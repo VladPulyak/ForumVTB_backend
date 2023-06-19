@@ -41,6 +41,7 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new TopicConfigurations());
             modelBuilder.ApplyConfiguration(new SubsectionConfigurations());
             modelBuilder.ApplyConfiguration(new SectionConfigurations());
+            modelBuilder.ApplyConfiguration(new UserRoleConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

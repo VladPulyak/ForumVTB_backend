@@ -168,12 +168,35 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Sex")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("UserProfiles", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Message", b =>
@@ -228,6 +251,17 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Subsection");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.UserProfile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.UserRole", "UserRole")
+                        .WithMany("UserProfiles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserRole");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Message", b =>
                 {
                     b.Navigation("Files");
@@ -251,6 +285,11 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.UserProfile", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.UserRole", b =>
+                {
+                    b.Navigation("UserProfiles");
                 });
 #pragma warning restore 612, 618
         }
