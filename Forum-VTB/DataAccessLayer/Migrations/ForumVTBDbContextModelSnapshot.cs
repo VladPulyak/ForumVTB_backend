@@ -149,6 +149,9 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("HashPassword")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsEmailConfirm")
                         .HasColumnType("boolean");
 
@@ -160,18 +163,7 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("character varying(15)");
-
                     b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Sex")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -191,8 +183,8 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
 

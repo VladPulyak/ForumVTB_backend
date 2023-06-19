@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "TkUONBqjlr8u+rVhLyXmSnHNGVY6xiC0RFbpAQ7BJPnfIOuqXyMzQHxeN6GuwTw0cqgjKER7pxNaQR83fErqTQ==",
+  "success": true,
+  "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vladp\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\vladp\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,12 @@
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\bin\Debug\net7.0\BusinessLayer.deps.json
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\bin\Debug\net7.0\BusinessLayer.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\bin\Debug\net7.0\BusinessLayer.pdb
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.csproj.AssemblyReference.cache
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.GeneratedMSBuildEditorConfig.editorconfig
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.AssemblyInfoInputs.cache
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.AssemblyInfo.cs
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.csproj.CoreCompileInputs.cache
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\refint\BusinessLayer.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\BusinessLayer.pdb
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\BusinessLayer\obj\Debug\net7.0\ref\BusinessLayer.dll

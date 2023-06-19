@@ -10,8 +10,8 @@ namespace DataAccessLayer.Models
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public ICollection<UserProfile> UserProfiles { get; set; }
+        public ICollection<UserProfile>? UserProfiles { get; set; }
     }
 }

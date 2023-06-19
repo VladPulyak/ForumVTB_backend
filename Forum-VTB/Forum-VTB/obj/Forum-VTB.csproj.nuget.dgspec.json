@@ -4,6 +4,67 @@
     "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj": {}
   },
   "projects": {
+    "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj",
+        "projectName": "BusinessLayer",
+        "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj",
+        "packagesPath": "C:\\Users\\vladp\\.nuget\\packages\\",
+        "outputPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\vladp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -105,6 +166,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj": {
+                "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj"
+              },
               "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
                 "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj"
               }
@@ -121,6 +185,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.7, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.4, )"
@@ -138,6 +206,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[7.0.6, )"
             }
           },
           "imports": [

@@ -19,8 +19,6 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.NickName).HasMaxLength(30);
             builder.Property(q => q.Email).IsRequired();
             builder.Property(q => q.Email).HasMaxLength(50);
-            builder.Property(q => q.Phone).IsRequired();
-            builder.Property(q => q.Phone).HasMaxLength(15);
             builder.HasOne(q => q.UserRole).WithMany(w => w.UserProfiles).HasForeignKey(q => q.RoleId);
         }
     }
