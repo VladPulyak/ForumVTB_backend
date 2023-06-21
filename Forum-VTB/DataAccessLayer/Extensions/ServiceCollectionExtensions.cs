@@ -13,7 +13,7 @@ namespace DataAccessLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddForumVTBDbContext(this IServiceCollection services, string connectionString)
+        private static IServiceCollection AddForumVTBDbContext(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<ForumVTBDbContext>(options =>
             {
@@ -22,7 +22,7 @@ namespace DataAccessLayer.Extensions
             return services;
         }
 
-        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        public static IServiceCollection AddEntityDependencies(this IServiceCollection services, string connectionString)
         {
             services.AddScoped<IRepository<UserProfile>, UserProfileRepository>();
             services.AddScoped<IRepository<UserRole>, UserRoleRepository>();
@@ -31,6 +31,7 @@ namespace DataAccessLayer.Extensions
             services.AddScoped<IRepository<Section>, SectionRepository>();
             services.AddScoped<IRepository<Message>, MessageRepository>();
             services.AddScoped<IRepository<MessageFile>, MessageFileRepository>();
+            services.AddForumVTBDbContext(connectionString);
             return services;
         }
     }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLayer.Interfaces;
+using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using BusinessLayer.Dtos;
 
 namespace Forum_VTB.Controllers
 {
@@ -7,6 +10,8 @@ namespace Forum_VTB.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-
+        public UserController()
+        {
+        }
     }
 }

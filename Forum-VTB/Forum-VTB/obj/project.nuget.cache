@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "CizKLJNKZodGV3rKPi4LfIL9UpP8sjJhi2/EeoCN6CBlxt+yX7Tr9wsGw6qrbkckqUUi8nPHCukN0lf6Klmoiw==",
+  "dgSpecHash": "wS+JVfg/GBvbn5G1cx41FPhq19gufbvtYV8faCrqB1rtAtWP2REGPUFrH8KiaYjd/mAyUxkrZsborHEks0Lm4w==",
   "success": true,
   "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vladp\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\vladp\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\vladp\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.7\\microsoft.aspnetcore.authentication.jwtbearer.7.0.7.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.4\\microsoft.aspnetcore.openapi.7.0.4.nupkg.sha512",

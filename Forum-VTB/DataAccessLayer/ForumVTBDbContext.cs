@@ -33,6 +33,8 @@ namespace DataAccessLayer
 
         public DbSet<Section> Sections { get; set; }
 
+        public DbSet<UserRole> UserRoles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
