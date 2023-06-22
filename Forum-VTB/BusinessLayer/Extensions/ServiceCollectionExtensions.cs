@@ -19,6 +19,7 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRoleService, UserRoleService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly());
             return services;
         }

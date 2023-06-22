@@ -12,6 +12,7 @@ namespace Forum_VTB.Controllers
     {
         public UserController()
         {
+
         }
     }
 }
