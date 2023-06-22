@@ -1,8 +1,10 @@
 using BusinessLayer.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,16 +28,36 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+
+builder.Services.AddCors(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.AddPolicy("AllowAll", allow =>
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-    };
+        allow.AllowAnyHeader();
+        allow.AllowAnyMethod();
+        allow.AllowAnyOrigin();
+    });
 });
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = "Forum-VTB",
+            ValidAudience = "Forum-VTB"
+        };
+    })
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = "948547979355-3b3k2at6r1vekk4e113kll36gbjgdmo0.apps.googleusercontent.com";
+        googleOptions.ClientSecret = "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";
+    });
+
 
 var app = builder.Build();
 

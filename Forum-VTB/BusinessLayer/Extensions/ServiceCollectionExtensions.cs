@@ -16,7 +16,7 @@ namespace BusinessLayer.Extensions
         public static IServiceCollection AddDependencies(this IServiceCollection services, string connectionString)
         {
             services.AddEntityDependencies(connectionString);
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRoleService, UserRoleService>();
             services.AddScoped<IEmailService, EmailService>();

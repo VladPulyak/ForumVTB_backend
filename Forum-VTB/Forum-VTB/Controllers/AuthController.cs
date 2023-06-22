@@ -12,6 +12,9 @@ using System.IdentityModel.Tokens.Jwt;
 using BusinessLayer.Services;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.Configuration;
 
 namespace Forum_VTB.Controllers
 {
@@ -20,12 +23,14 @@ namespace Forum_VTB.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthService _authService;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthenticationService authenticationService, IUserService userService)
+        public AuthController(IAuthService authService, IUserService userService, IConfiguration configuration)
         {
-            _authenticationService = authenticationService;
+            _authService = authService;
             _userService = userService;
+            _configuration = configuration;
         }
         [HttpPost("register")]
         public async Task<ActionResult<UserProfile>> Register(UserRegisterDto userRequestDto)
@@ -34,7 +39,7 @@ namespace Forum_VTB.Controllers
             {
                 return BadRequest("User already exists");
             }
-            var user = _authenticationService.MapUserProfile(userRequestDto);
+            var user = _authService.MapUserProfile(userRequestDto);
             await _userService.Add(user);
             await _userService.Save();
             return user;
@@ -59,9 +64,9 @@ namespace Forum_VTB.Controllers
                 return BadRequest("Wrong password!");
             }
 
-            var token = _authenticationService.CreateAccessToken(user);
-            var refreshToken = _authenticationService.GenerateRefreshToken();
-            _authenticationService.SetRefreshToken(refreshToken, user);
+            var token = _authService.CreateAccessToken(user);
+            var refreshToken = _authService.GenerateRefreshToken();
+            _authService.SetRefreshToken(refreshToken, user);
             return Ok(token);
         }
 
@@ -89,10 +94,32 @@ namespace Forum_VTB.Controllers
                 return Unauthorized("Token Expired!");
             }
 
-            string token = _authenticationService.CreateAccessToken(userProfile);
-            var newRefreshToken = _authenticationService.GenerateRefreshToken();
-            _authenticationService.SetRefreshToken(newRefreshToken, userProfile);
+            string token = _authService.CreateAccessToken(userProfile);
+            var newRefreshToken = _authService.GenerateRefreshToken();
+            _authService.SetRefreshToken(newRefreshToken, userProfile);
             return Ok(token);
+        }
+
+        [HttpPost("Google")]
+        [Authorize]
+        public ActionResult GetUsers()
+        {
+            return Ok(_userService.GetAll());
+        }
+
+        private string CreateAccessToken(UserProfile userProfile)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Email, userProfile.Email),
+                new Claim(ClaimTypes.Role, userProfile.UserRole.Name)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
+            var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: credentials);
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
     }
 }

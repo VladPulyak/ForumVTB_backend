@@ -58,3 +58,4 @@ D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\System
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\BusinessLayer.dll
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\BusinessLayer.pdb
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.Google.dll
