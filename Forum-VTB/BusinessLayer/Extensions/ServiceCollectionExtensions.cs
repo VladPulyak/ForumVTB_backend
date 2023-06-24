@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
+using BusinessLayer.MapProfiles;
 using BusinessLayer.Services;
 using DataAccessLayer.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +19,8 @@ namespace BusinessLayer.Extensions
             services.AddEntityDependencies(connectionString);
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserRoleService, UserRoleService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddAutoMapper(Assembly.GetCallingAssembly(), Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(UserMapProfile));
             return services;
         }
     }

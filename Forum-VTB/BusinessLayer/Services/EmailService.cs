@@ -1,9 +1,5 @@
 ﻿using BusinessLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using BusinessLayer.Dtos;
 using System.Net.Mail;
 using System.Net;
@@ -15,7 +11,7 @@ namespace BusinessLayer.Services
         public async Task SendMessage(EmailSenderDto requestDto)
         {
             string senderEmail = "forumvtbds@gmail.com";
-            string senderPassword = "poaxpntlomvkzkhq";
+            string senderPassword = "mzioajhajzrrhikz";
             MailMessage mailMessage = new MailMessage();
             mailMessage.From = new MailAddress(senderEmail);
             mailMessage.To.Add(new MailAddress(requestDto.ReceiverEmail));

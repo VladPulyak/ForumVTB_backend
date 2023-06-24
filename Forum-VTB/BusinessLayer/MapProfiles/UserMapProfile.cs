@@ -13,8 +13,7 @@ namespace BusinessLayer.MapProfiles
     {
         public UserMapProfile()
         {
-            CreateMap<UserRegisterDto, UserProfile>();
-            CreateMap<UserProfile, UserRegisterDto>();
+            CreateMap<UserProfile, UserRegisterDto>().ReverseMap();                
         }
     }
 }

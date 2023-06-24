@@ -1,6 +1,10 @@
 using BusinessLayer.Extensions;
+using DataAccessLayer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -39,7 +43,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // JwtBearerDefaults.AuthenticationScheme
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -49,17 +53,31 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidIssuer = "Forum-VTB",
-            ValidAudience = "Forum-VTB"
+            ValidAudience = "Forum-VTB",
+            ClockSkew = TimeSpan.Zero
         };
     })
     .AddGoogle(googleOptions =>
     {
-        googleOptions.ClientId = "948547979355-3b3k2at6r1vekk4e113kll36gbjgdmo0.apps.googleusercontent.com";
-        googleOptions.ClientSecret = "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";
+        googleOptions.ClientId = "235213662998-9eqe351jifk2urdcj1q6k38hfru1bcme.apps.googleusercontent.com";
+        googleOptions.ClientSecret = "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";
+        googleOptions.Scope.Add("email");
+        googleOptions.Scope.Add("profile");
+        googleOptions.Scope.Add("openId");
     });
 
 
 var app = builder.Build();
+
+app.UseExceptionHandler(c => c.Run(async context =>
+{
+    var exception = context.Features
+        .Get<IExceptionHandlerPathFeature>()
+        .Error;
+    var response = new { error = exception.Message };
+    await context.Response.WriteAsJsonAsync(response);
+}));
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -76,4 +94,34 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+await BusinessLayerStartupFunctions.MigrateDatabase(app.Services);
+
 app.Run();
+
+
+public static class BusinessLayerStartupFunctions
+{
+    public static async Task MigrateDatabase(IServiceProvider service)
+    {
+        using (var scope = service.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ForumVTBDbContext>();
+            dbContext.Database.Migrate();
+            await SeedDataAsync(dbContext);
+        }
+    }
+
+    private static async Task SeedDataAsync(ForumVTBDbContext dbContext)
+    {
+        if (!await dbContext.Roles.AnyAsync())
+        {
+            await dbContext.Roles.AddRangeAsync(new List<IdentityRole>
+            {
+                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Name = "User", NormalizedName = "USER" }
+            });
+
+            await dbContext.SaveChangesAsync();
+        }
+    }
+}

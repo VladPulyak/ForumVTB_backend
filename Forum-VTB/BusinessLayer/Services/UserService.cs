@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
 
         public Task<UserProfile> GetByLogin(string login)
         {
-            var user = _context.UserProfiles.Include(q=>q.UserRole).SingleOrDefaultAsync(q=>q.Login == login);
+            var user = _context.UserProfiles.SingleOrDefaultAsync(q => q.Email == login);
 
             if (user is null)
             {
