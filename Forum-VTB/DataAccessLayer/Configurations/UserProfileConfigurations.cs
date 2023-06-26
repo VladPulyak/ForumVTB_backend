@@ -13,14 +13,8 @@ namespace DataAccessLayer.Configurations
     {
         public void Configure(EntityTypeBuilder<UserProfile> builder)
         {
-            builder.ToTable("UserProfiles");
             builder.HasKey(q => q.Id);
-            builder.Property(q => q.NickName).IsRequired();
-            builder.Property(q => q.NickName).HasMaxLength(30);
-            builder.Property(q => q.Email).IsRequired();
-            builder.Property(q => q.Email).HasMaxLength(50);
-            builder.Property(q => q.Phone).IsRequired();
-            builder.Property(q => q.Phone).HasMaxLength(15);
+            builder.ToTable("UserProfiles");
         }
     }
 }

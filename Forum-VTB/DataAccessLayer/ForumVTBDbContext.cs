@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Configurations;
 using DataAccessLayer.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class ForumVTBDbContext : DbContext
+    public class ForumVTBDbContext : IdentityDbContext<UserProfile>
     {
         public ForumVTBDbContext()
         {
             
         }
 
-        public ForumVTBDbContext(DbContextOptions options) : base(options)
+        public ForumVTBDbContext(DbContextOptions<ForumVTBDbContext> options) : base(options)
         {
 
         }
