@@ -66,3 +66,7 @@ D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Micros
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\System.Security.Permissions.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Newtonsoft.Json.dll
+D:\.NET projects\DreamSoft\forum-vtb\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll

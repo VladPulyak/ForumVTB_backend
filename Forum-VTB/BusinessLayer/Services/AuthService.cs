@@ -138,7 +138,7 @@ namespace BusinessLayer.Services
             }
             else
             {
-                throw new InvalidTokenException("Invalid token!");
+                throw new InvalidTokenException("Invalid login or password");
             }
         }
         public async Task<string> CreateRefreshToken(UserProfile user)

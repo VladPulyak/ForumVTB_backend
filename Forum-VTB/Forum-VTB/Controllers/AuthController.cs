@@ -43,27 +43,23 @@ namespace Forum_VTB.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<AuthResponceDto>> Login([FromBody] UserLoginDto userLogin)
         {
-
-            var result = await _authService.Login(userLogin);
+            AuthResponceDto result;
+            try
+            {
+                result = await _authService.Login(userLogin);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
             if (result is null)
             {
                 return Unauthorized(result.UserEmail);
             }
             return Ok(result);
-        }
-
-        [HttpGet]
-        [Route("/auth/userinfo.profile")]
-        public ActionResult GetProfile(string userProfile)
-        {
-            return Ok(userProfile);
-        }
-
-        [HttpGet]
-        [Route("/auth/userinfo.email")]
-        public ActionResult GetEmail(string email)
-        {
-            return Ok(email);
         }
 
         [HttpPost("RefreshToken")]
@@ -79,11 +75,11 @@ namespace Forum_VTB.Controllers
         }
 
 
-        [HttpPost("Google")]
-        [Authorize]
-        public ActionResult GetUsers()
-        {
-            return Ok(_userService.GetAll());
-        }
+        //[HttpPost("Google")]
+        //public ActionResult Google(object obj)
+        //{
+        //    Console.WriteLine(obj);
+        //    return Ok();
+        //}
     }
 }
