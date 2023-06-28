@@ -1,0 +1,4 @@
+include:
+  - project: 'ds-interns/forum-vtb/devops/pipeline'
+    ref:  main
+    file: '/gitlab-ci.yml'
