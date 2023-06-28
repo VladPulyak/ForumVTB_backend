@@ -28,6 +28,7 @@ namespace DataAccessLayer.Extensions
             services.AddIdentityCore<UserProfile>(options =>
                 {
                     options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
                     options.SignIn.RequireConfirmedEmail = false;
                     options.SignIn.RequireConfirmedPhoneNumber = false;
                 })
