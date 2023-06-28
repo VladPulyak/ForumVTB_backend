@@ -1,8 +1,11 @@
 ﻿using BusinessLayer.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+using System.Text.Json;
+using BusinessLayer.Exceptions;
+using System.IdentityModel.Tokens.Jwt;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using DataAccessLayer.Models;
 
 namespace Forum_VTB.Controllers
 {
@@ -74,12 +77,24 @@ namespace Forum_VTB.Controllers
             return Ok(result);
         }
 
+        [HttpPost("GoogleAuthentication")]
+        public async Task<ActionResult<AuthResponceDto>> GoogleAuthentication([FromBody] object request)
+        {
+            var requestDto = JsonSerializer.Deserialize<GoogleAuthRequestDto>(request.ToString(), new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
 
-        //[HttpPost("Google")]
-        //public ActionResult Google(object obj)
-        //{
-        //    Console.WriteLine(obj);
-        //    return Ok();
-        //}
+            AuthResponceDto responce;
+            try
+            {
+                responce = await _authService.GoogleAuthentication(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok(responce);
+        }
     }
 }

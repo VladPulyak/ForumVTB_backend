@@ -2,24 +2,15 @@
 using BusinessLayer.Dtos;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
-using DataAccessLayer;
 using DataAccessLayer.Exceptions;
-using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
-using DataAccessLayer.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
@@ -34,60 +25,6 @@ namespace BusinessLayer.Services
             _mapper = mapper;
             _userManager = userManager;
         }
-
-        //public string CreateAccessToken(UserProfile userProfile)
-        //{
-        //    var claims = new List<Claim>()
-        //    {
-        //        new Claim(ClaimTypes.Email, userProfile.Email),
-        //        new Claim(ClaimTypes.Role, userProfile.UserRole.Name)
-        //    };
-
-        //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value!));
-        //    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-        //    var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(1), signingCredentials: credentials, issuer: "Forum-VTB", audience: "Forum-VTB");
-        //    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        //    return jwt;
-        //}
-
-        //public UserProfile MapUserProfile(UserRegisterDto userRequestDto)
-        //{
-        //    var user = new UserProfile();
-        //    var hashPassword = BCrypt.Net.BCrypt.HashPassword(userRequestDto.Password);
-        //    user.HashPassword = hashPassword;
-        //    user.Login = userRequestDto.Login;
-        //    user.Email = user.Login;
-        //    user.NickName = "Unnamed";
-        //    user.RoleId = 1;
-        //    return user;
-        //}
-
-        //public RefreshToken GenerateRefreshToken()
-        //{
-        //    var refreshToken = new RefreshToken()
-        //    {
-        //        Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-        //        DateOfCreating = DateTime.UtcNow,
-        //        DateOfExpiring = DateTime.UtcNow.AddDays(7)
-        //    };
-        //    return refreshToken;
-        //}
-
-        //public void SetRefreshToken(RefreshToken refreshToken, UserProfile userProfile)
-        //{
-        //    var cookieOptions = new CookieOptions()
-        //    {
-        //        HttpOnly = true,
-        //        Expires = refreshToken.DateOfExpiring
-        //    };
-        //    _contextAccessor.HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
-        //    userProfile.RefreshToken = refreshToken.Token;
-        //    userProfile.DateOfCreating = refreshToken.DateOfCreating;
-        //    userProfile.DateOfExpiring = refreshToken.DateOfExpiring;
-        //    _userService.Update(userProfile);
-        //    _userService.Save();
-        //}
-
 
         public async Task<UserRegisterResponceDto> Register(UserRegisterDto registerUserDto)
         {
@@ -157,7 +94,7 @@ namespace BusinessLayer.Services
                 }
                 else
                 {
-                    throw new InvalidTokenException("Invalid token!");
+                    throw new InvalidTokenException("Invalid refresh token!");
                 }
             }
             catch (InvalidTokenException)
@@ -188,7 +125,7 @@ namespace BusinessLayer.Services
                 }
                 catch (InvalidTokenException)
                 {
-                    throw new InvalidTokenException("Invalid token!");
+                    throw new InvalidTokenException("Token could not be read!");
                 }
 
                 var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
@@ -196,7 +133,7 @@ namespace BusinessLayer.Services
                 var user = await _userManager.FindByEmailAsync(userEmail);
                 if (user is null || user.Email != request.UserEmail)
                 {
-                    throw new InvalidOperationException("User not found or email is incorrect");
+                    throw new ObjectNotFoundException("User with this email is not found");
                 }
 
                 var isValidRefreshToken = await _userManager.VerifyUserTokenAsync(user, loginProvider, myRefreshToken, request.RefreshToken);
@@ -218,9 +155,9 @@ namespace BusinessLayer.Services
                 await _userManager.UpdateSecurityStampAsync(user);
                 throw new InvalidTokenException("Invalid token!");
             }
-            catch (InvalidTokenException)
+            catch (Exception ex)
             {
-                throw;
+                throw new InvalidOperationException(ex.Message);
             }
         }
 
@@ -249,5 +186,91 @@ namespace BusinessLayer.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<AuthResponceDto> GoogleAuthentication(GoogleAuthRequestDto requestDto)
+        {
+            var jwtSecurityToken = ConvertOAuthTokenToJWT(requestDto.OAuthToken);
+            var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
+
+            var user = new UserProfile()
+            {
+                Email = userEmail,
+                EmailConfirmed = true,
+                NormalizedEmail = userEmail.ToUpper(),
+                UserName = userEmail,
+                NormalizedUserName = userEmail.ToUpper()
+            };
+            AuthResponceDto responce;
+
+            var searchedUser = await _userManager.FindByEmailAsync(userEmail);
+            if (searchedUser is null)
+            {
+                var errors = await RegisterByGoogle(user);
+                if (!errors.IsNullOrEmpty())
+                {
+                    throw new RegisterUserException($"User isn't registered: {errors.First().Description}");
+                }
+                responce = await LoginByGoogle(user);
+            }
+            else
+            {
+                responce = await LoginByGoogle(user);
+            }
+            return responce;
+        }
+
+        private async Task<AuthResponceDto> LoginByGoogle(UserProfile user)
+        {
+            var token = await GenerateToken(user);
+            return new AuthResponceDto()
+            {
+                UserEmail = user.Email,
+                Token = token,
+                RefreshToken = await CreateRefreshToken(user)
+            };
+        }
+
+        private async Task<List<IdentityError>> RegisterByGoogle(UserProfile user)
+        {
+            List<IdentityError> resultErrors = new List<IdentityError>();
+            var result = await _userManager.CreateAsync(user, Guid.NewGuid().ToString() + "H");
+            if (result.Succeeded)
+            {
+                var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
+                if (!addToRoleResult.Succeeded)
+                {
+                    resultErrors.AddRange(addToRoleResult.Errors);
+                }
+            }
+            else
+            {
+                resultErrors.AddRange(result.Errors);
+            }
+            return resultErrors;
+        }
+
+        private JwtSecurityToken ConvertOAuthTokenToJWT(string token)
+        {
+            var jwtSequrityTokenHandler = new JwtSecurityTokenHandler();
+            if (!jwtSequrityTokenHandler.CanReadToken(token))
+            {
+                throw new InvalidTokenException("Token could not be read");
+            }
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken();
+            DateTime dateOfExpiring;
+            try
+            {
+                var tokenContent = jwtSequrityTokenHandler.ReadJwtToken(token);
+                dateOfExpiring = tokenContent.ValidTo;
+                jwtSecurityToken = tokenContent;
+            }
+            catch (InvalidTokenException)
+            {
+                throw new InvalidTokenException("Invalid token!");
+            }
+            return jwtSecurityToken;
+        }
     }
+
 }

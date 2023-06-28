@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "t0qqFQBlBGTXpco/wcmWEj44csQuSYOtdWq6Wv0wT7/RPYzM53v0/HYy0yr/VIzGmgGYVDdTolhiPV82qcMCpQ==",
+  "dgSpecHash": "EQITdmyMk+MnOrk56rYQhh4NYbNbtyOp8k/kZyQiEAb2bzVLlMPDaD8rezleAf3cJsDuGNtS6EwAzfYcgl9nAg==",
   "success": true,
-  "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
+  "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vladp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

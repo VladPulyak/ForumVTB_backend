@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {}
+    "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {}
   },
   "projects": {
-    "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
+    "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectUniqueName": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
         "projectName": "DataAccessLayer",
-        "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
+        "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj",
         "packagesPath": "C:\\Users\\vladp\\.nuget\\packages\\",
-        "outputPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\obj\\",
+        "outputPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vladp\\AppData\\Roaming\\NuGet\\NuGet.Config",

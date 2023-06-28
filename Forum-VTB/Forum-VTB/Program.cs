@@ -1,16 +1,11 @@
 using BusinessLayer.Extensions;
-using DataAccessLayer;
-using Microsoft.AspNetCore.Authentication;
+using BusinessLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,27 +38,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) // JwtBearerDefaults.AuthenticationScheme
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters
-//        {
-//            ValidateIssuerSigningKey = true,
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidIssuer = "Forum-VTB",
-//            ValidAudience = "Forum-VTB",
-//            ClockSkew = TimeSpan.Zero
-//        };
-//    })
-//    .AddGoogle(googleOptions => // OAuth аккаунт на vlad.puliak@gmail.com
-//    {
-//        googleOptions.ClientId = "1076353144099-0ul0atc8o614bnk771qod4uibcb5musf.apps.googleusercontent.com";
-//        googleOptions.ClientSecret = "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";
-//    });
-
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -84,35 +58,8 @@ builder.Services.AddAuthentication(options =>
 })
 .AddGoogle(googleOptions =>
 {
-    googleOptions.ClientId = "1076353144099-0ul0atc8o614bnk771qod4uibcb5musf.apps.googleusercontent.com";
-    googleOptions.ClientSecret = "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";
-    googleOptions.Events = new OAuthEvents
-    {
-        OnCreatingTicket = context =>
-        {
-            // Convert the Google access token to a JWT token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = context.Principal.Identity as ClaimsIdentity,
-                Expires = DateTime.UtcNow.AddMinutes(20),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)), SecurityAlgorithms.HmacSha256Signature),
-                Audience = "Forum-VTB",
-                Issuer = "Forum-VTB"
-            };
-            var jwtToken = tokenHandler.CreateToken(tokenDescriptor);
-            var accessToken = tokenHandler.WriteToken(jwtToken);
-
-            // Set the access token as the authentication ticket
-            var authenticationTicket = new AuthenticationTicket(context.Principal, new AuthenticationProperties(),
-                context.Scheme.Name);
-            authenticationTicket.Properties.StoreTokens(new[] { new AuthenticationToken { Name = "access_token", Value = accessToken } });
-
-            context.Principal = new ClaimsPrincipal(authenticationTicket.Principal);
-
-            return Task.CompletedTask;
-        }
-    };
+    googleOptions.ClientId = "235213662998-9eqe351jifk2urdcj1q6k38hfru1bcme.apps.googleusercontent.com";
+    googleOptions.ClientSecret = "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";
 });
 
 var app = builder.Build();
@@ -145,34 +92,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await BusinessLayerStartupFunctions.MigrateDatabase(app.Services);
+await StartupServices.MigrateDatabase(app.Services);
 
 app.Run();
-
-
-public static class BusinessLayerStartupFunctions
-{
-    public static async Task MigrateDatabase(IServiceProvider service)
-    {
-        using (var scope = service.CreateScope())
-        {
-            var dbContext = scope.ServiceProvider.GetRequiredService<ForumVTBDbContext>();
-            dbContext.Database.Migrate();
-            await SeedDataAsync(dbContext);
-        }
-    }
-
-    private static async Task SeedDataAsync(ForumVTBDbContext dbContext)
-    {
-        if (!await dbContext.Roles.AnyAsync())
-        {
-            await dbContext.Roles.AddRangeAsync(new List<IdentityRole>
-            {
-                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Name = "User", NormalizedName = "USER" }
-            });
-
-            await dbContext.SaveChangesAsync();
-        }
-    }
-}

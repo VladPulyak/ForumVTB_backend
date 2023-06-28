@@ -3497,11 +3497,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
+      "projectUniqueName": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
       "projectName": "Forum-VTB",
-      "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
+      "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
       "packagesPath": "C:\\Users\\vladp\\.nuget\\packages\\",
-      "outputPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\obj\\",
+      "outputPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\Forum-VTB\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\vladp\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3518,11 +3518,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj": {
-              "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj"
+            "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj": {
+              "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj"
             },
-            "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj"
+            "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\DataAccessLayer\\DataAccessLayer.csproj"
             }
           }
         }

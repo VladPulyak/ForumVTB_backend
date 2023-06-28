@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "d3+GiJbX9re+LgqM7NEEUCzdaveMbTNeYz4xHRGsIuCOHRXEAOk74CxB4RjuTn+d35EfA6OvZsEEQECUL35iWg==",
+  "dgSpecHash": "ZAZPqgSMZaGPeOwNsggyd2Wudd9mrXjl1dD7IrmM3ehD6cQIcCr3hEwriCHU/855HeMaS2aH73u104FWVq8/UQ==",
   "success": true,
-  "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
+  "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vladp\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
