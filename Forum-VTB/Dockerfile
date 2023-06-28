@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Forum-VTB/Forum-VTB.csproj", "Forum-VTB/"]
+COPY ["BusinessLayer/BusinessLayer.csproj", "BusinessLayer/"]
+COPY ["DataAccessLayer/DataAccessLayer.csproj", "DataAccessLayer/"]
 RUN dotnet restore "Forum-VTB/Forum-VTB.csproj"
 COPY . .
 WORKDIR "/src/Forum-VTB"
