@@ -5,11 +5,13 @@ using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
 
 namespace BusinessLayer.Services
@@ -103,7 +105,7 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<AuthResponceDto> VerifyRefreshToken(AuthResponceDto request)
+        public async Task<AuthResponceDto> RefreshToken(AuthResponceDto request)
         {
             var loginProvider = "Forum-VTB.LoginProvider";
             var myRefreshToken = "Forum-VTB.RefreshToken";
@@ -120,7 +122,6 @@ namespace BusinessLayer.Services
                 try
                 {
                     var tokenContent = jwtSequrityTokenHandler.ReadJwtToken(request.Token);
-                    var date = tokenContent.ValidTo;
                     jwtSecurityToken = tokenContent;
                 }
                 catch (InvalidTokenException)
@@ -129,7 +130,6 @@ namespace BusinessLayer.Services
                 }
 
                 var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
-                var dateOfExpiring = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Exp)?.Value;
                 var user = await _userManager.FindByEmailAsync(userEmail);
                 if (user is null || user.Email != request.UserEmail)
                 {
@@ -151,9 +151,8 @@ namespace BusinessLayer.Services
                         };
                     }
                 }
-
                 await _userManager.UpdateSecurityStampAsync(user);
-                throw new InvalidTokenException("Invalid token!");
+                throw new InvalidTokenException("Invalid refresh token!");
             }
             catch (Exception ex)
             {
@@ -192,19 +191,19 @@ namespace BusinessLayer.Services
             var jwtSecurityToken = ConvertOAuthTokenToJWT(requestDto.OAuthToken);
             var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
 
-            var user = new UserProfile()
-            {
-                Email = userEmail,
-                EmailConfirmed = true,
-                NormalizedEmail = userEmail.ToUpper(),
-                UserName = userEmail,
-                NormalizedUserName = userEmail.ToUpper()
-            };
             AuthResponceDto responce;
 
             var searchedUser = await _userManager.FindByEmailAsync(userEmail);
             if (searchedUser is null)
             {
+                var user = new UserProfile()
+                {
+                    Email = userEmail,
+                    EmailConfirmed = true,
+                    NormalizedEmail = userEmail.ToUpper(),
+                    UserName = userEmail,
+                    NormalizedUserName = userEmail.ToUpper()
+                };
                 var errors = await RegisterByGoogle(user);
                 if (!errors.IsNullOrEmpty())
                 {
@@ -214,7 +213,7 @@ namespace BusinessLayer.Services
             }
             else
             {
-                responce = await LoginByGoogle(user);
+                responce = await LoginByGoogle(searchedUser);
             }
             return responce;
         }
@@ -271,6 +270,35 @@ namespace BusinessLayer.Services
             }
             return jwtSecurityToken;
         }
-    }
 
+        public async Task<string> GenerateResetPasswordToken(ForgotPasswordRequestDto requestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(requestDto.UserEmail);
+            string newResetPasswordToken;
+
+            if (user is null)
+            {
+                throw new ObjectNotFoundException("User not found");
+            }
+            try
+            {
+                 newResetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);                
+            }
+            catch (InvalidTokenException)
+            {
+                throw new InvalidTokenException("Invalid reset password token!");
+            }
+            return newResetPasswordToken;
+        }
+
+        public async Task ResetPassword(string userEmail, string resetToken, ResetPasswordRequestDto requestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, requestDto.Password);
+            if (!result.Succeeded)
+            {
+                throw new ResetPasswordException("Password cannot be reset");
+            }
+        }
+    }
 }
