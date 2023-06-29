@@ -13,15 +13,11 @@ namespace Forum_VTB.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
         private readonly IAuthService _authService;
-        private readonly IConfiguration _configuration;
 
-        public AuthController(IAuthService authService, IUserService userService, IConfiguration configuration)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userService = userService;
-            _configuration = configuration;
         }
 
         [HttpPost("Register")]
@@ -68,7 +64,7 @@ namespace Forum_VTB.Controllers
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<AuthResponceDto>> RefreshToken([FromBody] AuthResponceDto request)
         {
-            var result = await _authService.VerifyRefreshToken(request);
+            var result = await _authService.RefreshToken(request);
             if (result is null)
             {
                 return Unauthorized(result.UserEmail);
@@ -86,6 +82,7 @@ namespace Forum_VTB.Controllers
             });
 
             AuthResponceDto responce;
+
             try
             {
                 responce = await _authService.GoogleAuthentication(requestDto);

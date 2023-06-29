@@ -2,6 +2,7 @@
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,12 @@ namespace BusinessLayer.Interfaces
 
         Task<string> CreateRefreshToken(UserProfile user);
 
-        Task<AuthResponceDto> VerifyRefreshToken(AuthResponceDto request);
+        Task<AuthResponceDto> RefreshToken(AuthResponceDto request);
 
         Task<AuthResponceDto> GoogleAuthentication(GoogleAuthRequestDto requestDto);
+
+        Task<string> GenerateResetPasswordToken(ForgotPasswordRequestDto requestDto);
+
+        Task ResetPassword(string userEmail, string resetToken, ResetPasswordRequestDto requestDto);
     }
 }
