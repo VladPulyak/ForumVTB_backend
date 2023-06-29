@@ -6,6 +6,7 @@ using BusinessLayer.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using DataAccessLayer.Models;
+using BusinessLayer.Services;
 
 namespace Forum_VTB.Controllers
 {
@@ -14,10 +15,12 @@ namespace Forum_VTB.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IEmailService emailService)
         {
             _authService = authService;
+            _emailService = emailService;
         }
 
         [HttpPost("Register")]
@@ -93,5 +96,44 @@ namespace Forum_VTB.Controllers
             }
             return Ok(responce);
         }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordRequestDto requestDto)
+        {
+            string newResetPasswordToken;
+            try
+            {
+                newResetPasswordToken = await _authService.GenerateResetPasswordToken(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            await _emailService.SendMessage(new EmailSenderDto
+            {
+                Subject = "Reset Password",
+                Body = "https://localhost:7086" + Url.Action("ResetPassword", new { userEmail = requestDto.UserEmail, resetToken = newResetPasswordToken }),
+                ReceiverEmail = requestDto.UserEmail
+            });
+
+            return Ok("To reset your password, follow the link sent to your email");
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult> ResetPassword([FromQuery] string userEmail, [FromQuery] string resetToken, [FromForm] ResetPasswordRequestDto requestDto)
+        {
+            try
+            {
+                await _authService.ResetPassword(userEmail, resetToken, requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok("Password reset successfully!");
+        }
+
     }
 }
