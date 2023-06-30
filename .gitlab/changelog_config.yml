@@ -1,0 +1,21 @@
+---
+tag_regex: '^v(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)$'
+categories:
+  feature: Features
+  bug: Bug fixes
+  performance: Performance improvements
+template: |
+  {% if categories %}
+  {% each categories %}
+  ### {{ title }} ({% if single_change %}1 change{% else %}{{ count }} changes{% end %})
+
+  {% each entries %}
+  - [{{ title }}]({{ commit.reference }}) by {{ author.reference }}\
+  {% if merge_request %} ([merge request]({{ merge_request.reference }})){% end %}
+
+  {% end %}
+
+  {% end %}
+  {% else %}
+  No changes.
+  {% end %}
