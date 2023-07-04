@@ -21,4 +21,6 @@ RUN dotnet publish "Forum-VTB.csproj" -c Release -o /app/publish /p:UseAppHost=f
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+# Установка переменной окружения для параметра подключения
+ENV ConnectionStrings__DefaultConnection=$DB_CONNECTION_STRING
 ENTRYPOINT ["dotnet", "Forum-VTB.dll"]
