@@ -134,6 +134,5 @@ namespace Forum_VTB.Controllers
 
             return Ok("Password reset successfully!");
         }
-
     }
 }

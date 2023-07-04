@@ -21,6 +21,7 @@ namespace BusinessLayer.Extensions
             services.AddEntityDependencies(connectionString);
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(typeof(UserMapProfile));
             return services;
