@@ -145,6 +145,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("timestamp");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -162,6 +165,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("NickName")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -174,10 +181,14 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("text");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -197,6 +208,9 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });

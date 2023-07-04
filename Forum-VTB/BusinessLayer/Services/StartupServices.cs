@@ -30,5 +30,10 @@ namespace BusinessLayer.Services
                 await dbContext.SaveChangesAsync();
             }
         }
+
+        public static async Task PrintConnectionString(string connectionString)
+        {
+            await Console.Out.WriteLineAsync(connectionString);
+        }
     }
 }
