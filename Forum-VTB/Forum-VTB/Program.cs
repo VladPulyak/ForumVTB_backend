@@ -16,6 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDependencies(builder.Configuration.GetConnectionString("DefaultConnection"));
+//builder.Services.AddDependencies("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -73,6 +74,8 @@ app.UseExceptionHandler(c => c.Run(async context =>
     await context.Response.WriteAsJsonAsync(response);
 }));
 
+//await StartupServices.PrintConnectionString("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
+await StartupServices.PrintConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,7 +83,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 
