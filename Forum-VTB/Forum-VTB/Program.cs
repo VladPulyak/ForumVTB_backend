@@ -3,6 +3,7 @@ using BusinessLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -15,7 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDependencies(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}");
+
 //builder.Services.AddDependencies("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(options =>
@@ -75,7 +77,7 @@ app.UseExceptionHandler(c => c.Run(async context =>
 }));
 
 //await StartupServices.PrintConnectionString("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
-await StartupServices.PrintConnectionString(builder.Configuration.GetConnectionString("DefaultConnection"));
+await StartupServices.PrintConnectionString($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!};");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
