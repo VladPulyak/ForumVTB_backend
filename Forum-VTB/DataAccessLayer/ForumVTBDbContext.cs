@@ -34,6 +34,8 @@ namespace DataAccessLayer
 
         public DbSet<Section> Sections { get; set; }
 
+        public DbSet<UserMessage> UserMessages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
@@ -42,6 +44,7 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new TopicConfigurations());
             modelBuilder.ApplyConfiguration(new SubsectionConfigurations());
             modelBuilder.ApplyConfiguration(new SectionConfigurations());
+            modelBuilder.ApplyConfiguration(new UserMessageConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -18,7 +18,6 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}");
 
-//builder.Services.AddDependencies("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -76,7 +75,6 @@ app.UseExceptionHandler(c => c.Run(async context =>
     await context.Response.WriteAsJsonAsync(response);
 }));
 
-//await StartupServices.PrintConnectionString("Host=localhost;Port=5432;Database=ForumVTB;Username=postgres;Password=admin;");
 await StartupServices.PrintConnectionString($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!};");
 
 // Configure the HTTP request pipeline.

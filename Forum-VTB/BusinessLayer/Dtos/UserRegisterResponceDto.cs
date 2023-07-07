@@ -10,11 +10,10 @@ namespace BusinessLayer.Dtos
 {
     public class UserRegisterResponceDto
     {
-        [JsonIgnore]
-        public List<IdentityError> Errors { get; set; }
+        public string? Token { get; set; }
 
-        public string? UserName { get; set; }
+        public string? UserEmail { get; set; }
 
-        public string? Email { get; set; }
+        public string? RefreshToken { get; set; }
     }
 }
