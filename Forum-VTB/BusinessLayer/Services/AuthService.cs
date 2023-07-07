@@ -28,6 +28,10 @@ namespace BusinessLayer.Services
 
         public async Task<UserRegisterResponceDto> Register(UserRegisterDto registerUserDto)
         {
+            if (await _userManager.FindByEmailAsync(registerUserDto.Email) is not null)
+            {
+                throw new DuplicateUserException("User with this email already exists");
+            }
             var user = _mapper.Map<UserProfile>(registerUserDto);
             user.UserName = registerUserDto.Email;
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);

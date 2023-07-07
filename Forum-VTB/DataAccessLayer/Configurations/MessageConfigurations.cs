@@ -15,11 +15,12 @@ namespace DataAccessLayer.Configurations
         {
             builder.ToTable("TopicMessages");
             builder.HasKey(x => x.Id);
-            builder.Property(q=>q.Text).IsRequired();
-            builder.Property(q=>q.Text).HasMaxLength(300);
+            builder.Property(q => q.Text).IsRequired();
+            builder.Property(q => q.Text).HasMaxLength(300);
+            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp").IsRequired();
             builder.HasOne(q => q.UserProfile).WithMany(w => w.Messages).HasForeignKey(q => q.UserId);
             builder.HasOne(q => q.Topic).WithMany(w => w.Messages).HasForeignKey(q => q.TopicId);
-            builder.HasOne(q => q.ReplyingMessage).WithOne(q => q.ReplyingMessage).HasForeignKey<Message>(q => q.ReplyingMessageId);
+            builder.HasOne(q => q.ParentMessage).WithMany(q => q.Replies).HasForeignKey(q => q.ParentMessageId);
         }
     }
 }

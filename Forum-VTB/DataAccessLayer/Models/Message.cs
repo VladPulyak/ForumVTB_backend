@@ -14,11 +14,13 @@ namespace DataAccessLayer.Models
 
         public int TopicId { get; set; }
 
-        public int? ReplyingMessageId { get; set; }
+        public int? ParentMessageId { get; set; }
 
         public string? Text { get; set; }
 
         public bool IsReply { get; set; }
+
+        public DateTime DateOfCreation { get; set; }
 
         public ICollection<MessageFile>? Files { get; set; }
 
@@ -26,6 +28,8 @@ namespace DataAccessLayer.Models
 
         public UserProfile? UserProfile { get; set; }
 
-        public Message? ReplyingMessage { get; set; }
+        public Message? ParentMessage { get; set; }
+
+        public ICollection<Message>? Replies { get; set; }
     }
 }
