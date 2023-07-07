@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
 using System.Text.Json;
-using BusinessLayer.Exceptions;
-using System.IdentityModel.Tokens.Jwt;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using DataAccessLayer.Models;
-using BusinessLayer.Services;
 
 namespace Forum_VTB.Controllers
 {
@@ -24,26 +19,27 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegistration)
+        public async Task<ActionResult> Register(UserRegisterDto userRegistration)
         {
-            var userRegisterResponceDto = await _authService.Register(userRegistration);
+            UserRegisterResponceDto responceDto;
+            try
+            {
+                responceDto = await _authService.Register(userRegistration);
 
-            if (userRegisterResponceDto.Errors.Any())
+            }
+            catch (Exception ex)
             {
-                foreach (var error in userRegisterResponceDto.Errors)
+                return BadRequest(new ExceptionResponceDto
                 {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-                return BadRequest(ModelState);
-            }
-            else
-            {
-                return Ok(userRegisterResponceDto);
-            }
+                    Message = ex.Message
+                });
+            }            
+
+            return Ok(responceDto);
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<AuthResponceDto>> Login([FromBody] UserLoginDto userLogin)
+        public async Task<ActionResult<AuthResponceDto>> Login(UserLoginDto userLogin)
         {
             AuthResponceDto result;
             try
@@ -57,23 +53,27 @@ namespace Forum_VTB.Controllers
                     Message = ex.Message
                 });
             }
-            if (result is null)
-            {
-                return Unauthorized(result.UserEmail);
-            }
+
             return Ok(result);
         }
 
         [HttpPost("RefreshToken")]
         public async Task<ActionResult<AuthResponceDto>> RefreshToken([FromBody] AuthResponceDto request)
         {
-            var result = await _authService.RefreshToken(request);
-            if (result is null)
+            AuthResponceDto responceDto;
+            try
             {
-                return Unauthorized(result.UserEmail);
+                responceDto = await _authService.RefreshToken(request);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
 
-            return Ok(result);
+            return Ok(responceDto);
         }
 
         [HttpPost("GoogleAuthentication")]
@@ -92,7 +92,10 @@ namespace Forum_VTB.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
             return Ok(responce);
         }
@@ -107,13 +110,16 @@ namespace Forum_VTB.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
 
             await _emailService.SendMessage(new EmailSenderDto
             {
                 Subject = "Reset Password",
-                Body = "https://localhost:7086" + Url.Action("ResetPassword", new { userEmail = requestDto.UserEmail, resetToken = newResetPasswordToken }),
+                Body = "http://10.55.1.8:90/" + Url.Action("ResetPassword", new { userEmail = requestDto.UserEmail, resetToken = newResetPasswordToken }),
                 ReceiverEmail = requestDto.UserEmail
             });
 
@@ -129,7 +135,10 @@ namespace Forum_VTB.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
 
             return Ok("Password reset successfully!");

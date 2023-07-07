@@ -14,95 +14,72 @@ namespace Forum_VTB.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<UserProfile> _userManager;
-        private readonly IUserService _userService;
         private readonly IAccountService _accountService;
-        public AccountController(UserManager<UserProfile> userManager, IUserService userService, IAccountService accountService)
+
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _userService = userService;
             _accountService = accountService;
         }
-        [HttpGet("GetProfile")]
-        public async Task<ActionResult<UserProfile>> GetUserProfile()
+
+        [HttpGet("GetUserProfile")]
+        public async Task<ActionResult> GetUserProfile()
         {
-            var userEmail = User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-            return Ok(user);
+            var responceDto = await _accountService.GetUserProfile();
+            return Ok(responceDto);
         }
 
         [HttpPost("FillingAccountInfo")]
-        public async Task<ActionResult> FillingAccountInfo([FromForm] FillingAccountDataRequestDto requestDto)
+        public async Task<ActionResult> FillingAccountInfo(FillingAccountDataRequestDto requestDto)
         {
-            var userEmail = User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            user.UserName = requestDto.UserName;
-            user.NickName = requestDto.NickName;
-            user.BirthDate = new DateTime(requestDto.YearOfBirth, requestDto.MonthOfBirth, requestDto.DayOfBirth);
-            user.Photo = "photo";
-            //Photo
-            var updatedUser = _userService.Update(user);
-            await _userService.Save();
-            return Ok(updatedUser);
-        }
-
-        [HttpPost("ChangeEmail")]
-        public async Task<ActionResult> ChangeEmail(ChangeEmailRequestDto requestDto)
-        {
-            var userEmail = User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            var userWithNewEmail = await _userManager.FindByEmailAsync(requestDto.NewEmail);
-            if (userWithNewEmail is not null)
+            UserProfileInfoResponceDto responceDto;
+            try
             {
-                return BadRequest("This email is in user by another user");
-            }
+                responceDto = await _accountService.FillingAccountInfo(requestDto);
 
-            var result = await _userManager.ChangeEmailAsync(user, requestDto.NewEmail, await _userManager.GenerateChangeEmailTokenAsync(user, requestDto.NewEmail));
-
-            if (result.Succeeded)
-            {
-                return Ok("Email changed successfully");
             }
-            else
+            catch (Exception ex)
             {
-                throw new EmailChangingException("Email cannot be changed");
-            }
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }         
+            return Ok(responceDto);
         }
 
         [HttpPost("ChangePassword")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequestDto requestDto)
         {
-            var userEmail = User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            var result = await _userManager.ChangePasswordAsync(user, requestDto.OldPassword, requestDto.NewPassword);
-            if (result.Succeeded)
+            try
             {
-                return Ok("Password changed successfully!");
+                await _accountService.ChangePassword(requestDto);
             }
-            else
+            catch (ChangePasswordException ex)
             {
-                return BadRequest("Password cannot be changed!");
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
+            return Ok("Password changed successfuly!");
         }
 
         [HttpPost("ChangePhoneNumber")]
         public async Task<ActionResult> ChangePhoneNumber(ChangePhoneNumberRequestDto requestDto)
         {
-            var userEmail = User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            var result = await _userManager.ChangePhoneNumberAsync(user, requestDto.NewPhoneNumber, await _userManager.GenerateChangePhoneNumberTokenAsync(user, requestDto.NewPhoneNumber));
-            if (result.Succeeded)
+            try
             {
-                return Ok("Phone number changed successfully!");
+                await _accountService.ChangePhoneNumber(requestDto);
             }
-            else
+            catch (ChangePhoneNumberException ex)
             {
-                return BadRequest("Phone number cannot be changed");
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
+            return Ok("Phone number changed successfully!");
+
         }
     }
 }

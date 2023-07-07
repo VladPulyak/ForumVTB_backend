@@ -13,12 +13,13 @@ namespace DataAccessLayer.Configurations
     {
         public void Configure(EntityTypeBuilder<Message> builder)
         {
-            builder.ToTable("Messages");
+            builder.ToTable("TopicMessages");
             builder.HasKey(x => x.Id);
             builder.Property(q=>q.Text).IsRequired();
             builder.Property(q=>q.Text).HasMaxLength(300);
             builder.HasOne(q => q.UserProfile).WithMany(w => w.Messages).HasForeignKey(q => q.UserId);
             builder.HasOne(q => q.Topic).WithMany(w => w.Messages).HasForeignKey(q => q.TopicId);
+            builder.HasOne(q => q.ReplyingMessage).WithOne(q => q.ReplyingMessage).HasForeignKey<Message>(q => q.ReplyingMessageId);
         }
     }
 }

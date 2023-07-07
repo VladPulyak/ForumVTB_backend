@@ -14,6 +14,7 @@ namespace BusinessLayer.MapProfiles
         public UserMapProfile()
         {
             CreateMap<UserProfile, UserRegisterDto>().ReverseMap();                
+            CreateMap<UserProfile, UserProfileInfoResponceDto>().ReverseMap();                
         }
     }
 }

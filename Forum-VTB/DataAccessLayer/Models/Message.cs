@@ -14,12 +14,18 @@ namespace DataAccessLayer.Models
 
         public int TopicId { get; set; }
 
+        public int? ReplyingMessageId { get; set; }
+
         public string? Text { get; set; }
+
+        public bool IsReply { get; set; }
 
         public ICollection<MessageFile>? Files { get; set; }
 
         public Topic? Topic { get; set; }
 
         public UserProfile? UserProfile { get; set; }
+
+        public Message? ReplyingMessage { get; set; }
     }
 }

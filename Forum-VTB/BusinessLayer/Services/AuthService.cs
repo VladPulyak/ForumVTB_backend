@@ -5,13 +5,11 @@ using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Policy;
 using System.Text;
 
 namespace BusinessLayer.Services
@@ -30,32 +28,39 @@ namespace BusinessLayer.Services
 
         public async Task<UserRegisterResponceDto> Register(UserRegisterDto registerUserDto)
         {
-            List<IdentityError> resultErrors = new List<IdentityError>();
             var user = _mapper.Map<UserProfile>(registerUserDto);
             user.UserName = registerUserDto.Email;
-
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
 
             if (result.Succeeded)
             {
                 var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
-                if (!addToRoleResult.Succeeded)
+                if (addToRoleResult.Succeeded)
                 {
-                    resultErrors.AddRange(addToRoleResult.Errors);
+                    var authResponceDto = await Login(new UserLoginDto
+                    {
+                        Login = registerUserDto.Email,
+                        Password = registerUserDto.Password
+                    });
+                    return new UserRegisterResponceDto
+                    {
+                        Token = authResponceDto.Token,
+                        UserEmail = authResponceDto.UserEmail,
+                        RefreshToken = authResponceDto.RefreshToken
+                    };
+                }
+                else
+                {
+                    await _userManager.DeleteAsync(user);
+                    throw new InvalidOperationException(addToRoleResult.Errors.First().Description);
                 }
             }
             else
             {
-                resultErrors.AddRange(result.Errors);
+                throw new InvalidOperationException(result.Errors.First().Description);
             }
-
-            return new UserRegisterResponceDto
-            {
-                Errors = resultErrors,
-                UserName = user.UserName,
-                Email = user.Email
-            };
         }
+
         public async Task<AuthResponceDto> Login(UserLoginDto loginUserDto)
         {
             var user = await _userManager.FindByEmailAsync(loginUserDto.Login);
@@ -109,55 +114,48 @@ namespace BusinessLayer.Services
         {
             var loginProvider = "Forum-VTB.LoginProvider";
             var myRefreshToken = "Forum-VTB.RefreshToken";
+            var jwtSequrityTokenHandler = new JwtSecurityTokenHandler();
+            if (!jwtSequrityTokenHandler.CanReadToken(request.Token))
+            {
+                throw new InvalidTokenException("Invalid token!");
+            }
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken();
+
             try
             {
-                var jwtSequrityTokenHandler = new JwtSecurityTokenHandler();
-                if (!jwtSequrityTokenHandler.CanReadToken(request.Token))
-                {
-                    throw new InvalidTokenException("Invalid token!");
-                }
-
-                JwtSecurityToken jwtSecurityToken = new JwtSecurityToken();
-
-                try
-                {
-                    var tokenContent = jwtSequrityTokenHandler.ReadJwtToken(request.Token);
-                    jwtSecurityToken = tokenContent;
-                }
-                catch (InvalidTokenException)
-                {
-                    throw new InvalidTokenException("Token could not be read!");
-                }
-
-                var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
-                var user = await _userManager.FindByEmailAsync(userEmail);
-                if (user is null || user.Email != request.UserEmail)
-                {
-                    throw new ObjectNotFoundException("User with this email is not found");
-                }
-
-                var isValidRefreshToken = await _userManager.VerifyUserTokenAsync(user, loginProvider, myRefreshToken, request.RefreshToken);
-                if (isValidRefreshToken)
-                {
-                    var refreshToken = await CreateRefreshToken(user);
-                    if (refreshToken is not null)
-                    {
-                        var token = await GenerateToken(user);
-                        return new AuthResponceDto
-                        {
-                            Token = token,
-                            UserEmail = user.Email,
-                            RefreshToken = refreshToken,
-                        };
-                    }
-                }
-                await _userManager.UpdateSecurityStampAsync(user);
-                throw new InvalidTokenException("Invalid refresh token!");
+                var tokenContent = jwtSequrityTokenHandler.ReadJwtToken(request.Token);
+                jwtSecurityToken = tokenContent;
             }
-            catch (Exception ex)
+            catch (InvalidTokenException)
             {
-                throw new InvalidOperationException(ex.Message);
+                throw new InvalidTokenException("Token could not be read!");
             }
+
+            var userEmail = jwtSecurityToken.Claims.ToList().FirstOrDefault(q => q.Type == JwtRegisteredClaimNames.Email)?.Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user is null || user.Email != request.UserEmail)
+            {
+                throw new ObjectNotFoundException("User with this email is not found");
+            }
+
+            var isValidRefreshToken = await _userManager.VerifyUserTokenAsync(user, loginProvider, myRefreshToken, request.RefreshToken);
+            if (isValidRefreshToken)
+            {
+                var refreshToken = await CreateRefreshToken(user);
+                if (refreshToken is not null)
+                {
+                    var token = await GenerateToken(user);
+                    return new AuthResponceDto
+                    {
+                        Token = token,
+                        UserEmail = user.Email,
+                        RefreshToken = refreshToken,
+                    };
+                }
+            }
+            await _userManager.UpdateSecurityStampAsync(user);
+            throw new InvalidTokenException("Invalid refresh token!");
         }
 
         private async Task<string> GenerateToken(UserProfile user)
@@ -282,7 +280,7 @@ namespace BusinessLayer.Services
             }
             try
             {
-                 newResetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);                
+                newResetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
             }
             catch (InvalidTokenException)
             {
