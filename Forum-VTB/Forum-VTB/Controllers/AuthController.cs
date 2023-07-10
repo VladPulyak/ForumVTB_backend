@@ -33,7 +33,7 @@ namespace Forum_VTB.Controllers
                 {
                     Message = ex.Message
                 });
-            }            
+            }
 
             return Ok(responceDto);
         }
@@ -116,10 +116,12 @@ namespace Forum_VTB.Controllers
                 });
             }
 
+            var domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
+
             await _emailService.SendMessage(new EmailSenderDto
             {
                 Subject = "Reset Password",
-                Body = "http://10.55.1.8:90/" + Url.Action("ResetPassword", new { userEmail = requestDto.UserEmail, resetToken = newResetPasswordToken }),
+                Body = domain + Url.Action("ResetPassword", new { userEmail = requestDto.UserEmail, resetToken = newResetPasswordToken }),
                 ReceiverEmail = requestDto.UserEmail
             });
 
