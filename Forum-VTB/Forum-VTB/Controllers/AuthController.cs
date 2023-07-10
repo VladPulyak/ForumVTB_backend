@@ -116,7 +116,8 @@ namespace Forum_VTB.Controllers
                 });
             }
 
-            var domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
+            //var domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
+            var domain = "http://10.55.1.8:90";
 
             await _emailService.SendMessage(new EmailSenderDto
             {
