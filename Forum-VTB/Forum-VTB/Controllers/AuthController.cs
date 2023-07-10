@@ -129,7 +129,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<ActionResult> ResetPassword([FromQuery] string userEmail, [FromQuery] string resetToken, [FromForm] ResetPasswordRequestDto requestDto)
+        public async Task<ActionResult> ResetPassword([FromQuery] string userEmail, [FromQuery] string resetToken, ResetPasswordRequestDto requestDto)
         {
             try
             {

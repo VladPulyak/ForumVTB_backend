@@ -10,11 +10,6 @@ namespace BusinessLayer.Dtos
 {
     public class ResetPasswordRequestDto
     {
-        [Required(ErrorMessage = "New password must be required")]
         public string? Password { get; set; }
-
-        [Compare("NewPassword", ErrorMessage = "Passwords is different")]
-        [Required(ErrorMessage = "New password must be required")]
-        public string? ConfirmPassword { get; set; }
     }
 }
