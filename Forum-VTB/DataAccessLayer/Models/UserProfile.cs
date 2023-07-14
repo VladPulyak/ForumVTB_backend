@@ -10,7 +10,7 @@ namespace DataAccessLayer.Models
 
         public string? NickName { get; set; }
 
-        public ICollection<Message>? Messages { get; set; }
+        public ICollection<TopicMessage>? Messages { get; set; }
 
         public ICollection<UserMessage>? SentMessages { get; set; }
 

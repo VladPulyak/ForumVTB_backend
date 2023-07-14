@@ -16,9 +16,9 @@ namespace BusinessLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddDependencies(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddDependencies(this IServiceCollection services, string connectionString, string vehiclesConnectionString)
         {
-            services.AddEntityDependencies(connectionString);
+            services.AddEntityDependencies(connectionString, vehiclesConnectionString);
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Configurations
 {
-    public class MessageConfigurations : IEntityTypeConfiguration<Message>
+    public class TopicMessageConfigurations : IEntityTypeConfiguration<TopicMessage>
     {
-        public void Configure(EntityTypeBuilder<Message> builder)
+        public void Configure(EntityTypeBuilder<TopicMessage> builder)
         {
             builder.ToTable("TopicMessages");
             builder.HasKey(x => x.Id);

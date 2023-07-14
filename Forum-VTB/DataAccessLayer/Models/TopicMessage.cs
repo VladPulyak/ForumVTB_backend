@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Models
 {
-    public class Message
+    public class TopicMessage
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public string? UserId { get; set; }
 
         public int TopicId { get; set; }
 
-        public int? ParentMessageId { get; set; }
+        public string? ParentMessageId { get; set; }
 
         public string? Text { get; set; }
 
@@ -28,8 +28,8 @@ namespace DataAccessLayer.Models
 
         public UserProfile? UserProfile { get; set; }
 
-        public Message? ParentMessage { get; set; }
+        public TopicMessage? ParentMessage { get; set; }
 
-        public ICollection<Message>? Replies { get; set; }
+        public ICollection<TopicMessage>? Replies { get; set; }
     }
 }

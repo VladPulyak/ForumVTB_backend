@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Interfaces;
+﻿using DataAccessLayer.InfoModels;
+using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,15 @@ namespace DataAccessLayer.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private static IServiceCollection AddForumVTBDbContext(this IServiceCollection services, string connectionString)
+        private static IServiceCollection AddForumVTBDbContext(this IServiceCollection services, string connectionString, string vehiclesConnectionString)
         {
             services.AddDbContext<ForumVTBDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
+            });
+            services.AddDbContext<VehiclesDbContext>(options =>
+            {
+                options.UseNpgsql(vehiclesConnectionString);
             });
             return services;
         }
@@ -39,15 +44,23 @@ namespace DataAccessLayer.Extensions
             return services;
         }
 
-        public static IServiceCollection AddEntityDependencies(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddEntityDependencies(this IServiceCollection services, string connectionString, string vehiclesConnectionString)
         {
             services.AddScoped<IRepository<UserProfile>, UserProfileRepository>();
             services.AddScoped<IRepository<Topic>, TopicRepository>();
             services.AddScoped<IRepository<Subsection>, SubsectionRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
-            services.AddScoped<IRepository<Message>, MessageRepository>();
+            services.AddScoped<IRepository<TopicMessage>, MessageRepository>();
             services.AddScoped<IRepository<MessageFile>, MessageFileRepository>();
-            services.AddForumVTBDbContext(connectionString);
+            services.AddScoped<IReadOnlyRepository<AgriculturalMachineryInfo>, AgriculturalMachineryInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<BusesInfo>, BusesInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<CarsInfo>, CarsInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<LorriesInfo>, LorriesInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<MotorbikesInfo>, MotorbikesInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<ScootersInfo>, ScootersInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<SnowmobilesInfo>, SnowmobilesInfoRepository>();
+            services.AddScoped<IReadOnlyRepository<TrailersInfo>, TrailersInfoRepository>();
+            services.AddForumVTBDbContext(connectionString, vehiclesConnectionString);
             services.AddIdentityDependencies();
             return services;
         }

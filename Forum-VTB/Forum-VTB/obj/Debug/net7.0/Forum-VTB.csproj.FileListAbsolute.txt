@@ -142,3 +142,5 @@ D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.pdb
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.genruntimeconfig.cache
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\ref\Forum-VTB.dll
+D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\bin\Debug\net7.0\HtmlAgilityPack.dll
+D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\bin\Debug\net7.0\Cars.dll

@@ -14,7 +14,7 @@ namespace DataAccessLayer.Models
 
         public string? Name { get; set; }
 
-        public ICollection<Message>? Messages { get; set; }
+        public ICollection<TopicMessage>? Messages { get; set; }
 
         public Subsection? Subsection { get; set; }
     }

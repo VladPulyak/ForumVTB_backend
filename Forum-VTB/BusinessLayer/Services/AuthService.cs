@@ -296,6 +296,10 @@ namespace BusinessLayer.Services
         public async Task ResetPassword(string userEmail, string resetToken, ResetPasswordRequestDto requestDto)
         {
             var user = await _userManager.FindByEmailAsync(userEmail);
+            if (await _userManager.CheckPasswordAsync(user, requestDto.Password))
+            {
+                throw new ResetPasswordException("Old and new passwords are identical!");
+            }
             var result = await _userManager.ResetPasswordAsync(user, resetToken, requestDto.Password);
             if (!result.Succeeded)
             {

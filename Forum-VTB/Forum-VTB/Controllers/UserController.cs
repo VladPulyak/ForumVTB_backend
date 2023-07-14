@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using BusinessLayer.Exceptions;
+using DataAccessLayer.InfoModels;
+using DataAccessLayer.Interfaces;
 
 namespace Forum_VTB.Controllers
 {
@@ -15,10 +17,12 @@ namespace Forum_VTB.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        public UserController(IMapper mapper, IUserService userService)
+        private readonly IReadOnlyRepository<CarsInfo> _carsInfoRepository;
+        public UserController(IMapper mapper, IUserService userService, IReadOnlyRepository<CarsInfo> carsInfoRepository)
         {
             _mapper = mapper;
             _userService = userService;
+            _carsInfoRepository = carsInfoRepository;
         }
 
         [HttpGet("GetUsers")]

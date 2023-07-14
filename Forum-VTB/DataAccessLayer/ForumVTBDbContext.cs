@@ -24,7 +24,7 @@ namespace DataAccessLayer
 
         public DbSet<UserProfile> UserProfiles { get; set; }
 
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<TopicMessage> TopicMessages { get; set; }
 
         public DbSet<MessageFile> Files { get; set; }
 
@@ -39,7 +39,7 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
-            modelBuilder.ApplyConfiguration(new MessageConfigurations());
+            modelBuilder.ApplyConfiguration(new TopicMessageConfigurations());
             modelBuilder.ApplyConfiguration(new MessageFileConfigurations());
             modelBuilder.ApplyConfiguration(new TopicConfigurations());
             modelBuilder.ApplyConfiguration(new SubsectionConfigurations());

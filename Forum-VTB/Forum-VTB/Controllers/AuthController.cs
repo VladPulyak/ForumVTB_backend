@@ -117,7 +117,8 @@ namespace Forum_VTB.Controllers
             }
 
             //var domain = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
-            var domain = "http://10.55.1.8:90";
+            //var domain = "http://10.55.1.8:90";
+            var domain = "https://localhost:3000";
 
             await _emailService.SendMessage(new EmailSenderDto
             {
@@ -130,7 +131,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<ActionResult> ResetPassword([FromQuery] string userEmail, [FromQuery] string resetToken, ResetPasswordRequestDto requestDto)
+        public async Task<ActionResult> ResetPassword(string userEmail, string resetToken, ResetPasswordRequestDto requestDto)
         {
             try
             {

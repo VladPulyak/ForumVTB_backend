@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class MessageRepository : Repository<Message>
+    public class MessageRepository : Repository<TopicMessage>
     {
         public MessageRepository(ForumVTBDbContext context) : base(context)
         {
