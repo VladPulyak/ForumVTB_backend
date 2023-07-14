@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Cars" Version="2.1.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.49" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.8" />

@@ -12,10 +12,16 @@ namespace BusinessLayer.Interfaces
     public interface IAccountService
     {
         Task<UserProfileInfoResponceDto> FillingAccountInfo(FillingAccountDataRequestDto requestDto);
-        Task ChangePassword(ChangePasswordRequestDto requestDto);
+
+        Task<string> ChangePassword(ChangePasswordRequestDto requestDto);
+
+        Task<string> CheckPassword(CheckPasswordRequestDto requestDto);
 
         Task ChangePhoneNumber(ChangePhoneNumberRequestDto requestDto);
 
         Task<UserProfileInfoResponceDto> GetUserProfile();
+
+        Task Support(SupportMessageRequestDto requestDto);
+
     }
 }

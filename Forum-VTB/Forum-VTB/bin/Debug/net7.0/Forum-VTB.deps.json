@@ -10,7 +10,9 @@
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
           "BusinessLayer": "1.0.0",
+          "Cars": "2.1.2",
           "DataAccessLayer": "1.0.0",
+          "HtmlAgilityPack": "1.11.49",
           "Microsoft.AspNetCore.Authentication.Google": "7.0.7",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.7",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "7.0.8",
@@ -52,6 +54,26 @@
           "lib/net6.0/BCrypt.Net-Next.dll": {
             "assemblyVersion": "4.0.3.0",
             "fileVersion": "4.0.3.0"
+          }
+        }
+      },
+      "Cars/2.1.2": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0",
+          "Microsoft.Extensions.Logging": "7.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Cars.dll": {
+            "assemblyVersion": "2.1.2.0",
+            "fileVersion": "2.1.2.0"
+          }
+        }
+      },
+      "HtmlAgilityPack/1.11.49": {
+        "runtime": {
+          "lib/netstandard2.0/HtmlAgilityPack.dll": {
+            "assemblyVersion": "1.11.49.0",
+            "fileVersion": "1.11.49.0"
           }
         }
       },
@@ -724,6 +746,20 @@
       "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
       "path": "bcrypt.net-next/4.0.3",
       "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
+    },
+    "Cars/2.1.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-l6ewIyXVsYnLITL5o8ja7tR0qAUjpcA3jjSBTIb6m8DIqZi8wosMme1Y0rRUjtLtC5rUUSJxBgL0AB1PZYPO6w==",
+      "path": "cars/2.1.2",
+      "hashPath": "cars.2.1.2.nupkg.sha512"
+    },
+    "HtmlAgilityPack/1.11.49": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Mo5Thds22DOvJOBOTmMosHsykqoTHECuHzjc1VWQMIjUTXZ+W03m/+HHH1dkWYfV8fOkXsI3eXCXVGNjAsdRKQ==",
+      "path": "htmlagilitypack/1.11.49",
+      "hashPath": "htmlagilitypack.1.11.49.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",

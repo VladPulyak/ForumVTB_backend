@@ -16,7 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}");
+builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}", 
+    $"Host={builder.Configuration.GetSection("VehiclesInfoConnectionString:Host").Value!};Port={builder.Configuration.GetSection("VehiclesInfoConnectionString:Port").Value!};Database={builder.Configuration.GetSection("VehiclesInfoConnectionString:Database").Value!};Username={builder.Configuration.GetSection("VehiclesInfoConnectionString:Username").Value!};Password={builder.Configuration.GetSection("VehiclesInfoConnectionString:Password").Value!}");
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(options =>

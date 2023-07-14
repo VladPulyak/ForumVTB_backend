@@ -2,6 +2,7 @@
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Models;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +44,7 @@ namespace Forum_VTB.Controllers
                 {
                     Message = ex.Message
                 });
-            }         
+            }
             return Ok(responceDto);
         }
 
@@ -64,6 +65,24 @@ namespace Forum_VTB.Controllers
             return Ok("Password changed successfuly!");
         }
 
+        [HttpPost("CheckPassword")]
+        public async Task<ActionResult> CheckPassword(CheckPasswordRequestDto requestDto)
+        {
+            string resultString;
+            try
+            {
+                resultString = await _accountService.CheckPassword(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(resultString);
+        }
+
         [HttpPost("ChangePhoneNumber")]
         public async Task<ActionResult> ChangePhoneNumber(ChangePhoneNumberRequestDto requestDto)
         {
@@ -80,6 +99,20 @@ namespace Forum_VTB.Controllers
             }
             return Ok("Phone number changed successfully!");
 
+        }
+
+        [HttpPost("Support")]
+        public async Task<ActionResult> Support(SupportMessageRequestDto requestDto)
+        {
+            try
+            {
+                await _accountService.Support(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Message sent successfully!");
         }
     }
 }

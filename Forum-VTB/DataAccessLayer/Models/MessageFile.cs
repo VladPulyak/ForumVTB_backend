@@ -10,11 +10,12 @@ namespace DataAccessLayer.Models
     {
         public int Id { get; set; }
 
-        public int MessageId { get; set; }
+        public string? MessageId { get; set; }
 
         public string? FileURL { get; set; }
 
-        public Message? Message { get; set; }
+        public TopicMessage? TopicMessage { get; set; }
 
+        public UserMessage? UserMessage { get; set; }
     }
 }

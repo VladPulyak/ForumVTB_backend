@@ -8,13 +8,13 @@ namespace DataAccessLayer.Models
 {
     public class UserMessage
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public string? SenderId { get; set; }
 
         public string? ReceiverId { get; set; }
 
-        public int ParentMessageId { get; set; }
+        public string? ParentMessageId { get; set; }
 
         public string? Text { get; set; }
 
@@ -27,5 +27,7 @@ namespace DataAccessLayer.Models
         public UserMessage? ParentMessage { get; set; }
 
         public ICollection<UserMessage>? Replies { get; set; }
+
+        public ICollection<MessageFile>? Files { get; set; }
     }
 }
