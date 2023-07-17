@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos
+namespace BusinessLayer.Dtos.Account
 {
-    public class FillingAccountDataRequestDto
+    public class UserProfileInfoResponceDto
     {
         public string? Photo { get; set; }
 
@@ -14,10 +14,6 @@ namespace BusinessLayer.Dtos
 
         public string? UserName { get; set; }
 
-        public int DayOfBirth { get; set; }
-
-        public int MonthOfBirth { get; set; }
-
-        public int YearOfBirth { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }

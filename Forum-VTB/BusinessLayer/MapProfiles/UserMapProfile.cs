@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLayer.Dtos;
+using BusinessLayer.Dtos.Account;
+using BusinessLayer.Dtos.Authentication;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;

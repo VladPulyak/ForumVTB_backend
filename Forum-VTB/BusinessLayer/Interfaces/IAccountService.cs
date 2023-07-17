@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Dtos;
+﻿using BusinessLayer.Dtos.Account;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;

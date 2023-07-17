@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos
+namespace BusinessLayer.Dtos.Messages
 {
-    public class EmailSenderDto
+    public class SendMessageRequestDto
     {
         public string? ReceiverEmail { get; set; }
 
-        public string? Subject { get; set; }
+        public string? Text { get; set; }
 
-        public string? Body { get; set; }
+        public DateTime CreationDate { get; set; }
     }
 }

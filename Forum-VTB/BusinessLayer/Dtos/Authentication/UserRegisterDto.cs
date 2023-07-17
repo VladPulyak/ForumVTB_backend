@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos
+namespace BusinessLayer.Dtos.Authentication
 {
-    public class UserRegisterDto 
+    public class UserRegisterDto
     {
 
         public string? Email { get; set; }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos
+namespace BusinessLayer.Dtos.Account
 {
-    public class ForgotPasswordRequestDto
+    public class ChangePhoneNumberRequestDto
     {
-        public string? UserEmail { get; set; }
+        public string NewPhoneNumber { get; set; }
     }
 }

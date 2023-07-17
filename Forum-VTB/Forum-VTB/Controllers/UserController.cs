@@ -1,13 +1,13 @@
 ﻿using BusinessLayer.Interfaces;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
-using BusinessLayer.Dtos;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using BusinessLayer.Exceptions;
 using DataAccessLayer.InfoModels;
 using DataAccessLayer.Interfaces;
+using BusinessLayer.Dtos.Authentication;
 
 namespace Forum_VTB.Controllers
 {

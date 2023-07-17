@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos
+namespace BusinessLayer.Dtos.Common
 {
-    public class ChangePhoneNumberRequestDto
+    public class ExceptionResponceDto
     {
-        public string NewPhoneNumber { get; set; }
+        public string? Message { get; set; }
     }
 }

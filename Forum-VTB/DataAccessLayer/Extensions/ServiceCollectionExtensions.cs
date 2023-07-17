@@ -51,6 +51,7 @@ namespace DataAccessLayer.Extensions
             services.AddScoped<IRepository<Subsection>, SubsectionRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
             services.AddScoped<IRepository<TopicMessage>, MessageRepository>();
+            services.AddScoped<IUserMessageRepository, UserMessageRepository>();
             services.AddScoped<IRepository<MessageFile>, MessageFileRepository>();
             services.AddScoped<IReadOnlyRepository<AgriculturalMachineryInfo>, AgriculturalMachineryInfoRepository>();
             services.AddScoped<IReadOnlyRepository<BusesInfo>, BusesInfoRepository>();
