@@ -1,8 +1,8 @@
 ﻿using BusinessLayer.Interfaces;
 using System.Text;
-using BusinessLayer.Dtos;
 using System.Net.Mail;
 using System.Net;
+using BusinessLayer.Dtos.Email;
 
 namespace BusinessLayer.Services
 {

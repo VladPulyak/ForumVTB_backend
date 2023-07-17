@@ -1,5 +1,4 @@
-﻿using BusinessLayer.Dtos;
-using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Interfaces;
 using BusinessLayer.Exceptions;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +8,7 @@ using AutoMapper;
 using System.Net.Mail;
 using System.Net;
 using System.Text;
+using BusinessLayer.Dtos.Account;
 
 namespace BusinessLayer.Services
 {

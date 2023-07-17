@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLayer.Dtos;
+using BusinessLayer.Dtos.Authentication;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;

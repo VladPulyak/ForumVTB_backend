@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Dtos;
+﻿using BusinessLayer.Dtos.Account;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Models;

@@ -13,7 +13,7 @@ namespace DataAccessLayer.Repositories
         where TEntity : class
     {
         private readonly ForumVTBDbContext _context;
-        private readonly DbSet<TEntity> _set;
+        protected readonly DbSet<TEntity> _set;
 
         public Repository(ForumVTBDbContext context)
         {

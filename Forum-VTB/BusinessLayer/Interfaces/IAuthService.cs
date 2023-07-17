@@ -1,4 +1,4 @@
-﻿using BusinessLayer.Dtos;
+﻿using BusinessLayer.Dtos.Authentication;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
