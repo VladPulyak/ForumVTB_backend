@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLayer.Dtos;
+using BusinessLayer.Dtos.Account;
+using BusinessLayer.Dtos.Messages;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace BusinessLayer.MapProfiles
         {
             CreateMap<SupportMessageRequestDto, TopicMessage>()
                 .ForMember("Text", q => q.MapFrom(w => w.Text));
+            CreateMap<SendMessageRequestDto, UserMessage>().ReverseMap();
         }
     }
 }

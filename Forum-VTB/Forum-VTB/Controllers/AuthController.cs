@@ -1,7 +1,9 @@
-﻿using BusinessLayer.Dtos;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BusinessLayer.Interfaces;
 using System.Text.Json;
+using BusinessLayer.Dtos.Authentication;
+using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.Email;
 
 namespace Forum_VTB.Controllers
 {

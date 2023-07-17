@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLayer.Dtos;
+using BusinessLayer.Dtos.Authentication;
 using DataAccessLayer.Models;
 
 namespace Forum_VTB.MapProfiles
