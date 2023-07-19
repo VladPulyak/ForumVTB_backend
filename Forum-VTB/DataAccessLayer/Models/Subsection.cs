@@ -14,7 +14,7 @@ namespace DataAccessLayer.Models
 
         public string? Name { get; set; }
 
-        public ICollection<Topic>? Topics { get; set; }
+        public ICollection<Advert>? Adverts { get; set; }
 
         public Section? Section { get; set; }
     }

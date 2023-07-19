@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -13,9 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+    });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}", 
+builder.Services.AddDependencies($"Host={builder.Configuration.GetSection("ConnectionString:Host").Value!};Port={builder.Configuration.GetSection("ConnectionString:Port").Value!};Database={builder.Configuration.GetSection("ConnectionString:Database").Value!};Username={builder.Configuration.GetSection("ConnectionString:Username").Value!};Password={builder.Configuration.GetSection("ConnectionString:Password").Value!}",
     $"Host={builder.Configuration.GetSection("VehiclesInfoConnectionString:Host").Value!};Port={builder.Configuration.GetSection("VehiclesInfoConnectionString:Port").Value!};Database={builder.Configuration.GetSection("VehiclesInfoConnectionString:Database").Value!};Username={builder.Configuration.GetSection("VehiclesInfoConnectionString:Username").Value!};Password={builder.Configuration.GetSection("VehiclesInfoConnectionString:Password").Value!}");
 
 builder.Services.AddHttpContextAccessor();

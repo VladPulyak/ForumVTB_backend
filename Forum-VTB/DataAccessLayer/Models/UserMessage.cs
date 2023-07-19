@@ -26,8 +26,6 @@ namespace DataAccessLayer.Models
 
         public UserMessage? ParentMessage { get; set; }
 
-        public ICollection<UserMessage>? Replies { get; set; }
-
         public ICollection<MessageFile>? Files { get; set; }
     }
 }

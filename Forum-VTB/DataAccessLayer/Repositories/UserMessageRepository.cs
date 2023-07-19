@@ -22,7 +22,20 @@ namespace DataAccessLayer.Repositories
 
             if (userMessage is null)
             {
-                throw new ObjectNotFoundException("Object not found");
+                throw new ObjectNotFoundException("Received messages not found");
+            }
+
+            return userMessage;
+
+        }
+
+        public async Task<List<UserMessage>> GetBySenderId(string id)
+        {
+            var userMessage = await _set.Where(q => q.SenderId == id).ToListAsync();
+
+            if (userMessage is null)
+            {
+                throw new ObjectNotFoundException("Sended messages not found");
             }
 
             return userMessage;

@@ -22,6 +22,105 @@ namespace DataAccessLayer.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<int?>("SubsectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsectionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Adverts", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AdvertId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp");
+
+                    b.Property<bool>("IsReply")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ParentCommentId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AdvertMessages", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdvertId")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("AdvertId1")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FileURL")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId1");
+
+                    b.ToTable("AdvertFile");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
                     b.Property<int>("Id")
@@ -84,65 +183,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("SectionId");
 
                     b.ToTable("Subsections", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<int>("SubsectionId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubsectionId");
-
-                    b.ToTable("Topics", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp");
-
-                    b.Property<bool>("IsReply")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("ParentMessageId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<int>("TopicId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentMessageId");
-
-                    b.HasIndex("TopicId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TopicMessages", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
@@ -388,17 +428,60 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
+                        .WithMany("Adverts")
+                        .HasForeignKey("SubsectionId");
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("Adverts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subsection");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertComment", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithMany("Comments")
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.AdvertComment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Advert");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertFile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithMany("Files")
+                        .HasForeignKey("AdvertId1");
+
+                    b.Navigation("Advert");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.TopicMessage", "TopicMessage")
-                        .WithMany("Files")
-                        .HasForeignKey("MessageId");
-
                     b.HasOne("DataAccessLayer.Models.UserMessage", "UserMessage")
                         .WithMany("Files")
                         .HasForeignKey("MessageId");
-
-                    b.Navigation("TopicMessage");
 
                     b.Navigation("UserMessage");
                 });
@@ -414,44 +497,10 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Section");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
-                        .WithMany("Topics")
-                        .HasForeignKey("SubsectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subsection");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.TopicMessage", "ParentMessage")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentMessageId");
-
-                    b.HasOne("DataAccessLayer.Models.Topic", "Topic")
-                        .WithMany("Messages")
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("ParentMessage");
-
-                    b.Navigation("Topic");
-
-                    b.Navigation("UserProfile");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.UserMessage", "ParentMessage")
-                        .WithMany("Replies")
+                        .WithMany()
                         .HasForeignKey("ParentMessageId");
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "Receiver")
@@ -520,6 +569,18 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Files");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertComment", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Section", b =>
                 {
                     b.Navigation("Subsections");
@@ -527,31 +588,19 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Subsection", b =>
                 {
-                    b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
-                {
-                    b.Navigation("Files");
-
-                    b.Navigation("Replies");
+                    b.Navigation("Adverts");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
                 {
                     b.Navigation("Files");
-
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserProfile", b =>
                 {
-                    b.Navigation("Messages");
+                    b.Navigation("Adverts");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("ReceivedMessages");
 
