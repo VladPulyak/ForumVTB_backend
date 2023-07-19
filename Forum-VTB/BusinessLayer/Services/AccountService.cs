@@ -37,6 +37,7 @@ namespace BusinessLayer.Services
             }
             user.UserName = requestDto.UserName;
             user.NickName = requestDto.NickName;
+            user.NormalizedUserName = requestDto.UserName.ToUpperInvariant();
             user.BirthDate = new DateTime(requestDto.YearOfBirth, requestDto.MonthOfBirth, requestDto.DayOfBirth);
             user.Photo = requestDto.Photo;
             var updatedUser = _userService.Update(user);

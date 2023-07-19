@@ -99,6 +99,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//await StartupServices.MigrateDatabase(app.Services);
+await StartupServices.MigrateDatabase(app.Services);
 
 app.Run();
