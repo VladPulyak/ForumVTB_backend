@@ -47,10 +47,10 @@ namespace DataAccessLayer.Extensions
         public static IServiceCollection AddEntityDependencies(this IServiceCollection services, string connectionString, string vehiclesConnectionString)
         {
             services.AddScoped<IRepository<UserProfile>, UserProfileRepository>();
-            services.AddScoped<IRepository<Topic>, TopicRepository>();
+            services.AddScoped<IRepository<Advert>, TopicRepository>();
             services.AddScoped<IRepository<Subsection>, SubsectionRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
-            services.AddScoped<IRepository<TopicMessage>, MessageRepository>();
+            services.AddScoped<IRepository<AdvertComment>, MessageRepository>();
             services.AddScoped<IUserMessageRepository, UserMessageRepository>();
             services.AddScoped<IRepository<MessageFile>, MessageFileRepository>();
             services.AddScoped<IReadOnlyRepository<AgriculturalMachineryInfo>, AgriculturalMachineryInfoRepository>();

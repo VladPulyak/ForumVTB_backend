@@ -14,8 +14,6 @@ namespace DataAccessLayer.Models
 
         public string? FileURL { get; set; }
 
-        public TopicMessage? TopicMessage { get; set; }
-
         public UserMessage? UserMessage { get; set; }
     }
 }

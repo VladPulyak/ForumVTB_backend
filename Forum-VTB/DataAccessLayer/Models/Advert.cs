@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessLayer.Models
+{
+    public class Advert
+    {
+        public int Id { get; set; }
+
+        public string UserId { get; set; }
+
+        public int? SubsectionId { get; set; }
+
+        public string? Title { get; set; }
+
+        public string? Description { get; set; }
+
+        public string? Price { get; set; }
+
+        public ICollection<AdvertFile>? Files { get; set; }
+
+        public UserProfile? User { get; set; }
+
+        public ICollection<AdvertComment>? Comments { get; set; }
+
+        public Subsection? Subsection { get; set; }
+    }
+}

@@ -20,7 +20,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.DateOfCreation).HasColumnType("timestamp").IsRequired();
             builder.HasOne(q => q.Sender).WithMany(w => w.SentMessages).HasForeignKey(q => q.SenderId);
             builder.HasOne(q => q.Receiver).WithMany(w => w.ReceivedMessages).HasForeignKey(q => q.ReceiverId);
-            builder.HasOne(q => q.ParentMessage).WithMany(q => q.Replies).HasForeignKey(q => q.ParentMessageId);
+            builder.HasOne(q => q.ParentMessage).WithMany().HasForeignKey(q => q.ParentMessageId);
         }
     }
 }

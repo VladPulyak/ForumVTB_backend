@@ -13,5 +13,7 @@ namespace BusinessLayer.Interfaces
         Task<UserMessage> SendMessage(SendMessageRequestDto requestDto);
 
         Task<IEnumerable<UserMessage>> GetReceivedMessages();
+
+        Task<IEnumerable<UserMessage>> GetSendedMessages();
     }
 }

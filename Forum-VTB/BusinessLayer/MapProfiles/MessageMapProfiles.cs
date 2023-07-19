@@ -14,7 +14,7 @@ namespace BusinessLayer.MapProfiles
     {
         public MessageMapProfiles()
         {
-            CreateMap<SupportMessageRequestDto, TopicMessage>()
+            CreateMap<SupportMessageRequestDto, AdvertComment>()
                 .ForMember("Text", q => q.MapFrom(w => w.Text));
             CreateMap<SendMessageRequestDto, UserMessage>().ReverseMap();
         }

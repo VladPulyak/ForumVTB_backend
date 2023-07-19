@@ -10,5 +10,7 @@ namespace DataAccessLayer.Interfaces
     public interface IUserMessageRepository : IRepository<UserMessage>
     {
         Task<List<UserMessage>> GetByReceiverId(string id);
+
+        Task<List<UserMessage>> GetBySenderId(string id);
     }
 }

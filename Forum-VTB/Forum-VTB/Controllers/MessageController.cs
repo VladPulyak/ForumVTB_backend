@@ -31,5 +31,12 @@ namespace Forum_VTB.Controllers
             var messages = await _messageService.GetReceivedMessages();
             return Ok(messages);
         }
+        
+        [HttpGet("GetSendedMessages")]
+        public async Task<ActionResult> GetSendedMessages()
+        {
+            var messages = await _messageService.GetSendedMessages();
+            return Ok(messages);
+        }
     }
 }

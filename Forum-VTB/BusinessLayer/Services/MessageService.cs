@@ -38,7 +38,10 @@ namespace BusinessLayer.Services
             var message = _mapper.Map<UserMessage>(requestDto);
             message.SenderId = user.Id;
             message.ReceiverId = receiver.Id;
+            message.DateOfCreation = DateTime.Now;
+            message.Id = new Guid().ToString();
             var addedUserMessage = await _userMessageRepository.Add(message);
+            await _userMessageRepository.Save();
             return addedUserMessage;
         }
 
@@ -47,6 +50,14 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var messages = await _userMessageRepository.GetByReceiverId(user.Id);
+            return messages;
+        }
+
+        public async Task<IEnumerable<UserMessage>> GetSendedMessages()
+        {
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var messages = await _userMessageRepository.GetBySenderId(user.Id);
             return messages;
         }
     }
