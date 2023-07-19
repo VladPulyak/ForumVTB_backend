@@ -36,6 +36,7 @@ namespace DataAccessLayer.Extensions
                     options.Password.RequireUppercase = false;
                     options.SignIn.RequireConfirmedEmail = false;
                     options.SignIn.RequireConfirmedPhoneNumber = false;
+                    options.User.AllowedUserNameCharacters = "!@#$%^&*()_+-={}[]\\|:;\"'<>,.?/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789";
                 })
                 .AddRoles<IdentityRole>()
                 .AddTokenProvider<DataProtectorTokenProvider<UserProfile>>("Forum-VTB.LoginProvider")
