@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ForumVTBDbContext))]
-    [Migration("20230718212751_ChangeTopicAndTopicMessages")]
-    partial class ChangeTopicAndTopicMessages
+    [Migration("20230721115744_ChangeTypeOfDateOfCreationInAdvertEntity")]
+    partial class ChangeTypeOfDateOfCreationInAdvertEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,22 +27,31 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp(3)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
 
                     b.Property<int?>("SubsectionId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -59,8 +68,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<int>("AdvertId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AdvertId")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("timestamp");
@@ -87,16 +96,32 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AdvertMessages", (string)null);
+                    b.ToTable("AdvertComments", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdvertId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
+
+                    b.ToTable("AdvertFiles", (string)null);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("FileURL")
                         .IsRequired()
@@ -405,9 +430,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
                         .WithMany("Adverts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Subsection");
 
@@ -418,9 +441,7 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Comments")
-                        .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdvertId");
 
                     b.HasOne("DataAccessLayer.Models.AdvertComment", "ParentComment")
                         .WithMany("Replies")
@@ -437,17 +458,20 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("UserProfile");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.AdvertFile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithMany("Files")
+                        .HasForeignKey("AdvertId");
+
+                    b.Navigation("Advert");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.AdvertComment", "AdvertComment")
-                        .WithMany("Files")
-                        .HasForeignKey("MessageId");
-
                     b.HasOne("DataAccessLayer.Models.UserMessage", "UserMessage")
                         .WithMany("Files")
                         .HasForeignKey("MessageId");
-
-                    b.Navigation("AdvertComment");
 
                     b.Navigation("UserMessage");
                 });
@@ -538,12 +562,12 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Files");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.AdvertComment", b =>
                 {
-                    b.Navigation("Files");
-
                     b.Navigation("Replies");
                 });
 

@@ -8,9 +8,9 @@ namespace DataAccessLayer.Models
 {
     public class Advert
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         public int? SubsectionId { get; set; }
 
@@ -19,6 +19,8 @@ namespace DataAccessLayer.Models
         public string? Description { get; set; }
 
         public string? Price { get; set; }
+
+        public DateTime DateOfCreation { get; set; }
 
         public ICollection<AdvertFile>? Files { get; set; }
 

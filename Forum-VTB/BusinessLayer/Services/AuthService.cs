@@ -105,7 +105,7 @@ namespace BusinessLayer.Services
                 }
                 else
                 {
-                    throw new InvalidTokenException($"{result.Errors.First().Description}\n CreateRefreshToken(UserProfile user)");
+                    throw new InvalidTokenException($"{result.Errors.First().Description}");
                 }
             }
             catch (InvalidTokenException)
@@ -143,16 +143,12 @@ namespace BusinessLayer.Services
                 throw new ObjectNotFoundException("User with this email is not found");
             }
 
-            await Console.Out.WriteLineAsync("Before VerifyUserTokenAsync");
             var isValidRefreshToken = await _userManager.VerifyUserTokenAsync(user, loginProvider, myRefreshToken, request.RefreshToken);
-            await Console.Out.WriteLineAsync("After VerifyUserTokenAsync");
             if (isValidRefreshToken)
             {
-                await Console.Out.WriteLineAsync("In first if");
                 var refreshToken = await CreateRefreshToken(user);
                 if (refreshToken is not null)
                 {
-                    await Console.Out.WriteLineAsync("In second if");
                     var token = await GenerateToken(user);
                     return new AuthResponceDto
                     {
@@ -183,7 +179,7 @@ namespace BusinessLayer.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id)
             }
             .Union(userClaims).Union(roleClaims);
 

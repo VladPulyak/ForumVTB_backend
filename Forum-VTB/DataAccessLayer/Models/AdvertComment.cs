@@ -12,13 +12,13 @@ namespace DataAccessLayer.Models
 
         public string? UserId { get; set; }
 
-        public int AdvertId { get; set; }
+        public string? AdvertId { get; set; }
 
         public string? ParentCommentId { get; set; }
 
         public string? Text { get; set; }
 
-        public bool IsReply { get; set; }
+        public bool IsReply { get; set; }   
 
         public DateTime DateOfCreation { get; set; }
 

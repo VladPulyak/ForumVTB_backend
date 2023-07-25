@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
-    public class MessageRepository : Repository<AdvertComment>
+    public class AdvertFileRepository : Repository<AdvertFile>
     {
-        public MessageRepository(ForumVTBDbContext context) : base(context)
+        public AdvertFileRepository(ForumVTBDbContext context) : base(context)
         {
+            
         }
     }
 }

@@ -4,8 +4,6 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
@@ -227,63 +225,10 @@ namespace DataAccessLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Topics",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SubsectionId = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Topics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Topics_Subsections_SubsectionId",
-                        column: x => x.SubsectionId,
-                        principalTable: "Subsections",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TopicMessages",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    TopicId = table.Column<int>(type: "integer", nullable: false),
-                    ParentMessageId = table.Column<string>(type: "text", nullable: true),
-                    Text = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    IsReply = table.Column<bool>(type: "boolean", nullable: false),
-                    DateOfCreation = table.Column<DateTime>(type: "timestamp", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TopicMessages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TopicMessages_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TopicMessages_TopicMessages_ParentMessageId",
-                        column: x => x.ParentMessageId,
-                        principalTable: "TopicMessages",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TopicMessages_Topics_TopicId",
-                        column: x => x.TopicId,
-                        principalTable: "Topics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MessageFiles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<string>(type: "text", nullable: false),
                     MessageId = table.Column<string>(type: "text", nullable: true),
                     FileURL = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false)
                 },
@@ -291,30 +236,118 @@ namespace DataAccessLayer.Migrations
                 {
                     table.PrimaryKey("PK_MessageFiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MessageFiles_TopicMessages_MessageId",
-                        column: x => x.MessageId,
-                        principalTable: "TopicMessages",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_MessageFiles_UserMessages_MessageId",
                         column: x => x.MessageId,
                         principalTable: "UserMessages",
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.InsertData(
-                table: "Topics",
-                columns: new[] { "Id", "Name", "SubsectionId" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Adverts",
+                columns: table => new
                 {
-                    { 1, "Transport", null },
-                    { 2, "Electronics", null },
-                    { 3, "Sports and relax", null },
-                    { 4, "Animals", null },
-                    { 5, "Read estate", null },
-                    { 6, "Clothes", null },
-                    { 7, "Home and garden", null }
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    SubsectionId = table.Column<int>(type: "integer", nullable: true),
+                    Title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "character varying(3000)", maxLength: 3000, nullable: false),
+                    Price = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "timestamp", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Adverts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Adverts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Adverts_Subsections_SubsectionId",
+                        column: x => x.SubsectionId,
+                        principalTable: "Subsections",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateTable(
+                name: "AdvertComments",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    AdvertId = table.Column<string>(type: "text", nullable: true),
+                    ParentCommentId = table.Column<string>(type: "text", nullable: true),
+                    Text = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    IsReply = table.Column<bool>(type: "boolean", nullable: false),
+                    DateOfCreation = table.Column<DateTime>(type: "timestamp", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvertComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdvertComments_AdvertComments_ParentCommentId",
+                        column: x => x.ParentCommentId,
+                        principalTable: "AdvertComments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AdvertComments_Adverts_AdvertId",
+                        column: x => x.AdvertId,
+                        principalTable: "Adverts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AdvertComments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdvertFiles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    AdvertId = table.Column<string>(type: "text", nullable: true),
+                    FileURL = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvertFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdvertFiles_Adverts_AdvertId",
+                        column: x => x.AdvertId,
+                        principalTable: "Adverts",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertComments_AdvertId",
+                table: "AdvertComments",
+                column: "AdvertId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertComments_ParentCommentId",
+                table: "AdvertComments",
+                column: "ParentCommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertComments_UserId",
+                table: "AdvertComments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvertFiles_AdvertId",
+                table: "AdvertFiles",
+                column: "AdvertId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Adverts_SubsectionId",
+                table: "Adverts",
+                column: "SubsectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Adverts_UserId",
+                table: "Adverts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -370,26 +403,6 @@ namespace DataAccessLayer.Migrations
                 column: "SectionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TopicMessages_ParentMessageId",
-                table: "TopicMessages",
-                column: "ParentMessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TopicMessages_TopicId",
-                table: "TopicMessages",
-                column: "TopicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TopicMessages_UserId",
-                table: "TopicMessages",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Topics_SubsectionId",
-                table: "Topics",
-                column: "SubsectionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserMessages_ParentMessageId",
                 table: "UserMessages",
                 column: "ParentMessageId");
@@ -409,6 +422,12 @@ namespace DataAccessLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AdvertComments");
+
+            migrationBuilder.DropTable(
+                name: "AdvertFiles");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -427,22 +446,19 @@ namespace DataAccessLayer.Migrations
                 name: "MessageFiles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Adverts");
 
             migrationBuilder.DropTable(
-                name: "TopicMessages");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "UserMessages");
 
             migrationBuilder.DropTable(
-                name: "Topics");
+                name: "Subsections");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Subsections");
 
             migrationBuilder.DropTable(
                 name: "Sections");

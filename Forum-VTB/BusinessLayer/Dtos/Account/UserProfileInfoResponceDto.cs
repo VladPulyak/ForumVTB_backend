@@ -8,6 +8,8 @@ namespace BusinessLayer.Dtos.Account
 {
     public class UserProfileInfoResponceDto
     {
+        public string? Email { get; set; }
+
         public string? Photo { get; set; }
 
         public string? NickName { get; set; }

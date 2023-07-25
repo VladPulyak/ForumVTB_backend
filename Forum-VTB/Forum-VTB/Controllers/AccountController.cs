@@ -111,9 +111,14 @@ namespace Forum_VTB.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
             }
             return Ok("Message sent successfully!");
         }
+
+
     }
 }
