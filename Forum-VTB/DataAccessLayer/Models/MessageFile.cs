@@ -8,7 +8,7 @@ namespace DataAccessLayer.Models
 {
     public class MessageFile
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public string? MessageId { get; set; }
 

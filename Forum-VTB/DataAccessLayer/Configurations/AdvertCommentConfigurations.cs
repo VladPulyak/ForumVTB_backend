@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Configurations
 {
-    public class AdvertMessageConfigurations : IEntityTypeConfiguration<AdvertComment>
+    public class AdvertCommentConfigurations : IEntityTypeConfiguration<AdvertComment>
     {
         public void Configure(EntityTypeBuilder<AdvertComment> builder)
         {
-            builder.ToTable("AdvertMessages");
+            builder.ToTable("AdvertComments");
             builder.HasKey(x => x.Id);
             builder.Property(q => q.Text).IsRequired();
             builder.Property(q => q.Text).HasMaxLength(300);

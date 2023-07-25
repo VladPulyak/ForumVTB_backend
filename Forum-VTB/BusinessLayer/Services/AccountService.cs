@@ -47,7 +47,8 @@ namespace BusinessLayer.Services
                 Photo = updatedUser.Photo,
                 BirthDate = updatedUser.BirthDate,
                 NickName = updatedUser.NickName,
-                UserName = updatedUser.UserName
+                UserName = updatedUser.UserName,
+                Email = userEmail
             };
         }
 

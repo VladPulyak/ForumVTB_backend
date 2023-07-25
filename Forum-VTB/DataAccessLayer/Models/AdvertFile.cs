@@ -8,7 +8,7 @@ namespace DataAccessLayer.Models
 {
     public class AdvertFile
     {
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public string? AdvertId { get; set; }
 

@@ -39,7 +39,7 @@ namespace BusinessLayer.Services
             message.SenderId = user.Id;
             message.ReceiverId = receiver.Id;
             message.DateOfCreation = DateTime.Now;
-            message.Id = new Guid().ToString();
+            message.Id = Guid.NewGuid().ToString();
             var addedUserMessage = await _userMessageRepository.Add(message);
             await _userMessageRepository.Save();
             return addedUserMessage;

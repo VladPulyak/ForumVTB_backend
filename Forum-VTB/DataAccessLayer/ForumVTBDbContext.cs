@@ -14,7 +14,7 @@ namespace DataAccessLayer
     {
         public ForumVTBDbContext()
         {
-            
+
         }
 
         public ForumVTBDbContext(DbContextOptions<ForumVTBDbContext> options) : base(options)
@@ -28,7 +28,9 @@ namespace DataAccessLayer
 
         public DbSet<MessageFile> Files { get; set; }
 
-        public DbSet<Advert> Topics { get; set; }
+        public DbSet<Advert> Adverts { get; set; }
+
+        public DbSet<AdvertFile> AdvertFiles { get; set; }
 
         public DbSet<Subsection> Subsections { get; set; }
 
@@ -39,12 +41,13 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
-            modelBuilder.ApplyConfiguration(new AdvertMessageConfigurations());
+            modelBuilder.ApplyConfiguration(new AdvertCommentConfigurations());
             modelBuilder.ApplyConfiguration(new MessageFileConfigurations());
             modelBuilder.ApplyConfiguration(new AdvertConfigurations());
             modelBuilder.ApplyConfiguration(new SubsectionConfigurations());
             modelBuilder.ApplyConfiguration(new SectionConfigurations());
             modelBuilder.ApplyConfiguration(new UserMessageConfiguration());
+            modelBuilder.ApplyConfiguration(new AdvertFileConfugiration());
             base.OnModelCreating(modelBuilder);
         }
     }
