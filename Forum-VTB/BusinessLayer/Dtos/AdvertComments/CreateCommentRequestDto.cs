@@ -11,7 +11,5 @@ namespace BusinessLayer.Dtos.AdvertComments
         public string? AdvertId { get; set; }
 
         public string? Text { get; set; }
-
-        public bool IsReply { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace BusinessLayer.MapProfiles
     {
         public AdvertMapProfiles()
         {
-            CreateMap<Advert, CreateAdvertRequestDto>().ReverseMap();
+            CreateMap<CreateAdvertRequestDto, Advert>().ReverseMap();
             CreateMap<Advert, UpdateAdvertRequestDto>().ReverseMap();
             CreateMap<Advert, UserAdvertResponceDto>().ReverseMap();
         }

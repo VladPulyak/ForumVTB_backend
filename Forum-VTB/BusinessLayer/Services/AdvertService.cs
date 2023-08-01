@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
+using BusinessLayer.Dtos.AdvertFiles;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Interfaces;
@@ -24,9 +25,11 @@ namespace BusinessLayer.Services
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
+        private readonly IAdvertFileService _advertFileService;
+        private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -34,6 +37,8 @@ namespace BusinessLayer.Services
             _mapper = mapper;
             _subsectionRepository = subsectionRepository;
             _commentService = commentService;
+            _fileService = fileService;
+            _advertFileService = advertFileService;
         }
 
         public async Task<CreateAdvertResponceDto> CreateAdvert(CreateAdvertRequestDto requestDto)
@@ -49,14 +54,24 @@ namespace BusinessLayer.Services
             advert.Id = Guid.NewGuid().ToString();
             var addedAdvert = await _advertRepository.Add(advert);
             await _advertRepository.Save();
+            await _fileService.AddFiles(new AddAdvertFileRequestDto
+            {
+                AdvertId = advert.Id,
+                FileStrings = requestDto.FileStrings
+            });
+
             return new CreateAdvertResponceDto
             {
                 AdvertId = addedAdvert.Id,
                 Title = addedAdvert.Title,
                 Description = addedAdvert.Description,
                 Price = addedAdvert.Price,
-                Comments = addedAdvert.Comments is null ? new List<AdvertComment>() : addedAdvert.Comments.ToList(),
-                DateOfCreation = advert.DateOfCreation
+                Comments = new List<AdvertComment>(),
+                DateOfCreation = advert.DateOfCreation,
+                Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
+                {
+                    AdvertId = addedAdvert.Id
+                })
             };
         }
 
@@ -78,7 +93,11 @@ namespace BusinessLayer.Services
                 Description = updatedAdvert.Description,
                 Price = updatedAdvert.Price,
                 Comments = updatedAdvert.Comments is null ? new List<AdvertComment>() : updatedAdvert.Comments.ToList(),
-                DateOfCreation = updatedAdvert.DateOfCreation
+                DateOfCreation = updatedAdvert.DateOfCreation,
+                Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
+                {
+                    AdvertId = updatedAdvert.Id
+                })
             };
         }
 
@@ -115,7 +134,10 @@ namespace BusinessLayer.Services
                 {
                     AdvertId = userAdvert.Id
                 }),
-                Files = userAdvert.Files is null ? new List<AdvertFile>() : userAdvert.Files.ToList(),
+                Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
+                {
+                    AdvertId = userAdvert.Id
+                }),
                 NickName = user.NickName,
                 UserName = user.UserName,
                 UserPhoto = user.Photo,

@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Dtos.AdvertComments;
+using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace BusinessLayer.Interfaces
         Task DeleteComment(DeleteCommentRequestDto requestDto);
 
         Task<List<GetCommentResponceDto>> GetCommentsByAdvertId(GetCommentsRequestDto requestDto);
+
+        Task<ReplyCommentResponceDto> ReplyComment(ReplyCommentRequestDto requestDto);
     }
 }

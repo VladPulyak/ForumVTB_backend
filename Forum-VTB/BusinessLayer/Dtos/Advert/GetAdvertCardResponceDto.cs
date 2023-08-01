@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Dtos.AdvertComments;
+using BusinessLayer.Dtos.AdvertFiles;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,6 @@ namespace BusinessLayer.Dtos.Advert
 
         public List<GetCommentResponceDto>? Comments { get; set; }
 
-        public List<AdvertFile>? Files { get; set; }
+        public List<GetAdvertFileResponceDto>? Files { get; set; }
     }
 }

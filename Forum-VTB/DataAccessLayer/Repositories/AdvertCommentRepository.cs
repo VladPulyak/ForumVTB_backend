@@ -36,8 +36,25 @@ namespace DataAccessLayer.Repositories
 
         public async Task<List<AdvertComment>> GetByAdvertId(string advertId)
         {
-            var comments = await _set.Where(q => q.AdvertId == advertId).Include(q => q.UserProfile).ToListAsync();
+            var comments = await _set.Where(q => q.AdvertId == advertId && q.ParentCommentId == null)
+                                     .Include(q => q.UserProfile)
+                                     .Include(q => q.Replies)
+                                     .ToListAsync();
+
             return comments;
         }
+
+        public async Task<AdvertComment> GetByDateOfCreation(DateTime dateOfCreation, string userId)
+        {
+            var advertComment = await _set.Where(q => q.DateOfCreation == dateOfCreation && q.UserId == userId).Include(q => q.UserProfile).SingleOrDefaultAsync();
+
+            if (advertComment is null)
+            {
+                throw new ObjectNotFoundException("Comment with this date of creation or from this user is not found");
+            }
+
+            return advertComment;
+        }
+
     }
 }

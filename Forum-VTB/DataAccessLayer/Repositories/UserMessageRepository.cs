@@ -18,7 +18,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task<List<UserMessage>> GetByReceiverId(string id)
         {
-            var userMessage = await _set.Where(q => q.ReceiverId == id).ToListAsync();
+            var userMessage = await _set.Where(q => q.ReceiverId == id).Include(q => q.Sender).ToListAsync();
 
             if (userMessage is null)
             {
@@ -26,12 +26,11 @@ namespace DataAccessLayer.Repositories
             }
 
             return userMessage;
-
         }
 
         public async Task<List<UserMessage>> GetBySenderId(string id)
         {
-            var userMessage = await _set.Where(q => q.SenderId == id).ToListAsync();
+            var userMessage = await _set.Where(q => q.SenderId == id).Include(q => q.Receiver).ToListAsync();
 
             if (userMessage is null)
             {
@@ -39,7 +38,24 @@ namespace DataAccessLayer.Repositories
             }
 
             return userMessage;
+        }
 
+        public async Task<UserMessage> GetByDateOfCreation(DateTime dateOfCreation, string userId)
+        {
+            var userMessage = await _set.Where(q => q.DateOfCreation == dateOfCreation && q.SenderId == userId).Include(q => q.Receiver).SingleOrDefaultAsync();
+
+            if (userMessage is null)
+            {
+                throw new ObjectNotFoundException("Message with this date of creation is not found");
+            }
+
+            return userMessage;
+        }
+
+        public async Task Delete(DateTime dateOfCreation, string userId)
+        {
+            var userMessage = await GetByDateOfCreation(dateOfCreation, userId);
+            _set.Remove(userMessage);
         }
     }
 }

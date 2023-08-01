@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Dtos.Messages;
+﻿using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.Messages;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,9 +12,9 @@ namespace Forum_VTB.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-        private readonly IMessageService _messageService;
+        private readonly IUserMessageService _messageService;
 
-        public MessageController(IMessageService messageService)
+        public MessageController(IUserMessageService messageService)
         {
             _messageService = messageService;
         }
@@ -21,22 +22,96 @@ namespace Forum_VTB.Controllers
         [HttpPost("SendMessage")]
         public async Task<ActionResult> SendMessage(SendMessageRequestDto requestDto)
         {
-            var message = await _messageService.SendMessage(requestDto);
-            return Ok(message);
+            UserMessageResponceDto responceDto;
+
+            try
+            {
+                responceDto = await _messageService.SendMessage(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
         }
 
         [HttpGet("GetReceivedMessages")]
         public async Task<ActionResult> GetReceivedMessages()
         {
-            var messages = await _messageService.GetReceivedMessages();
-            return Ok(messages);
+            List<UserMessageResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _messageService.GetReceivedMessages();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+
+            }
+            return Ok(responceDtos);
         }
-        
+
         [HttpGet("GetSendedMessages")]
         public async Task<ActionResult> GetSendedMessages()
         {
-            var messages = await _messageService.GetSendedMessages();
-            return Ok(messages);
+            List<UserMessageResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _messageService.GetSendedMessages();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+
+            }
+            return Ok(responceDtos);
+        }
+
+        [HttpPut("UpdateMessage")]
+        public async Task<ActionResult> UpdateMessage(UpdateMessageRequestDto requestDto)
+        {
+            UserMessageResponceDto responceDto;
+
+            try
+            {
+                responceDto = await _messageService.UpdateMessage(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
+        }
+
+        [HttpDelete("DeleteMessage")]
+        public async Task<ActionResult> DeleteMessage(DeleteMessageRequestDto requestDto)
+        {
+            try
+            {
+                await _messageService.DeleteMessage(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok("Message delete successfully!");
         }
     }
 }

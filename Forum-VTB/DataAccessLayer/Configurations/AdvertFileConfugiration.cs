@@ -16,7 +16,7 @@ namespace DataAccessLayer.Configurations
             builder.ToTable("AdvertFiles");
             builder.HasKey(x => x.Id);
             builder.Property(q => q.FileURL).IsRequired();
-            builder.HasOne(q => q.Advert).WithMany(w => w.Files).HasForeignKey(q => q.AdvertId);
+            builder.HasOne(q => q.Advert).WithMany(w => w.Files).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

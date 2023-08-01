@@ -14,5 +14,7 @@ namespace DataAccessLayer.Interfaces
         Task Delete(string id);
 
         Task<List<AdvertComment>> GetByAdvertId(string advertId);
+
+        Task<AdvertComment> GetByDateOfCreation(DateTime dateOfCreation, string userId);
     }
 }
