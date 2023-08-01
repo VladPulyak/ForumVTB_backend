@@ -12,5 +12,9 @@ namespace DataAccessLayer.Interfaces
         Task<List<UserMessage>> GetByReceiverId(string id);
 
         Task<List<UserMessage>> GetBySenderId(string id);
+
+        Task<UserMessage> GetByDateOfCreation(DateTime dateOfCreation, string userId);
+
+        Task Delete(DateTime dateOfCreation, string userId);
     }
 }

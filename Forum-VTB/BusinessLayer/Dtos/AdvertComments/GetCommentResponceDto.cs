@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,9 @@ namespace BusinessLayer.Dtos.AdvertComments
         public string? UserName { get; set; }
 
         public string? Text { get; set; }
+
+        public DateTime DateOfCreation { get; set; }
+
+        public List<Re_ReplyCommentDto>? Replies { get; set; }
     }
 }

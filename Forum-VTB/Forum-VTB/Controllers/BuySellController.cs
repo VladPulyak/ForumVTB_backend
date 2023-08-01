@@ -5,6 +5,8 @@ using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Forum_VTB.Controllers
 {
@@ -107,7 +109,6 @@ namespace Forum_VTB.Controllers
             try
             {
                 responceDto = await _advertService.GetAdvertCard(requestDto);
-
             }
             catch (Exception ex)
             {
@@ -116,7 +117,7 @@ namespace Forum_VTB.Controllers
                     Message = ex.Message
                 });
             }
-
+             
             return Ok(responceDto);
         }
 
@@ -196,6 +197,13 @@ namespace Forum_VTB.Controllers
             }
 
             return Ok("Comment delete successfully!");
+        }
+
+        [HttpPost("/Comments/ReplyComment")]
+        public async Task<ActionResult> ReplyComment(ReplyCommentRequestDto requestDto)
+        {
+            var responceDto = await _commentService.ReplyComment(requestDto);
+            return Ok(responceDto);
         }
     }
 }

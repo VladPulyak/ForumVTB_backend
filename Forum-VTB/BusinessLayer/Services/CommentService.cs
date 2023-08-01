@@ -81,5 +81,29 @@ namespace BusinessLayer.Services
             var commentResponceDtos = _mapper.Map<List<GetCommentResponceDto>>(comments);
             return commentResponceDtos;
         }
+
+        public async Task<ReplyCommentResponceDto> ReplyComment(ReplyCommentRequestDto requestDto)
+        {
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var parentCommentUser = await _userManager.FindByNameAsync(requestDto.ParentCommentUserName);
+            var parentCommnent = await _advertCommentRepository.GetByDateOfCreation(requestDto.ParentCommentDateOfCreation, parentCommentUser.Id);
+            var comment = _mapper.Map<AdvertComment>(requestDto);
+            comment.UserId = user.Id;
+            comment.Id = Guid.NewGuid().ToString();
+            comment.ParentCommentId = parentCommnent.Id;
+            comment.ParentComment = parentCommnent;
+            comment.DateOfCreation = DateTime.Now;
+            var addedComment = await _advertCommentRepository.Add(comment);
+            await _advertCommentRepository.Save();
+            return new ReplyCommentResponceDto
+            {
+                AdvertId = addedComment.AdvertId,
+                DateOfCreation = addedComment.DateOfCreation,
+                NickName = user.NickName,
+                UserName = user.UserName,
+                Text = addedComment.Text
+            };
+        }
     }
 }

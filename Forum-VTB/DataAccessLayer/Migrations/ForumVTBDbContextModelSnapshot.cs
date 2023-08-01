@@ -438,7 +438,8 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Comments")
-                        .HasForeignKey("AdvertId");
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.AdvertComment", "ParentComment")
                         .WithMany("Replies")
@@ -459,7 +460,8 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Files")
-                        .HasForeignKey("AdvertId");
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Advert");
                 });

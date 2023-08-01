@@ -19,7 +19,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.Text).HasMaxLength(300);
             builder.Property(q => q.DateOfCreation).HasColumnType("timestamp").IsRequired();
             builder.HasOne(q => q.UserProfile).WithMany(w => w.Comments).HasForeignKey(q => q.UserId);
-            builder.HasOne(q => q.Advert).WithMany(w => w.Comments).HasForeignKey(q => q.AdvertId);
+            builder.HasOne(q => q.Advert).WithMany(w => w.Comments).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.ParentComment).WithMany(q => q.Replies).HasForeignKey(q => q.ParentCommentId);
         }
     }

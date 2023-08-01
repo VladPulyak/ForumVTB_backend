@@ -23,9 +23,10 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IUserMessageService, UserMessageService>();
             services.AddScoped<IAdvertService, AdvertService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IAdvertFileService, AdvertFileService>();
             services.AddAutoMapper(typeof(UserMapProfile));
             return services;
         }

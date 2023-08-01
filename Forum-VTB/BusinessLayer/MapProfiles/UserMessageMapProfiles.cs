@@ -10,13 +10,15 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.MapProfiles
 {
-    internal class MessageMapProfiles : Profile
+    internal class UserMessageMapProfiles : Profile
     {
-        public MessageMapProfiles()
+        public UserMessageMapProfiles()
         {
-            CreateMap<SupportMessageRequestDto, AdvertComment>()
-                .ForMember("Text", q => q.MapFrom(w => w.Text));
             CreateMap<SendMessageRequestDto, UserMessage>().ReverseMap();
+            CreateMap<UserMessage, UserMessageResponceDto>()
+                .ForMember(q => q.ReceiverUserName, w => w.MapFrom(q => q.Receiver.UserName))
+                .ForMember(q => q.SenderUserName, w => w.MapFrom(q => q.Sender.UserName))
+                .ReverseMap();
         }
     }
 }

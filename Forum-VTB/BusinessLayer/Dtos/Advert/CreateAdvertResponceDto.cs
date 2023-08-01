@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Models;
+﻿using BusinessLayer.Dtos.AdvertFiles;
+using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace BusinessLayer.Dtos.Advert
         public List<AdvertComment>? Comments { get; set; }
 
         public DateTime DateOfCreation { get; set; }
+
+        public List<GetAdvertFileResponceDto>? Files { get; set; }
     }
 }
  
