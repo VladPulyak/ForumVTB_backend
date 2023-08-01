@@ -53,8 +53,8 @@ namespace BusinessLayer.Services
         public async Task<UpdateCommentResponceDto> UpdateComment(UpdateCommentRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
-            var comment = await _advertCommentRepository.GetById(requestDto.CommentId);
+            var user = await _userManager.FindByNameAsync(requestDto.Username);
+            var comment = await _advertCommentRepository.GetByDateOfCreation(requestDto.DateOfCreation, user.Id);
             comment.Text = requestDto.Text;
             comment.DateOfCreation = DateTime.Now;
             var updatedComment = _advertCommentRepository.Update(comment);
@@ -71,7 +71,8 @@ namespace BusinessLayer.Services
 
         public async Task DeleteComment(DeleteCommentRequestDto requestDto)
         {
-            await _advertCommentRepository.Delete(requestDto.CommentId);
+            var user = await _userManager.FindByNameAsync(requestDto.Username);
+            await _advertCommentRepository.Delete(requestDto.DateOfCreation, user.Id);
             await _advertCommentRepository.Save();
         }
 

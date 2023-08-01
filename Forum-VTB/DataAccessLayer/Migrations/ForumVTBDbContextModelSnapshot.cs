@@ -220,6 +220,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp");
 
+                    b.Property<long?>("ChatId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");

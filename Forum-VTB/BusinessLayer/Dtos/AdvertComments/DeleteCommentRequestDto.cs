@@ -8,6 +8,8 @@ namespace BusinessLayer.Dtos.AdvertComments
 {
     public class DeleteCommentRequestDto
     {
-        public string? CommentId { get; set; }
+        public DateTime DateOfCreation { get; set; }
+
+        public string? Username { get; set; }
     }
 }
