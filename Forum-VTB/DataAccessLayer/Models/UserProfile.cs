@@ -10,6 +10,8 @@ namespace DataAccessLayer.Models
 
         public string? NickName { get; set; }
 
+        public long? ChatId { get; set; }
+
         public ICollection<AdvertComment>? Comments { get; set; }
 
         public ICollection<UserMessage>? SentMessages { get; set; }

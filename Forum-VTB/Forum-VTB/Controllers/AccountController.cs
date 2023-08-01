@@ -3,7 +3,6 @@ using BusinessLayer.Dtos.Common;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Models;
-using HtmlAgilityPack;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

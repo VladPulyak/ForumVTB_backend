@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jqHmz0enSzGdyQtJuv+u3YhAsvxM9Tm3tZKaz+Z0gCyiqX5KZ/YZ+tp6EC2x2BjQ/XgNwXBmBw/m1SSgsAwwmQ==",
+  "dgSpecHash": "2BT8aYGPNXgDx7D3TBLYIaF6O4bae5nmHhzcIUNrnv48VfChFY09fzyE1Epsa8ECGgk5XtfvjPagSS9nvDMPkA==",
   "success": true,
   "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\BusinessLayer\\BusinessLayer.csproj",
   "expectedPackageFiles": [
@@ -64,7 +64,8 @@
     "C:\\Users\\vladp\\.nuget\\packages\\system.security.cryptography.xml\\4.5.0\\system.security.cryptography.xml.4.5.0.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\system.security.permissions\\4.5.0\\system.security.permissions.4.5.0.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512",
-    "C:\\Users\\vladp\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
+    "C:\\Users\\vladp\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512",
+    "C:\\Users\\vladp\\.nuget\\packages\\telegram.bot\\19.0.0\\telegram.bot.19.0.0.nupkg.sha512"
   ],
   "logs": []
 }

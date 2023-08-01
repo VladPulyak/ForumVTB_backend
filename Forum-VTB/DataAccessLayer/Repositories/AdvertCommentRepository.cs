@@ -28,9 +28,9 @@ namespace DataAccessLayer.Repositories
             return comment;
         }
 
-        public async Task Delete(string id)
+        public async Task Delete(DateTime dateOfCreation, string userId)
         {
-            var comment = await GetById(id);
+            var comment = await GetByDateOfCreation(dateOfCreation, userId);
             _set.Remove(comment);
         }
 
@@ -55,6 +55,5 @@ namespace DataAccessLayer.Repositories
 
             return advertComment;
         }
-
     }
 }

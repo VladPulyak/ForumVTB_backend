@@ -10,9 +10,7 @@
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
           "BusinessLayer": "1.0.0",
-          "Cars": "2.1.2",
           "DataAccessLayer": "1.0.0",
-          "HtmlAgilityPack": "1.11.49",
           "Microsoft.AspNetCore.Authentication.Google": "7.0.7",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.7",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "7.0.8",
@@ -20,7 +18,8 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.7",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.17.2",
           "Swashbuckle.AspNetCore": "6.4.0",
-          "Swashbuckle.AspNetCore.Filters": "7.0.6"
+          "Swashbuckle.AspNetCore.Filters": "7.0.6",
+          "Telegram.Bot": "19.0.0"
         },
         "runtime": {
           "Forum-VTB.dll": {}
@@ -54,26 +53,6 @@
           "lib/net6.0/BCrypt.Net-Next.dll": {
             "assemblyVersion": "4.0.3.0",
             "fileVersion": "4.0.3.0"
-          }
-        }
-      },
-      "Cars/2.1.2": {
-        "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "Microsoft.Extensions.Logging": "7.0.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Cars.dll": {
-            "assemblyVersion": "2.1.2.0",
-            "fileVersion": "2.1.2.0"
-          }
-        }
-      },
-      "HtmlAgilityPack/1.11.49": {
-        "runtime": {
-          "lib/netstandard2.0/HtmlAgilityPack.dll": {
-            "assemblyVersion": "1.11.49.0",
-            "fileVersion": "1.11.49.0"
           }
         }
       },
@@ -695,13 +674,25 @@
           "System.Text.Encodings.Web": "7.0.0"
         }
       },
+      "Telegram.Bot/19.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/net6.0/Telegram.Bot.dll": {
+            "assemblyVersion": "19.0.0.0",
+            "fileVersion": "19.0.0.0"
+          }
+        }
+      },
       "BusinessLayer/1.0.0": {
         "dependencies": {
           "AutoMapper": "12.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
           "BCrypt.Net-Next": "4.0.3",
           "DataAccessLayer": "1.0.0",
-          "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.7"
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "7.0.7",
+          "Telegram.Bot": "19.0.0"
         },
         "runtime": {
           "BusinessLayer.dll": {}
@@ -747,20 +738,6 @@
       "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
       "path": "bcrypt.net-next/4.0.3",
       "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
-    },
-    "Cars/2.1.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-l6ewIyXVsYnLITL5o8ja7tR0qAUjpcA3jjSBTIb6m8DIqZi8wosMme1Y0rRUjtLtC5rUUSJxBgL0AB1PZYPO6w==",
-      "path": "cars/2.1.2",
-      "hashPath": "cars.2.1.2.nupkg.sha512"
-    },
-    "HtmlAgilityPack/1.11.49": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Mo5Thds22DOvJOBOTmMosHsykqoTHECuHzjc1VWQMIjUTXZ+W03m/+HHH1dkWYfV8fOkXsI3eXCXVGNjAsdRKQ==",
-      "path": "htmlagilitypack/1.11.49",
-      "hashPath": "htmlagilitypack.1.11.49.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
@@ -1314,6 +1291,13 @@
       "sha512": "sha512-DaGSsVqKsn/ia6RG8frjwmJonfos0srquhw09TlT8KRw5I43E+4gs+/bZj4K0vShJ5H9imCuXupb4RmS+dBy3w==",
       "path": "system.text.json/7.0.0",
       "hashPath": "system.text.json.7.0.0.nupkg.sha512"
+    },
+    "Telegram.Bot/19.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Q16IOitgjGoaJOuqgKQy0FeF+hr/ncmlX2esrhCC7aiyhSX7roYEriWaGAHkQZR8QzbImjFfl4eQh2IxcnOrPg==",
+      "path": "telegram.bot/19.0.0",
+      "hashPath": "telegram.bot.19.0.0.nupkg.sha512"
     },
     "BusinessLayer/1.0.0": {
       "type": "project",

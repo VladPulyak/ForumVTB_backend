@@ -1,14 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "dn4dJCjN8nr1kkHoGinbrmf/AyPwfQ4SLP6RWxI3FNxivCsud4+VatSl42Pvt4enbTGSkH0kMlkR4gR9UzqWUw==",
+  "dgSpecHash": "6y+IS7IwodT3O0DZ7qgEJjVd3LY3+O0rgaN9GDQhpMnXkJXEDNGbuehut6mxb+ML1n6LOmnSycu0LV2ckKWX7w==",
   "success": true,
   "projectFilePath": "D:\\.NET projects\\DreamSoft\\forum-vtb_backend\\Forum-VTB\\Forum-VTB\\Forum-VTB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vladp\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
-    "C:\\Users\\vladp\\.nuget\\packages\\cars\\2.1.2\\cars.2.1.2.nupkg.sha512",
-    "C:\\Users\\vladp\\.nuget\\packages\\htmlagilitypack\\1.11.49\\htmlagilitypack.1.11.49.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
@@ -87,7 +85,8 @@
     "C:\\Users\\vladp\\.nuget\\packages\\system.security.permissions\\4.5.0\\system.security.permissions.4.5.0.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512",
     "C:\\Users\\vladp\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
-    "C:\\Users\\vladp\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
+    "C:\\Users\\vladp\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",
+    "C:\\Users\\vladp\\.nuget\\packages\\telegram.bot\\19.0.0\\telegram.bot.19.0.0.nupkg.sha512"
   ],
   "logs": []
 }
