@@ -13,5 +13,7 @@ namespace BusinessLayer.Interfaces
         Task<List<AdvertFile>> AddFiles(AddAdvertFileRequestDto requestDto);
 
         Task<List<GetAdvertFileResponceDto>> GetAdvertFiles(GetAdvertFileRequestDto requestDto);
+
+        Task AddMissingFiles(AddMissingFilesRequestDto requestDto);
     }
 }

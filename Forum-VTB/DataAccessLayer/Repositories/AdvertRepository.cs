@@ -17,11 +17,10 @@ namespace DataAccessLayer.Repositories
 
         }
 
-        //public async Task Delete(DateTime dateOfCreation, string userId)
-        //{
-        //    var entity = await GetByDateOfCreationForUser(dateOfCreation, userId);
-        //    _set.Remove(entity);
-        //}
+        public IQueryable<Advert> GetAdvertsWithSubsections()
+        {
+            return _set.Include(q => q.Subsection).AsNoTracking();
+        }
 
         public async Task Delete(string advertId)
         {
@@ -40,28 +39,42 @@ namespace DataAccessLayer.Repositories
             return adverts;
         }
 
-        //public async Task<Advert> GetByDateOfCreationForUser(DateTime dateOfCreation, string userId)
-        //{
-        //    var userAdverts = await GetByUserId(userId);
-        //    var advert = userAdverts.SingleOrDefault(q => q.DateOfCreation == dateOfCreation);
-        //    if (advert is null)
-        //    {
-        //        throw new ObjectNotFoundException("Advert with this date is not found");
-        //    }
-
-        //    return advert;
-        //}
-
         public async Task<Advert> GetById(string advertId)
         {
-            var advert = await _set.Where(q => q.Id == advertId).Include(q => q.Comments).Include(q => q.Subsection).SingleAsync();
+            var advert = await _set.Where(q => q.Id == advertId)
+                .Include(q => q.User)
+                .Include(q => q.Comments)
+                .Include(q => q.Subsection)
+                .Include(q => q.Files)
+                .SingleAsync();
             if (advert is null)
             {
                 throw new ObjectNotFoundException("Adverts with this id is not found");
             }
 
             return advert;
-
         }
+
+        public async Task<List<Advert>> GetBySectionName(string sectionName)
+        {
+            var entity = await _set.Include(q => q.Files)
+                .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
+                .Where(q => q.Subsection.Section.Name == sectionName)
+                .ToListAsync();
+
+            return entity;
+        }
+
+        public async Task<List<Advert>> GetBySubsectionName(string subsectionName)
+        {
+            var entity = await _set.Include(q => q.Files)
+                .Include(q => q.Subsection)
+                .Where(q => q.Subsection.Name == subsectionName)
+                .ToListAsync();
+
+            return entity;
+        }
+
     }
 }

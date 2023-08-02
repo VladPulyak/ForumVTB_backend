@@ -28,5 +28,20 @@ namespace DataAccessLayer.Repositories
 
             return entity;
         }
+
+        public async Task<List<Subsection>> GetBySectionName(string sectionName)
+        {
+            var entity = await _set.Include(q => q.Adverts)
+                .Include(q => q.Section)
+                .Where(q => q.Section.Name == sectionName)
+                .ToListAsync();
+
+            if (entity is null)
+            {
+                throw new ObjectNotFoundException("Subsections with this section name is not found");
+            }
+
+            return entity;
+        }
     }
 }

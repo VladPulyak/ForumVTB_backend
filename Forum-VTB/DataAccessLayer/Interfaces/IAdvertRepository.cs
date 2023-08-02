@@ -11,12 +11,14 @@ namespace DataAccessLayer.Interfaces
     {
         Task<List<Advert>> GetByUserId(string userId);
 
-        //Task Delete(DateTime dateOfCreation, string userId);
-
         Task Delete(string advertId);
 
-        //Task<Advert> GetByDateOfCreationForUser(DateTime dateOfCreation, string userId);
-
         Task<Advert> GetById(string advertId);
+
+        IQueryable<Advert> GetAdvertsWithSubsections();
+
+        Task<List<Advert>> GetBySectionName(string sectionName);
+
+        Task<List<Advert>> GetBySubsectionName(string subsectionName);
     }
 }

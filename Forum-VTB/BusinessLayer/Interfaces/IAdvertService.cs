@@ -21,5 +21,9 @@ namespace BusinessLayer.Interfaces
         Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto);
 
         Task<List<UserAdvertResponceDto>> GetAllAdverts();
+
+        Task<List<AdvertResponceDto>> FindBySectionName(FindBySectionNameRequestDto requestDto);
+
+        Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto);
     }
 }

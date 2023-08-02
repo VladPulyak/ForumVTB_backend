@@ -10,5 +10,7 @@ namespace DataAccessLayer.Interfaces
     public interface ISubsectionRepository : IRepository<Subsection>
     {
         Task<Subsection> GetByName(string name);
+
+        Task<List<Subsection>> GetBySectionName(string sectionName);
     }
 }
