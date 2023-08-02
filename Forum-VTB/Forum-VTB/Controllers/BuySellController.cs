@@ -64,6 +64,7 @@ namespace Forum_VTB.Controllers
             return Ok(responceDto);
         }
 
+        [AllowAnonymous]
         [HttpPut("/Adverts/UpdateAdvert")]
         public async Task<ActionResult> UpdateAdvert(UpdateAdvertRequestDto requestDto)
         {
@@ -142,6 +143,46 @@ namespace Forum_VTB.Controllers
             return Ok(adverts);
         }
 
+        [AllowAnonymous]
+        [HttpPost("/Advert/FindBySectionName")]
+        public async Task<ActionResult> FindBySectionName(FindBySectionNameRequestDto requestDto)
+        {
+            List<AdvertResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _advertService.FindBySectionName(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDtos);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/Advert/FindBySubsectionName")]
+        public async Task<ActionResult> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
+        {
+            List<AdvertResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _advertService.FindBySubsectionName(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDtos);
+        }
+
         [HttpPost("/Comments/CreateComment")]
         public async Task<ActionResult> CreateComment(CreateCommentRequestDto requestDto)
         {
@@ -202,7 +243,20 @@ namespace Forum_VTB.Controllers
         [HttpPost("/Comments/ReplyComment")]
         public async Task<ActionResult> ReplyComment(ReplyCommentRequestDto requestDto)
         {
-            var responceDto = await _commentService.ReplyComment(requestDto);
+            ReplyCommentResponceDto responceDto;
+
+            try
+            {
+                responceDto = await _commentService.ReplyComment(requestDto);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
             return Ok(responceDto);
         }
     }

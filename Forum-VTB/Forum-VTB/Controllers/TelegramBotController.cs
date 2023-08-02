@@ -35,7 +35,7 @@ namespace Forum_VTB.Controllers
                 if (string.IsNullOrEmpty(webhookInfo.Url))
                 {
                     await _botClient.DeleteWebhookAsync();
-                    await _botClient.SetWebhookAsync(WebhookUrl);
+                    await _botClient.SetWebhookAsync(WebhookUrl); 
                 }
 
                 // Обработка входящего обновления

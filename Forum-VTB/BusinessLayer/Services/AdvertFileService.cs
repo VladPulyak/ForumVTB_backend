@@ -46,5 +46,21 @@ namespace BusinessLayer.Services
             var responceDtos = _mapper.Map<List<GetAdvertFileResponceDto>>(advertFiles);
             return responceDtos;
         }
+
+        public async Task AddMissingFiles(AddMissingFilesRequestDto requestDto)
+        {
+            var advertFiles = await GetAdvertFiles(new GetAdvertFileRequestDto
+            {
+                AdvertId = requestDto.Advert.Id
+            });
+            var fileStrings = advertFiles.Select(q => q.FileString).ToList();
+            var missingFiles = requestDto.FileStrings.Except(fileStrings).ToList();
+            await AddFiles(new AddAdvertFileRequestDto
+            {
+                AdvertId = requestDto.Advert.Id,
+                FileStrings = missingFiles
+            });
+
+        }
     }
 }

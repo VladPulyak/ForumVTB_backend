@@ -28,8 +28,9 @@ namespace BusinessLayer.Services
         private readonly IAdvertFileService _advertFileService;
         private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
+        private readonly ISectionRepository _sectionRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -39,6 +40,7 @@ namespace BusinessLayer.Services
             _commentService = commentService;
             _fileService = fileService;
             _advertFileService = advertFileService;
+            _sectionRepository = sectionRepository;
         }
 
         public async Task<CreateAdvertResponceDto> CreateAdvert(CreateAdvertRequestDto requestDto)
@@ -77,13 +79,16 @@ namespace BusinessLayer.Services
 
         public async Task<UpdateAdvertResponceDto> UpdateAdvert(UpdateAdvertRequestDto requestDto)
         {
-            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = await _advertRepository.GetById(requestDto.AdvertId);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
             advert.DateOfCreation = DateTime.Now;
+            await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
+            {
+                Advert = advert,
+                FileStrings = requestDto.FileStrings
+            });
             var updatedAdvert = _advertRepository.Update(advert);
             await _advertRepository.Save();
             return new UpdateAdvertResponceDto
@@ -118,8 +123,6 @@ namespace BusinessLayer.Services
 
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
-            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByEmailAsync(userEmail);
             var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
 
             return new GetAdvertCardResponceDto
@@ -138,9 +141,9 @@ namespace BusinessLayer.Services
                 {
                     AdvertId = userAdvert.Id
                 }),
-                NickName = user.NickName,
-                UserName = user.UserName,
-                UserPhoto = user.Photo,
+                NickName = userAdvert.User.NickName,
+                UserName = userAdvert.User.UserName,
+                UserPhoto = userAdvert.User.Photo,
                 SubsectionName = userAdvert.Subsection.Name
             };
         }
@@ -155,6 +158,20 @@ namespace BusinessLayer.Services
 
             var userAdvertResponceDtos = _mapper.Map<List<UserAdvertResponceDto>>(adverts);
             return userAdvertResponceDtos;
+        }
+
+        public async Task<List<AdvertResponceDto>> FindBySectionName(FindBySectionNameRequestDto requestDto)
+        {
+            var adverts = await _advertRepository.GetBySectionName(requestDto.SectionName);
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            return responceDtos;
+        }
+
+        public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
+        {
+            var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            return responceDtos;
         }
     }
 }
