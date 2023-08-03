@@ -54,6 +54,7 @@ namespace BusinessLayer.Services
             advert.UserId = user.Id;
             advert.DateOfCreation = DateTime.Now;
             advert.Id = Guid.NewGuid().ToString();
+            advert.PhoneNumber = requestDto.PhoneNumber;
             var addedAdvert = await _advertRepository.Add(advert);
             await _advertRepository.Save();
             await _fileService.AddFiles(new AddAdvertFileRequestDto

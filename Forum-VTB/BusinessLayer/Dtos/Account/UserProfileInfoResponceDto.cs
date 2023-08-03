@@ -19,3 +19,4 @@ namespace BusinessLayer.Dtos.Account
         public DateTime? BirthDate { get; set; }
     }
 }
+ 
