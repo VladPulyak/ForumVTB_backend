@@ -19,7 +19,6 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.NickName).HasMaxLength(30);
             builder.Property(q => q.BirthDate).HasColumnType("timestamp");
             builder.Property(q => q.Email).HasMaxLength(30);
-            builder.Property(q => q.PhoneNumber).HasMaxLength(13);
             builder.HasIndex(q => new
             {
                 q.UserName

@@ -20,6 +20,8 @@ namespace DataAccessLayer.Models
 
         public string? Price { get; set; }
 
+        public string? PhoneNumber { get; set; }
+
         public DateTime DateOfCreation { get; set; }
 
         public ICollection<AdvertFile>? Files { get; set; }
