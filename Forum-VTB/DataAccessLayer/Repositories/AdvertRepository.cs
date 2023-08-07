@@ -17,10 +17,13 @@ namespace DataAccessLayer.Repositories
 
         }
 
-        public IQueryable<Advert> GetAdvertsWithSubsections()
+        public override IQueryable<Advert> GetAll()
         {
-            return _set.Include(q => q.Subsection).AsNoTracking();
+            return _set.Include(q => q.Files)
+                .Include(q => q.Subsection)
+                .AsNoTracking();
         }
+
 
         public async Task Delete(string advertId)
         {

@@ -27,7 +27,7 @@ namespace DataAccessLayer.Repositories
             return newEntity.Entity;
         }
 
-        public IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll()
         {
             return _set.AsNoTracking();
         }
