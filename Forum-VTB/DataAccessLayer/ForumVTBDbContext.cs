@@ -38,6 +38,10 @@ namespace DataAccessLayer
 
         public DbSet<UserMessage> UserMessages { get; set; }
 
+        public DbSet<Favourite> Favourites { get; set; }
+
+        public DbSet<Event> Events { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());

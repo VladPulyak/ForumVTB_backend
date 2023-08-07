@@ -19,5 +19,7 @@ namespace DataAccessLayer.Models
         public ICollection<UserMessage>? ReceivedMessages { get; set; }
 
         public ICollection<Advert>? Adverts { get; set; }
+
+        public ICollection<Favourite>? Favourites { get; set; }
     }
 }

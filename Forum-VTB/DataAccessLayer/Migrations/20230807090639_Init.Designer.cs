@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ForumVTBDbContext))]
-    [Migration("20230801124810_AddChatId")]
-    partial class AddChatId
+    [Migration("20230807090639_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,10 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<string>("Price")
                         .IsRequired()
@@ -116,6 +120,53 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("AdvertId");
 
                     b.ToTable("AdvertFiles", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Event", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OtherInfo")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Poster")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SubsectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsectionId");
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Favourite", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AdvertId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favourites");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
@@ -259,8 +310,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
@@ -472,6 +522,30 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Advert");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Event", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
+                        .WithMany("Events")
+                        .HasForeignKey("SubsectionId");
+
+                    b.Navigation("Subsection");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Favourite", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithMany("Favourites")
+                        .HasForeignKey("AdvertId");
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("Favourites")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Advert");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.UserMessage", "UserMessage")
@@ -568,6 +642,8 @@ namespace DataAccessLayer.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("Favourites");
+
                     b.Navigation("Files");
                 });
 
@@ -584,6 +660,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Subsection", b =>
                 {
                     b.Navigation("Adverts");
+
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
@@ -596,6 +674,8 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Adverts");
 
                     b.Navigation("Comments");
+
+                    b.Navigation("Favourites");
 
                     b.Navigation("ReceivedMessages");
 

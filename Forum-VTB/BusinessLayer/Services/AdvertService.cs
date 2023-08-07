@@ -107,6 +107,13 @@ namespace BusinessLayer.Services
             };
         }
 
+        public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
+        {
+            var adverts = await _advertRepository.GetAll().TakeLast(4).ToListAsync();
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            return responceDtos;
+        }
+
         public async Task DeleteAdvert(DeleteAdvertRequestDto requestDto)
         {
             await _advertRepository.Delete(requestDto.AdvertId);

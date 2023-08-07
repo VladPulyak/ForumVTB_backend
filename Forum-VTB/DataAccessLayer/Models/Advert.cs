@@ -31,5 +31,7 @@ namespace DataAccessLayer.Models
         public ICollection<AdvertComment>? Comments { get; set; }
 
         public Subsection? Subsection { get; set; }
+
+        public ICollection<Favourite>? Favourites { get; set; }
     }
 }

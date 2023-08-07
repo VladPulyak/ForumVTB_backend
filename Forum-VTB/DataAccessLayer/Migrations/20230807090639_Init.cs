@@ -34,6 +34,7 @@ namespace DataAccessLayer.Migrations
                     Photo = table.Column<string>(type: "text", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "timestamp", nullable: false),
                     NickName = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: true),
+                    ChatId = table.Column<long>(type: "bigint", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -42,7 +43,7 @@ namespace DataAccessLayer.Migrations
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
                     SecurityStamp = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
@@ -252,7 +253,8 @@ namespace DataAccessLayer.Migrations
                     Title = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "character varying(3000)", maxLength: 3000, nullable: false),
                     Price = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    DateOfCreation = table.Column<DateTime>(type: "timestamp", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: true),
+                    DateOfCreation = table.Column<DateTime>(type: "timestamp(3) without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -264,6 +266,27 @@ namespace DataAccessLayer.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Adverts_Subsections_SubsectionId",
+                        column: x => x.SubsectionId,
+                        principalTable: "Subsections",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    SubsectionId = table.Column<int>(type: "integer", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Poster = table.Column<string>(type: "text", nullable: true),
+                    OtherInfo = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Subsections_SubsectionId",
                         column: x => x.SubsectionId,
                         principalTable: "Subsections",
                         principalColumn: "Id");
@@ -293,7 +316,8 @@ namespace DataAccessLayer.Migrations
                         name: "FK_AdvertComments_Adverts_AdvertId",
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdvertComments_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -316,6 +340,30 @@ namespace DataAccessLayer.Migrations
                         name: "FK_AdvertFiles_Adverts_AdvertId",
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Favourites",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    AdvertId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favourites", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Favourites_Adverts_AdvertId",
+                        column: x => x.AdvertId,
+                        principalTable: "Adverts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Favourites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
@@ -393,6 +441,21 @@ namespace DataAccessLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Events_SubsectionId",
+                table: "Events",
+                column: "SubsectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favourites_AdvertId",
+                table: "Favourites",
+                column: "AdvertId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favourites_UserId",
+                table: "Favourites",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MessageFiles_MessageId",
                 table: "MessageFiles",
                 column: "MessageId");
@@ -443,13 +506,19 @@ namespace DataAccessLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Favourites");
+
+            migrationBuilder.DropTable(
                 name: "MessageFiles");
 
             migrationBuilder.DropTable(
-                name: "Adverts");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Adverts");
 
             migrationBuilder.DropTable(
                 name: "UserMessages");
