@@ -15,8 +15,6 @@ namespace DataAccessLayer.Interfaces
 
         Task<Advert> GetById(string advertId);
 
-        IQueryable<Advert> GetAdvertsWithSubsections();
-
         Task<List<Advert>> GetBySectionName(string sectionName);
 
         Task<List<Advert>> GetBySubsectionName(string subsectionName);
