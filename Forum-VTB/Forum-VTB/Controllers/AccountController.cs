@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Dtos.Account;
 using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.UserThemes;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -16,10 +17,12 @@ namespace Forum_VTB.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IUserThemeService _userThemeService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IUserThemeService userThemeService)
         {
             _accountService = accountService;
+            _userThemeService = userThemeService;
         }
 
         [HttpGet("GetUserProfile")]
@@ -118,6 +121,22 @@ namespace Forum_VTB.Controllers
             return Ok("Message sent successfully!");
         }
 
+        [HttpPatch("/Theme/ChangeTheme")]
+        public async Task<ActionResult> ChangeTheme(UserThemeDto requestDto)
+        {
+            try
+            {
+                await _userThemeService.ChangeTheme(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
 
+            return Ok("Theme changed successfully!");
+        }
     }
 }

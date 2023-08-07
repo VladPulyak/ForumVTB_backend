@@ -126,7 +126,6 @@ D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.AssemblyInfoInputs.cache
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.AssemblyInfo.cs
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.csproj.CoreCompileInputs.cache
-D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.MvcApplicationPartsAssemblyInfo.cs
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\Forum-VTB.MvcApplicationPartsAssemblyInfo.cache
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\staticwebassets\msbuild.Forum-VTB.Microsoft.AspNetCore.StaticWebAssets.props
 D:\.NET projects\DreamSoft\forum-vtb_backend\Forum-VTB\Forum-VTB\obj\Debug\net7.0\staticwebassets\msbuild.build.Forum-VTB.props

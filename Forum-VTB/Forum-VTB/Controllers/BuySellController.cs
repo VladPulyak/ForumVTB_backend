@@ -47,6 +47,7 @@ namespace Forum_VTB.Controllers
             return Ok(responceDtos);
         }
 
+        [AllowAnonymous]
         [HttpGet("/Adverts/GetFourNewestAdverts")]
         public async Task<ActionResult> GetFourNewestAdverts()
         {
@@ -86,7 +87,6 @@ namespace Forum_VTB.Controllers
             return Ok(responceDto);
         }
 
-        [AllowAnonymous]
         [HttpPut("/Adverts/UpdateAdvert")]
         public async Task<ActionResult> UpdateAdvert(UpdateAdvertRequestDto requestDto)
         {
@@ -125,6 +125,7 @@ namespace Forum_VTB.Controllers
             return Ok("Advert delete successfully!");
         }
 
+        [AllowAnonymous]
         [HttpPost("/Adverts/GetAdvertCard")]
         public async Task<ActionResult> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
