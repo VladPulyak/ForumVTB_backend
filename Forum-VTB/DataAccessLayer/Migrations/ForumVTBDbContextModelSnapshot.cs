@@ -49,8 +49,8 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
