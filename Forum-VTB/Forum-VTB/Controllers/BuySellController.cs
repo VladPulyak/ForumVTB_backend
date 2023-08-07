@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
 using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.Favourites;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +18,13 @@ namespace Forum_VTB.Controllers
     {
         private readonly IAdvertService _advertService;
         private readonly ICommentService _commentService;
+        private readonly IFavouriteService _favouriteService;
 
-        public BuySellController(IAdvertService advertService, ICommentService commentService)
+        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService)
         {
             _advertService = advertService;
             _commentService = commentService;
+            _favouriteService = favouriteService;
         }
 
         [HttpGet("/Adverts/GetUserAdverts")]
@@ -32,6 +35,25 @@ namespace Forum_VTB.Controllers
             {
                 responceDtos = await _advertService.GetUserAdverts();
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDtos);
+        }
+
+        [HttpGet("/Adverts/GetFourNewestAdverts")]
+        public async Task<ActionResult> GetFourNewestAdverts()
+        {
+            List<AdvertResponceDto> responceDtos;
+            try
+            {
+                responceDtos = await _advertService.GetFourNewestAdverts();
             }
             catch (Exception ex)
             {
@@ -120,6 +142,61 @@ namespace Forum_VTB.Controllers
             }
              
             return Ok(responceDto);
+        }
+
+        [HttpPost("/Favourites/AddToFavourites")]
+        public async Task<ActionResult> AddToFavourites(AddToFavouritesRequestDto requestDto)
+        {
+            try
+            {
+                await _favouriteService.AddToFavourites(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok("Advert added to favourites successfully!");
+        }
+
+        [HttpDelete("/Favourites/DeleteFromFavourites")]
+        public async Task<ActionResult> DeleteFromFavourites(DeleteFromFavouritesRequestDto requestDto)
+        {
+            try
+            {
+                await _favouriteService.DeleteFromFavourites(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok("Advert deleted from favourites successfully!");
+        }
+
+        [HttpGet("GetUserFavourites")]
+        public async Task<ActionResult> GetUserFavourites()
+        {
+            List<AdvertResponceDto> responceDtos;
+            try
+            {
+                responceDtos = await _favouriteService.GetUserFavourites();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDtos);
         }
 
         [AllowAnonymous]

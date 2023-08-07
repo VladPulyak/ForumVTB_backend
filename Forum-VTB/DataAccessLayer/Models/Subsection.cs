@@ -17,5 +17,7 @@ namespace DataAccessLayer.Models
         public ICollection<Advert>? Adverts { get; set; }
 
         public Section? Section { get; set; }
+
+        public ICollection<Event> Events { get; set; }
     }
 }

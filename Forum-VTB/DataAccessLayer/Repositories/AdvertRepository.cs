@@ -31,11 +31,6 @@ namespace DataAccessLayer.Repositories
         public async Task<List<Advert>> GetByUserId(string userId)
         {
             var adverts = await _set.Where(q => q.UserId == userId).Include(q => q.Comments).ToListAsync();
-            if (!adverts.Any())
-            {
-                throw new ObjectNotFoundException("Adverts for this user is not found");
-            }
-
             return adverts;
         }
 
