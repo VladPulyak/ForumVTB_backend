@@ -16,7 +16,7 @@ namespace DataAccessLayer.Configurations
             builder.ToTable("Adverts");
             builder.HasKey(q => q.Id);
             builder.Property(q => q.Title).IsRequired();
-            builder.Property(q => q.Title).HasMaxLength(30);
+            builder.Property(q => q.Title).HasMaxLength(100);
             builder.Property(q => q.Description).IsRequired();
             builder.Property(q => q.Description).HasMaxLength(3000);
             builder.Property(q => q.Price).IsRequired();
