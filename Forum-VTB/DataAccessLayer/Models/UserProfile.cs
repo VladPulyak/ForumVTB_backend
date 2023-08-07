@@ -21,5 +21,7 @@ namespace DataAccessLayer.Models
         public ICollection<Advert>? Adverts { get; set; }
 
         public ICollection<Favourite>? Favourites { get; set; }
+
+        public UserTheme? Theme { get; set; }
     }
 }

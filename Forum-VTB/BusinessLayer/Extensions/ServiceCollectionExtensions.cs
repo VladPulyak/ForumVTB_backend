@@ -29,6 +29,7 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IAdvertFileService, AdvertFileService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IFavouriteService, FavouriteService>();
+            services.AddScoped<IUserThemeService, UserThemeService>();
             services.AddSingleton<TelegramBotService>();
             services.AddAutoMapper(typeof(UserMapProfile));
             return services;

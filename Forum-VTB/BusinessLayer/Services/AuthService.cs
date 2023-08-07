@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Dtos.Authentication;
+using BusinessLayer.Dtos.UserThemes;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
@@ -11,57 +12,76 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Telegram.Bot.Types;
 
 namespace BusinessLayer.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
+        private readonly IUserThemeService _userThemeService;
         private readonly IMapper _mapper;
         private readonly UserManager<UserProfile> _userManager;
-        public AuthService(IConfiguration configuration, IMapper mapper, UserManager<UserProfile> userManager)
+        public AuthService(IConfiguration configuration, IMapper mapper, UserManager<UserProfile> userManager, IUserThemeService userThemeService)
         {
             _configuration = configuration;
             _mapper = mapper;
             _userManager = userManager;
+            _userThemeService = userThemeService;
         }
 
         public async Task<UserRegisterResponceDto> Register(UserRegisterDto registerUserDto)
         {
+            UserProfile user;
+
             if (await _userManager.FindByEmailAsync(registerUserDto.Email) is not null)
             {
                 throw new DuplicateUserException("User with this email already exists");
             }
-            var user = _mapper.Map<UserProfile>(registerUserDto);
+            user = _mapper.Map<UserProfile>(registerUserDto);
             user.UserName = registerUserDto.Email;
             var result = await _userManager.CreateAsync(user, registerUserDto.Password);
-
-            if (result.Succeeded)
+            try
             {
-                var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
-                if (addToRoleResult.Succeeded)
+                if (result.Succeeded)
                 {
-                    var authResponceDto = await Login(new UserLoginDto
+                    var addToRoleResult = await _userManager.AddToRoleAsync(user, "User");
+                    if (addToRoleResult.Succeeded)
                     {
-                        Login = registerUserDto.Email,
-                        Password = registerUserDto.Password
-                    });
-                    return new UserRegisterResponceDto
+                        user.Theme = await _userThemeService.AddUserTheme(new AddUserThemeDto
+                        {
+                            Theme = "dark",
+                            UserId = user.Id
+                        });
+                        var authResponceDto = await Login(new UserLoginDto
+                        {
+                            Login = registerUserDto.Email,
+                            Password = registerUserDto.Password
+                        });
+                        return new UserRegisterResponceDto
+                        {
+                            Token = authResponceDto.Token,
+                            UserEmail = authResponceDto.UserEmail,
+                            RefreshToken = authResponceDto.RefreshToken,
+                            Theme = user.Theme.Theme
+                        };
+                    }
+                    else
                     {
-                        Token = authResponceDto.Token,
-                        UserEmail = authResponceDto.UserEmail,
-                        RefreshToken = authResponceDto.RefreshToken
-                    };
+                        await _userManager.DeleteAsync(user);
+                        throw new InvalidOperationException(addToRoleResult.Errors.First().Description);
+                    }
                 }
                 else
                 {
-                    await _userManager.DeleteAsync(user);
-                    throw new InvalidOperationException(addToRoleResult.Errors.First().Description);
+                    throw new InvalidOperationException(result.Errors.First().Description);
                 }
+
             }
-            else
+            catch (Exception)
             {
-                throw new InvalidOperationException(result.Errors.First().Description);
+                await _userManager.DeleteAsync(user);
+                throw;
             }
         }
 
@@ -81,6 +101,7 @@ namespace BusinessLayer.Services
                 {
                     UserEmail = user.Email,
                     Token = token,
+                    Theme = _userThemeService.GetByUserId(user.Id).Result.Theme,
                     RefreshToken = await CreateRefreshToken(user)
                 };
             }
@@ -227,7 +248,8 @@ namespace BusinessLayer.Services
             {
                 UserEmail = user.Email,
                 Token = token,
-                RefreshToken = await CreateRefreshToken(user)
+                RefreshToken = await CreateRefreshToken(user),
+                Theme = _userThemeService.GetByUserId(user.Id).Result.Theme
             };
         }
 
@@ -242,6 +264,11 @@ namespace BusinessLayer.Services
                 {
                     resultErrors.AddRange(addToRoleResult.Errors);
                 }
+                user.Theme = await _userThemeService.AddUserTheme(new AddUserThemeDto
+                {
+                    Theme = "dark",
+                    UserId = user.Id
+                });
             }
             else
             {

@@ -42,6 +42,8 @@ namespace DataAccessLayer
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<UserTheme> Themes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
@@ -52,6 +54,9 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new SectionConfigurations());
             modelBuilder.ApplyConfiguration(new UserMessageConfiguration());
             modelBuilder.ApplyConfiguration(new AdvertFileConfugiration());
+            modelBuilder.ApplyConfiguration(new FavouritesConfigurations());
+            modelBuilder.ApplyConfiguration(new EventConfigurations());
+            modelBuilder.ApplyConfiguration(new UserThemeConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }
