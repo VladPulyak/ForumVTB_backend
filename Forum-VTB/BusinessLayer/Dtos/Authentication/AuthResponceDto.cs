@@ -13,7 +13,5 @@ namespace BusinessLayer.Dtos.Authentication
         public string? UserEmail { get; set; }
 
         public string? RefreshToken { get; set; }
-
-        public string? Theme { get; set; }
     }
 }

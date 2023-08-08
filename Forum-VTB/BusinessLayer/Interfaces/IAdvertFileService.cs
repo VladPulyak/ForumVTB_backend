@@ -10,9 +10,11 @@ namespace BusinessLayer.Interfaces
 {
     public interface IAdvertFileService
     {
-        Task<List<AdvertFile>> AddFiles(AddAdvertFileRequestDto requestDto);
+        Task<List<AdvertFile>> AddFiles(AddAdvertFilesRequestDto requestDto);
 
         Task<List<GetAdvertFileResponceDto>> GetAdvertFiles(GetAdvertFileRequestDto requestDto);
+
+        Task DeleteAdvertFile(DeleteAdvertFileRequestDto requestDto);
 
         Task AddMissingFiles(AddMissingFilesRequestDto requestDto);
     }

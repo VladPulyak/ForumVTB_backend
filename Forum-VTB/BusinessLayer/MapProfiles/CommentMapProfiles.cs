@@ -22,12 +22,14 @@ namespace BusinessLayer.MapProfiles
                 .ForMember(dest => dest.UserName, q => q.MapFrom(src => src.UserProfile.UserName))
                 .ForMember(dest => dest.UserPhoto, q => q.MapFrom(src => src.UserProfile.Photo))
                 .ForMember(dest => dest.ParentCommentId, q => q.MapFrom(src => src.ParentCommentId))
+                .ForMember(dest => dest.CommentId, q => q.MapFrom(src => src.Id))
                 .ReverseMap();
             CreateMap<AdvertComment, GetCommentResponceDto>()
                 .ForMember(dest => dest.NickName, q => q.MapFrom(src => src.UserProfile.NickName))
                 .ForMember(dest => dest.UserName, q => q.MapFrom(src => src.UserProfile.UserName))
                 .ForMember(dest => dest.UserPhoto, q => q.MapFrom(src => src.UserProfile.Photo))
                 .ForMember(dest => dest.Replies, q => q.MapFrom(src => src.Replies))
+                .ForMember(dest => dest.CommentId, q => q.MapFrom(src => src.Id))
                 .ReverseMap();
         }
     }

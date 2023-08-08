@@ -57,7 +57,7 @@ namespace BusinessLayer.Services
             advert.PhoneNumber = requestDto.PhoneNumber;
             var addedAdvert = await _advertRepository.Add(advert);
             await _advertRepository.Save();
-            await _fileService.AddFiles(new AddAdvertFileRequestDto
+            await _fileService.AddFiles(new AddAdvertFilesRequestDto
             {
                 AdvertId = advert.Id,
                 FileStrings = requestDto.FileStrings

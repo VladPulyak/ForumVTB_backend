@@ -22,7 +22,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<List<AdvertFile>> AddFiles(AddAdvertFileRequestDto requestDto)
+        public async Task<List<AdvertFile>> AddFiles(AddAdvertFilesRequestDto requestDto)
         {
             var advertFiles = new List<AdvertFile>();
             foreach (var fileString in requestDto.FileStrings)
@@ -55,12 +55,16 @@ namespace BusinessLayer.Services
             });
             var fileStrings = advertFiles.Select(q => q.FileString).ToList();
             var missingFiles = requestDto.FileStrings.Except(fileStrings).ToList();
-            await AddFiles(new AddAdvertFileRequestDto
+            await AddFiles(new AddAdvertFilesRequestDto
             {
                 AdvertId = requestDto.Advert.Id,
                 FileStrings = missingFiles
             });
+        }
 
+        public async Task DeleteAdvertFile(DeleteAdvertFileRequestDto requestDto)
+        {
+            await _advertFileRepository.Delete(requestDto.FileId);
         }
     }
 }

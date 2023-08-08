@@ -17,6 +17,8 @@ namespace BusinessLayer.Dtos.Account
         public string? UserName { get; set; }
 
         public DateTime? BirthDate { get; set; }
+
+        public string? ThemeName { get; set; }
     }
 }
  

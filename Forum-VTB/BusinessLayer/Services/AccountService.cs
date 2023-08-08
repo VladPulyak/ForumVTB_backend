@@ -18,12 +18,15 @@ namespace BusinessLayer.Services
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        public AccountService(IHttpContextAccessor contextAccessor, IUserService userService, UserManager<UserProfile> userManager, IMapper mapper)
+        private readonly IUserThemeService _userThemeService;
+
+        public AccountService(IHttpContextAccessor contextAccessor, IUserService userService, UserManager<UserProfile> userManager, IMapper mapper, IUserThemeService userThemeService)
         {
             _contextAccessor = contextAccessor;
             _userService = userService;
             _userManager = userManager;
             _mapper = mapper;
+            _userThemeService = userThemeService;
         }
 
         public async Task<UserProfileInfoResponceDto> FillingAccountInfo(FillingAccountDataRequestDto requestDto)
@@ -57,6 +60,8 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var responceDto = _mapper.Map<UserProfileInfoResponceDto>(user);
+            var userTheme = await _userThemeService.GetByUserId(user.Id);
+            responceDto.ThemeName = userTheme.Theme;
             return responceDto;
         }
 

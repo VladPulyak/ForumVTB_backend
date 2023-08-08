@@ -12,8 +12,10 @@ namespace BusinessLayer.Dtos.AdvertComments
 
         public string? Text { get; set; }
 
-        public DateTime ParentCommentDateOfCreation { get; set; }
+        public string? ParentCommentId { get; set; }
 
-        public string? ParentCommentUserName { get; set; }
+        //public DateTime ParentCommentDateOfCreation { get; set; }
+
+        //public string? ParentCommentUserName { get; set; }
     }
 }

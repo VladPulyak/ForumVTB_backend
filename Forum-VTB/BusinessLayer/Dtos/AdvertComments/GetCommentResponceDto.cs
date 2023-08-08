@@ -9,6 +9,8 @@ namespace BusinessLayer.Dtos.AdvertComments
 {
     public class GetCommentResponceDto
     {
+        public string? CommentId { get; set; }
+
         public string? UserPhoto { get; set; }
 
         public string? NickName { get; set; }
