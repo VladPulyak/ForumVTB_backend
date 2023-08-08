@@ -28,9 +28,15 @@ namespace DataAccessLayer.Repositories
             return comment;
         }
 
-        public async Task Delete(DateTime dateOfCreation, string userId)
+        //public async Task Delete(DateTime dateOfCreation, string userId)
+        //{
+        //    var comment = await GetByDateOfCreation(dateOfCreation, userId);
+        //    _set.Remove(comment);
+        //}
+
+        public async Task Delete(string commentId)
         {
-            var comment = await GetByDateOfCreation(dateOfCreation, userId);
+            var comment = await GetById(commentId);
             _set.Remove(comment);
         }
 
@@ -44,16 +50,16 @@ namespace DataAccessLayer.Repositories
             return comments;
         }
 
-        public async Task<AdvertComment> GetByDateOfCreation(DateTime dateOfCreation, string userId)
-        {
-            var advertComment = await _set.Where(q => q.DateOfCreation == dateOfCreation && q.UserId == userId).Include(q => q.UserProfile).SingleOrDefaultAsync();
+        //public async Task<AdvertComment> GetByDateOfCreation(DateTime dateOfCreation, string userId)
+        //{
+        //    var advertComment = await _set.Where(q => q.DateOfCreation == dateOfCreation && q.UserId == userId).Include(q => q.UserProfile).SingleOrDefaultAsync();
 
-            if (advertComment is null)
-            {
-                throw new ObjectNotFoundException("Comment with this date of creation or from this user is not found");
-            }
+        //    if (advertComment is null)
+        //    {
+        //        throw new ObjectNotFoundException("Comment with this date of creation or from this user is not found");
+        //    }
 
-            return advertComment;
-        }
+        //    return advertComment;
+        //}
     }
 }

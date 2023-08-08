@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
+using BusinessLayer.Dtos.AdvertFiles;
 using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Favourites;
 using BusinessLayer.Interfaces;
@@ -17,14 +18,16 @@ namespace Forum_VTB.Controllers
     public class BuySellController : ControllerBase
     {
         private readonly IAdvertService _advertService;
+        private readonly IAdvertFileService _advertFileService;
         private readonly ICommentService _commentService;
         private readonly IFavouriteService _favouriteService;
 
-        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService)
+        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService, IAdvertFileService advertFileService)
         {
             _advertService = advertService;
             _commentService = commentService;
             _favouriteService = favouriteService;
+            _advertFileService = advertFileService;
         }
 
         [HttpGet("/Adverts/GetUserAdverts")]
@@ -123,6 +126,24 @@ namespace Forum_VTB.Controllers
             }
 
             return Ok("Advert delete successfully!");
+        }
+
+        [HttpDelete("/AdvertFiles/DeletePhoto")]
+        public async Task<ActionResult> DeletePhoto(DeleteAdvertFileRequestDto requestDto)
+        {
+            try
+            {
+                await _advertFileService.DeleteAdvertFile(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok("File deleted successfully!");
         }
 
         [AllowAnonymous]

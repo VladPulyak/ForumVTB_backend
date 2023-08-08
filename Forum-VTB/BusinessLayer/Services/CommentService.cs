@@ -42,6 +42,7 @@ namespace BusinessLayer.Services
             await _advertCommentRepository.Save();
             return new CreateCommentResponceDto
             {
+                CommentId = addedComment.Id,
                 AdvertId = addedComment.AdvertId,
                 DateOfCreation = addedComment.DateOfCreation,
                 NickName = user.NickName,
@@ -53,14 +54,15 @@ namespace BusinessLayer.Services
         public async Task<UpdateCommentResponceDto> UpdateComment(UpdateCommentRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            var user = await _userManager.FindByNameAsync(requestDto.Username);
-            var comment = await _advertCommentRepository.GetByDateOfCreation(requestDto.DateOfCreation, user.Id);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var comment = await _advertCommentRepository.GetById(requestDto.CommentId);
             comment.Text = requestDto.Text;
             comment.DateOfCreation = DateTime.Now;
             var updatedComment = _advertCommentRepository.Update(comment);
             await _advertCommentRepository.Save();
             return new UpdateCommentResponceDto
             {
+                CommentId = updatedComment.Id,
                 AdvertId = updatedComment.AdvertId,
                 DateOfCreation = updatedComment.DateOfCreation,
                 NickName = user.NickName,
@@ -71,14 +73,14 @@ namespace BusinessLayer.Services
 
         public async Task DeleteComment(DeleteCommentRequestDto requestDto)
         {
-            var user = await _userManager.FindByNameAsync(requestDto.Username);
-            await _advertCommentRepository.Delete(requestDto.DateOfCreation, user.Id);
+            await _advertCommentRepository.Delete(requestDto.CommentId);
             await _advertCommentRepository.Save();
         }
 
         public async Task<List<GetCommentResponceDto>> GetCommentsByAdvertId(GetCommentsRequestDto requestDto)
         {
             var comments = await _advertCommentRepository.GetByAdvertId(requestDto.AdvertId);
+            comments.Reverse();
             var commentResponceDtos = _mapper.Map<List<GetCommentResponceDto>>(comments);
             return commentResponceDtos;
         }
@@ -87,8 +89,7 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var parentCommentUser = await _userManager.FindByNameAsync(requestDto.ParentCommentUserName);
-            var parentCommnent = await _advertCommentRepository.GetByDateOfCreation(requestDto.ParentCommentDateOfCreation, parentCommentUser.Id);
+            var parentCommnent = await _advertCommentRepository.GetById(requestDto.ParentCommentId);
             var comment = _mapper.Map<AdvertComment>(requestDto);
             comment.UserId = user.Id;
             comment.Id = Guid.NewGuid().ToString();
@@ -99,6 +100,7 @@ namespace BusinessLayer.Services
             await _advertCommentRepository.Save();
             return new ReplyCommentResponceDto
             {
+                CommentId = addedComment.Id,
                 AdvertId = addedComment.AdvertId,
                 DateOfCreation = addedComment.DateOfCreation,
                 NickName = user.NickName,

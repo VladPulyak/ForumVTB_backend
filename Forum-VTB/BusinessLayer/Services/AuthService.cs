@@ -62,8 +62,7 @@ namespace BusinessLayer.Services
                         {
                             Token = authResponceDto.Token,
                             UserEmail = authResponceDto.UserEmail,
-                            RefreshToken = authResponceDto.RefreshToken,
-                            Theme = user.Theme.Theme
+                            RefreshToken = authResponceDto.RefreshToken
                         };
                     }
                     else
@@ -101,7 +100,6 @@ namespace BusinessLayer.Services
                 {
                     UserEmail = user.Email,
                     Token = token,
-                    Theme = _userThemeService.GetByUserId(user.Id).Result.Theme,
                     RefreshToken = await CreateRefreshToken(user)
                 };
             }
@@ -248,8 +246,7 @@ namespace BusinessLayer.Services
             {
                 UserEmail = user.Email,
                 Token = token,
-                RefreshToken = await CreateRefreshToken(user),
-                Theme = _userThemeService.GetByUserId(user.Id).Result.Theme
+                RefreshToken = await CreateRefreshToken(user)
             };
         }
 

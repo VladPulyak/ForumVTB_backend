@@ -41,5 +41,10 @@ namespace DataAccessLayer.Repositories
             return files;
         }
 
+        public async Task Delete(string fileId)
+        {
+            var entity = await GetById(fileId);
+            _set.Remove(entity);
+        }
     }
 }
