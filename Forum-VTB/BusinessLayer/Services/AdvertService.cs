@@ -98,8 +98,12 @@ namespace BusinessLayer.Services
                 Title = updatedAdvert.Title,
                 Description = updatedAdvert.Description,
                 Price = updatedAdvert.Price,
-                Comments = updatedAdvert.Comments is null ? new List<AdvertComment>() : updatedAdvert.Comments.ToList(),
                 DateOfCreation = updatedAdvert.DateOfCreation,
+                Comments = updatedAdvert.Comments is null ? new List<GetCommentResponceDto>() :
+                await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
+                {
+                    AdvertId = updatedAdvert.Id
+                }),
                 Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
                 {
                     AdvertId = updatedAdvert.Id
@@ -171,14 +175,14 @@ namespace BusinessLayer.Services
         public async Task<List<AdvertResponceDto>> FindBySectionName(FindBySectionNameRequestDto requestDto)
         {
             var adverts = await _advertRepository.GetBySectionName(requestDto.SectionName);
-            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
             return responceDtos;
         }
 
         public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
-            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
             return responceDtos;
         }
     }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BusinessLayer.Dtos.Account;
 using BusinessLayer.Dtos.Messages;
+using BusinessLayer.Dtos.UserProfiles;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -87,6 +89,16 @@ namespace BusinessLayer.Services
             var sender = await _userManager.FindByEmailAsync(userEmail);
             await _userMessageRepository.Delete(requestDto.DateOfCreation, sender.Id);
             await _userMessageRepository.Save();
+        }
+
+        public async Task<List<GetUserProfileInfoResponceDto>> GetChats()
+        {
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var users = await _userMessageRepository.GetUsers(user.Id);
+            var setOfUsers = new HashSet<UserProfile?>(users);
+            var responceDtos = _mapper.Map<List<GetUserProfileInfoResponceDto>>(setOfUsers.ToList());
+            return responceDtos;
         }
     }
 }

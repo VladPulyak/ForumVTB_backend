@@ -16,6 +16,7 @@ namespace DataAccessLayer.Configurations
             builder.ToTable("AdvertFiles");
             builder.HasKey(x => x.Id);
             builder.Property(q => q.FileURL).IsRequired();
+            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp");
             builder.HasOne(q => q.Advert).WithMany(w => w.Files).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
         }
     }

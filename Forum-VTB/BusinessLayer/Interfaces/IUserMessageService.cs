@@ -1,4 +1,6 @@
-﻿using BusinessLayer.Dtos.Messages;
+﻿using BusinessLayer.Dtos.Account;
+using BusinessLayer.Dtos.Messages;
+using BusinessLayer.Dtos.UserProfiles;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -19,5 +21,7 @@ namespace BusinessLayer.Interfaces
         Task<UserMessageResponceDto> UpdateMessage(UpdateMessageRequestDto requestDto);
 
         Task DeleteMessage(DeleteMessageRequestDto requestDto);
+
+        Task<List<GetUserProfileInfoResponceDto>> GetChats();
     }
 }

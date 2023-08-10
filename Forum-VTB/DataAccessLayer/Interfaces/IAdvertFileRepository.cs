@@ -13,7 +13,7 @@ namespace DataAccessLayer.Interfaces
 
         Task<List<AdvertFile>> GetByAdvertId(string advertId);
 
-        Task AddRange(IEnumerable<AdvertFile> advertFiles);
+        void AddRange(IEnumerable<AdvertFile> advertFiles);
 
         Task Delete(string fileId);
     }

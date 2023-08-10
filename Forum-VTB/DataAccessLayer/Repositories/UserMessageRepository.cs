@@ -16,28 +16,28 @@ namespace DataAccessLayer.Repositories
         {
         }
 
+        public async Task<List<UserProfile?>> GetUsers(string userId)
+        {
+            var senders = await _set.Where(q => q.ReceiverId == userId)
+                .Include(q => q.Sender)
+                .Select(q => q.Sender)
+                .ToListAsync();
+
+            var receivers = await _set.Where(q => q.SenderId == userId)
+                .Include(q => q.Receiver)
+                .Select(q => q.Receiver)
+                .ToListAsync();
+            return senders.Union(receivers).ToList();
+        }
+
         public async Task<List<UserMessage>> GetByReceiverId(string id)
         {
-            var userMessage = await _set.Where(q => q.ReceiverId == id).Include(q => q.Sender).ToListAsync();
-
-            if (userMessage is null)
-            {
-                throw new ObjectNotFoundException("Received messages not found");
-            }
-
-            return userMessage;
+            return await _set.Where(q => q.ReceiverId == id).Include(q => q.Sender).ToListAsync();
         }
 
         public async Task<List<UserMessage>> GetBySenderId(string id)
         {
-            var userMessage = await _set.Where(q => q.SenderId == id).Include(q => q.Receiver).ToListAsync();
-
-            if (userMessage is null)
-            {
-                throw new ObjectNotFoundException("Sended messages not found");
-            }
-
-            return userMessage;
+            return await _set.Where(q => q.SenderId == id).Include(q => q.Receiver).ToListAsync();
         }
 
         public async Task<UserMessage> GetByDateOfCreation(DateTime dateOfCreation, string userId)
