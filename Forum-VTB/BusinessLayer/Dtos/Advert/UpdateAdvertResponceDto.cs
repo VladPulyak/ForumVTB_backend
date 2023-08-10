@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Dtos.AdvertFiles;
+﻿using BusinessLayer.Dtos.AdvertComments;
+using BusinessLayer.Dtos.AdvertFiles;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
-        public List<AdvertComment>? Comments { get; set; }
+        public List<GetCommentResponceDto>? Comments { get; set; }
 
         public DateTime DateOfCreation { get; set; }
 

@@ -14,6 +14,8 @@ namespace DataAccessLayer.Models
 
         public string? FileURL { get; set; }
 
+        public DateTime DateOfCreation { get; set; }
+
         public Advert? Advert { get; set; }
     }
 }

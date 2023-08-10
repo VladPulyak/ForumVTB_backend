@@ -22,28 +22,25 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<List<AdvertFile>> AddFiles(AddAdvertFilesRequestDto requestDto)
+        public async Task AddFiles(AddAdvertFilesRequestDto requestDto)
         {
-            var advertFiles = new List<AdvertFile>();
             foreach (var fileString in requestDto.FileStrings)
             {
-                advertFiles.Add(new AdvertFile
+                await _advertFileRepository.Add(new AdvertFile
                 {
                     AdvertId = requestDto.AdvertId,
                     FileURL = fileString,
-                    Id = Guid.NewGuid().ToString()
+                    Id = Guid.NewGuid().ToString(),
+                    DateOfCreation = DateTime.Now
                 });
             }
-
-            await _advertFileRepository.AddRange(advertFiles);
             await _advertFileRepository.Save();
-            return advertFiles;
         }
 
         public async Task<List<GetAdvertFileResponceDto>> GetAdvertFiles(GetAdvertFileRequestDto requestDto)
         {
             var advertFiles = await _advertFileRepository.GetByAdvertId(requestDto.AdvertId);
-            var responceDtos = _mapper.Map<List<GetAdvertFileResponceDto>>(advertFiles);
+            var responceDtos = _mapper.Map<List<GetAdvertFileResponceDto>>(advertFiles.OrderBy(q => q.DateOfCreation).ToList());
             return responceDtos;
         }
 

@@ -12,9 +12,11 @@ namespace DataAccessLayer.Repositories
 {
     public class AdvertFileRepository : Repository<AdvertFile>, IAdvertFileRepository
     {
+        private readonly ForumVTBDbContext _dbContext;
+
         public AdvertFileRepository(ForumVTBDbContext context) : base(context)
         {
-
+            _dbContext = context;
         }
 
         public async Task<AdvertFile> GetById(string id)
@@ -30,9 +32,9 @@ namespace DataAccessLayer.Repositories
 
         }
 
-        public async Task AddRange(IEnumerable<AdvertFile> advertFiles)
+        public void AddRange(IEnumerable<AdvertFile> advertFiles)
         {
-            await _set.AddRangeAsync(advertFiles);
+            _set.AddRangeAsync(advertFiles);
         }
 
         public async Task<List<AdvertFile>> GetByAdvertId(string advertId)

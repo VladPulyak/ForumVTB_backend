@@ -1,5 +1,7 @@
-﻿using BusinessLayer.Dtos.Common;
+﻿using BusinessLayer.Dtos.Account;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Messages;
+using BusinessLayer.Dtos.UserProfiles;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -112,6 +114,25 @@ namespace Forum_VTB.Controllers
                 });
             }
             return Ok("Message delete successfully!");
+        }
+
+        [HttpGet("GetChats")]
+        public async Task<ActionResult> GetChats()
+        {
+            List<GetUserProfileInfoResponceDto> responceDtos;
+            try
+            {
+                responceDtos = await _messageService.GetChats();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDtos);
         }
     }
 }

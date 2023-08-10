@@ -108,6 +108,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("AdvertId")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp");
+
                     b.Property<string>("FileURL")
                         .IsRequired()
                         .HasColumnType("text");
