@@ -137,10 +137,7 @@ namespace BusinessLayer.Services
 
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
-            //var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
-            //var user = await _userManager.FindByEmailAsync(userEmail);
             var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
-            //var favourite = await _favouriteRepository.GetByAdvertAndUserIds(userAdvert.Id, user.Id);
 
             return new GetAdvertCardResponceDto
             {
