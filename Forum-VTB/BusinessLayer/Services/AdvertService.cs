@@ -29,8 +29,9 @@ namespace BusinessLayer.Services
         private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
+        private readonly IFavouriteRepository _favouriteRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IFavouriteRepository favouriteRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -41,6 +42,7 @@ namespace BusinessLayer.Services
             _fileService = fileService;
             _advertFileService = advertFileService;
             _sectionRepository = sectionRepository;
+            _favouriteRepository = favouriteRepository;
         }
 
         public async Task<CreateAdvertResponceDto> CreateAdvert(CreateAdvertRequestDto requestDto)
@@ -52,7 +54,7 @@ namespace BusinessLayer.Services
             advert.Subsection = subsection;
             advert.Price = requestDto.Price;
             advert.UserId = user.Id;
-            advert.DateOfCreation = DateTime.Now;
+            advert.DateOfCreation = DateTime.UtcNow;
             advert.Id = Guid.NewGuid().ToString();
             advert.PhoneNumber = requestDto.PhoneNumber;
             var addedAdvert = await _advertRepository.Add(advert);
@@ -84,7 +86,7 @@ namespace BusinessLayer.Services
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
-            advert.DateOfCreation = DateTime.Now;
+            advert.DateOfCreation = DateTime.UtcNow;
             await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
             {
                 Advert = advert,

@@ -23,5 +23,9 @@ namespace DataAccessLayer.Models
         public ICollection<Favourite>? Favourites { get; set; }
 
         public UserTheme? Theme { get; set; }
+
+        public ICollection<UserChat>? ChatsAsFirstUser { get; set; }
+
+        public ICollection<UserChat>? ChatsAsSecondUser { get; set; }
     }
 }

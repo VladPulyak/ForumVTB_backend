@@ -22,7 +22,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.Price).IsRequired();
             builder.Property(q => q.Price).HasMaxLength(10);
             builder.Property(q => q.PhoneNumber).HasMaxLength(13);
-            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp(3)");
+            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp with time zone");
             builder.HasOne(q => q.Subsection).WithMany(w => w.Adverts).HasForeignKey(q => q.SubsectionId);
             builder.HasOne(q => q.User).WithMany(w => w.Adverts).HasForeignKey(q => q.UserId);
         }

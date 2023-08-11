@@ -16,7 +16,9 @@ namespace BusinessLayer.MapProfiles
         public UserMapProfile()
         {
             CreateMap<UserProfile, UserRegisterDto>().ReverseMap();
-            CreateMap<UserProfile, UserProfileInfoResponceDto>().ReverseMap();
+            CreateMap<UserProfile, UserProfileInfoResponceDto>()
+                .ForMember(dest => dest.UserId, q => q.MapFrom(src => src.Id))
+                .ReverseMap();
             CreateMap<UserProfile, GetUserProfileInfoResponceDto>()
                 .ForMember(dest => dest.Username, q => q.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Photo, q => q.MapFrom(src => src.Photo))

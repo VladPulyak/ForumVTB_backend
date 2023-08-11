@@ -57,5 +57,10 @@ namespace DataAccessLayer.Repositories
             var userMessage = await GetByDateOfCreation(dateOfCreation, userId);
             _set.Remove(userMessage);
         }
+
+        public async Task<List<UserMessage>> GetByChatId(string chatId)
+        {
+            return await _set.Where(q => q.ChatId == chatId).OrderBy(q => q.DateOfCreation).ToListAsync();
+        }
     }
 }

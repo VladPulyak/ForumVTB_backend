@@ -21,16 +21,16 @@ namespace DataAccessLayer.Repositories
         {
             var favourite = await _set.Where(q => q.AdvertId == advertId && q.UserId == userId)
                 .SingleOrDefaultAsync();
-            if (favourite is null)
-            {
-                throw new ObjectNotFoundException("Object with this advertId or userId is not found");
-            }
             return favourite;
         }
 
         public async Task Delete(string advertId, string userId)
         {
             var favourite = await GetByAdvertAndUserIds(advertId, userId);
+            if (favourite is null)
+            {
+                throw new ObjectNotFoundException("Object with this advertId or userId is not found");
+            }
             _set.Remove(favourite);
         }
 
