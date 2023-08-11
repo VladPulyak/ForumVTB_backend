@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Dtos.Account;
 using BusinessLayer.Dtos.Messages;
+using BusinessLayer.Dtos.UserChat;
 using BusinessLayer.Dtos.UserProfiles;
 using DataAccessLayer.Models;
 using System;
@@ -14,14 +15,10 @@ namespace BusinessLayer.Interfaces
     {
         Task<UserMessageResponceDto> SendMessage(SendMessageRequestDto requestDto);
 
-        Task<List<UserMessageResponceDto>> GetReceivedMessages();
+        Task<List<UserChatResponceDto>> GetChats();
 
-        Task<List<UserMessageResponceDto>> GetSendedMessages();
+        Task<List<GetChatMessageResponceDto>> GetChatMessages(string chatId);
 
-        Task<UserMessageResponceDto> UpdateMessage(UpdateMessageRequestDto requestDto);
-
-        Task DeleteMessage(DeleteMessageRequestDto requestDto);
-
-        Task<List<GetUserProfileInfoResponceDto>> GetChats();
+        Task<UserChatResponceDto> CreateChat(CreateChatRequestDto requestDto);
     }
 }

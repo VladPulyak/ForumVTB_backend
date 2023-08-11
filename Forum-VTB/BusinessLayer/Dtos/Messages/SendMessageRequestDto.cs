@@ -8,7 +8,7 @@ namespace BusinessLayer.Dtos.Messages
 {
     public class SendMessageRequestDto
     {
-        public string? ReceiverEmail { get; set; }
+        public string? ReceiverUsername { get; set; }
 
         public string? Text { get; set; }
     }

@@ -28,7 +28,18 @@ namespace Forum_VTB.Controllers
         [HttpGet("GetUserProfile")]
         public async Task<ActionResult> GetUserProfile()
         {
-            var responceDto = await _accountService.GetUserProfile();
+            UserProfileInfoResponceDto responceDto;
+            try
+            {
+                responceDto = await _accountService.GetUserProfile();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
             return Ok(responceDto);
         }
 

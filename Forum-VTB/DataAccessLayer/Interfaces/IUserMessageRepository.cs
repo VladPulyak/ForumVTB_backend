@@ -18,5 +18,7 @@ namespace DataAccessLayer.Interfaces
         Task Delete(DateTime dateOfCreation, string userId);
 
         Task<List<UserProfile?>> GetUsers(string receiverId);
+
+        Task<List<UserMessage>> GetByChatId(string chatId);
     }
 }

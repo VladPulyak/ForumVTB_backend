@@ -17,10 +17,11 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(q => q.Text).IsRequired();
             builder.Property(q => q.Text).HasMaxLength(300);
-            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp").IsRequired();
+            builder.Property(q => q.DateOfCreation).HasColumnType("timestamp with time zone").IsRequired();
             builder.HasOne(q => q.Sender).WithMany(w => w.SentMessages).HasForeignKey(q => q.SenderId);
             builder.HasOne(q => q.Receiver).WithMany(w => w.ReceivedMessages).HasForeignKey(q => q.ReceiverId);
             builder.HasOne(q => q.ParentMessage).WithMany().HasForeignKey(q => q.ParentMessageId);
+            builder.HasOne(q => q.Chat).WithMany(w=>w.Messages).HasForeignKey(q => q.ChatId);
         }
     }
 }

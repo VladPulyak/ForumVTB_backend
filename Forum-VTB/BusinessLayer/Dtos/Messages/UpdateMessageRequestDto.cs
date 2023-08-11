@@ -8,8 +8,6 @@ namespace BusinessLayer.Dtos.Messages
 {
     public class UpdateMessageRequestDto
     {
-        public string? Text { get; set; }
-
-        public DateTime DateOfCreation { get; set; }
+        public string? MessageId { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace BusinessLayer.Services
             comment.UserId = user.Id;
             comment.Id = Guid.NewGuid().ToString();
             comment.AdvertId = requestDto.AdvertId;
-            comment.DateOfCreation = DateTime.Now;
+            comment.DateOfCreation = DateTime.UtcNow;
             var addedComment = await _advertCommentRepository.Add(comment);
             await _advertCommentRepository.Save();
             return new CreateCommentResponceDto
@@ -57,7 +57,7 @@ namespace BusinessLayer.Services
             var user = await _userManager.FindByEmailAsync(userEmail);
             var comment = await _advertCommentRepository.GetById(requestDto.CommentId);
             comment.Text = requestDto.Text;
-            comment.DateOfCreation = DateTime.Now;
+            comment.DateOfCreation = DateTime.UtcNow;
             var updatedComment = _advertCommentRepository.Update(comment);
             await _advertCommentRepository.Save();
             return new UpdateCommentResponceDto
@@ -95,7 +95,7 @@ namespace BusinessLayer.Services
             comment.Id = Guid.NewGuid().ToString();
             comment.ParentCommentId = parentCommnent.Id;
             comment.ParentComment = parentCommnent;
-            comment.DateOfCreation = DateTime.Now;
+            comment.DateOfCreation = DateTime.UtcNow;
             var addedComment = await _advertCommentRepository.Add(comment);
             await _advertCommentRepository.Save();
             return new ReplyCommentResponceDto

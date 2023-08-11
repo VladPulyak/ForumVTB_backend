@@ -28,7 +28,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp(3)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -73,7 +73,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsReply")
                         .HasColumnType("boolean");
@@ -238,13 +238,36 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Subsections", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FirstUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SecondUserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FirstUserId");
+
+                    b.HasIndex("SecondUserId");
+
+                    b.ToTable("UserChats", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ChatId")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ParentMessageId")
                         .HasColumnType("text");
@@ -261,6 +284,8 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
 
                     b.HasIndex("ParentMessageId");
 
@@ -600,8 +625,29 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Section");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "FirstUser")
+                        .WithMany("ChatsAsFirstUser")
+                        .HasForeignKey("FirstUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "SecondUser")
+                        .WithMany("ChatsAsSecondUser")
+                        .HasForeignKey("SecondUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("FirstUser");
+
+                    b.Navigation("SecondUser");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
                 {
+                    b.HasOne("DataAccessLayer.Models.UserChat", "Chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId");
+
                     b.HasOne("DataAccessLayer.Models.UserMessage", "ParentMessage")
                         .WithMany()
                         .HasForeignKey("ParentMessageId");
@@ -613,6 +659,8 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.UserProfile", "Sender")
                         .WithMany("SentMessages")
                         .HasForeignKey("SenderId");
+
+                    b.Navigation("Chat");
 
                     b.Navigation("ParentMessage");
 
@@ -708,6 +756,11 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Events");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.UserMessage", b =>
                 {
                     b.Navigation("Files");
@@ -716,6 +769,10 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.UserProfile", b =>
                 {
                     b.Navigation("Adverts");
+
+                    b.Navigation("ChatsAsFirstUser");
+
+                    b.Navigation("ChatsAsSecondUser");
 
                     b.Navigation("Comments");
 

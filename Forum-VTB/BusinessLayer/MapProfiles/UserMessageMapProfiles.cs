@@ -19,6 +19,9 @@ namespace BusinessLayer.MapProfiles
                 .ForMember(q => q.ReceiverUserName, w => w.MapFrom(q => q.Receiver.UserName))
                 .ForMember(q => q.SenderUserName, w => w.MapFrom(q => q.Sender.UserName))
                 .ReverseMap();
+            CreateMap<UserMessage, GetChatMessageResponceDto>()
+                .ForMember(q => q.SenderId, w => w.MapFrom(q => q.SenderId))
+                .ReverseMap();
         }
     }
 }

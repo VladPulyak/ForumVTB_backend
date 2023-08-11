@@ -16,6 +16,8 @@ namespace DataAccessLayer.Models
 
         public string? ParentMessageId { get; set; }
 
+        public string? ChatId { get; set; }
+
         public string? Text { get; set; }
 
         public DateTime DateOfCreation { get; set; }
@@ -27,5 +29,7 @@ namespace DataAccessLayer.Models
         public UserMessage? ParentMessage { get; set; }
 
         public ICollection<MessageFile>? Files { get; set; }
+
+        public UserChat? Chat { get; set; }
     }
 }

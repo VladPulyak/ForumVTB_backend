@@ -44,6 +44,8 @@ namespace DataAccessLayer
 
         public DbSet<UserTheme> Themes { get; set; }
 
+        public DbSet<UserChat> UserChats { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
@@ -57,6 +59,7 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new FavouritesConfigurations());
             modelBuilder.ApplyConfiguration(new EventConfigurations());
             modelBuilder.ApplyConfiguration(new UserThemeConfigurations());
+            modelBuilder.ApplyConfiguration(new UserChatConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

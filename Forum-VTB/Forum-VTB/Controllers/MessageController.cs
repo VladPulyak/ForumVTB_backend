@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Dtos.Account;
 using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Messages;
+using BusinessLayer.Dtos.UserChat;
 using BusinessLayer.Dtos.UserProfiles;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,6 @@ namespace Forum_VTB.Controllers
         public async Task<ActionResult> SendMessage(SendMessageRequestDto requestDto)
         {
             UserMessageResponceDto responceDto;
-
             try
             {
                 responceDto = await _messageService.SendMessage(requestDto);
@@ -40,86 +40,10 @@ namespace Forum_VTB.Controllers
             return Ok(responceDto);
         }
 
-        [HttpGet("GetReceivedMessages")]
-        public async Task<ActionResult> GetReceivedMessages()
-        {
-            List<UserMessageResponceDto> responceDtos;
-
-            try
-            {
-                responceDtos = await _messageService.GetReceivedMessages();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-
-            }
-            return Ok(responceDtos);
-        }
-
-        [HttpGet("GetSendedMessages")]
-        public async Task<ActionResult> GetSendedMessages()
-        {
-            List<UserMessageResponceDto> responceDtos;
-
-            try
-            {
-                responceDtos = await _messageService.GetSendedMessages();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-
-            }
-            return Ok(responceDtos);
-        }
-
-        [HttpPut("UpdateMessage")]
-        public async Task<ActionResult> UpdateMessage(UpdateMessageRequestDto requestDto)
-        {
-            UserMessageResponceDto responceDto;
-
-            try
-            {
-                responceDto = await _messageService.UpdateMessage(requestDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-            return Ok(responceDto);
-        }
-
-        [HttpDelete("DeleteMessage")]
-        public async Task<ActionResult> DeleteMessage(DeleteMessageRequestDto requestDto)
-        {
-            try
-            {
-                await _messageService.DeleteMessage(requestDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-            return Ok("Message delete successfully!");
-        }
-
         [HttpGet("GetChats")]
         public async Task<ActionResult> GetChats()
         {
-            List<GetUserProfileInfoResponceDto> responceDtos;
+            List<UserChatResponceDto> responceDtos;
             try
             {
                 responceDtos = await _messageService.GetChats();
@@ -133,6 +57,43 @@ namespace Forum_VTB.Controllers
             }
 
             return Ok(responceDtos);
+        }
+
+        [HttpGet("GetChatMessages")]
+        public async Task<ActionResult> GetChatMessages(string chatId)
+        {
+            List<GetChatMessageResponceDto> responceDtos;
+            try
+            {
+                responceDtos = await _messageService.GetChatMessages(chatId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDtos);
+        }
+
+        [HttpPost("CreateChat")]
+        public async Task<ActionResult> CreateChat(CreateChatRequestDto requestDto)
+        {
+            UserChatResponceDto responceDto;
+            try
+            {
+                responceDto = await _messageService.CreateChat(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
         }
     }
 }
