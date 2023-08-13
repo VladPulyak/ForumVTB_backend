@@ -14,10 +14,10 @@ namespace BusinessLayer.Services
 {
     public class UserService : IUserService
     {
-        private readonly IRepository<UserProfile> _userProfileRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
         private readonly ForumVTBDbContext _context;
 
-        public UserService(IRepository<UserProfile> userProfileRepository, ForumVTBDbContext context)
+        public UserService(IUserProfileRepository userProfileRepository, ForumVTBDbContext context)
         {
             _userProfileRepository = userProfileRepository;
             _context = context;

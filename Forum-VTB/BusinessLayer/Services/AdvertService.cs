@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace BusinessLayer.Services
 {
@@ -30,8 +31,9 @@ namespace BusinessLayer.Services
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
         private readonly IFavouriteRepository _favouriteRepository;
+        private readonly IUserProfileRepository _userProfileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IFavouriteRepository favouriteRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -43,6 +45,7 @@ namespace BusinessLayer.Services
             _advertFileService = advertFileService;
             _sectionRepository = sectionRepository;
             _favouriteRepository = favouriteRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         public async Task<CreateAdvertResponceDto> CreateAdvert(CreateAdvertRequestDto requestDto)
@@ -82,6 +85,8 @@ namespace BusinessLayer.Services
 
         public async Task<UpdateAdvertResponceDto> UpdateAdvert(UpdateAdvertRequestDto requestDto)
         {
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = await _advertRepository.GetById(requestDto.AdvertId);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
@@ -94,6 +99,8 @@ namespace BusinessLayer.Services
             });
             var updatedAdvert = _advertRepository.Update(advert);
             await _advertRepository.Save();
+            var favourite = await _favouriteRepository.GetByAdvertAndUserIds(updatedAdvert.Id, user.Id);
+            bool isFavourite = favourite is not null ? true : false;
             return new UpdateAdvertResponceDto
             {
                 AdvertId = updatedAdvert.Id,
@@ -109,7 +116,8 @@ namespace BusinessLayer.Services
                 Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
                 {
                     AdvertId = updatedAdvert.Id
-                })
+                }),
+                IsFavourite = isFavourite
             };
         }
 
@@ -117,6 +125,26 @@ namespace BusinessLayer.Services
         {
             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
+            if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                return await CheckFavourites(responceDtos, user.Id);
+            }
+            return responceDtos;
+        }
+
+        public async Task<List<AdvertResponceDto>> CheckFavourites(List<AdvertResponceDto> responceDtos, string userId)
+        {
+            var favourites = await _favouriteRepository.GetByUserId(userId);
+            foreach (var responceDto in responceDtos)
+            {
+                if (favourites.SingleOrDefault(q => q.Id == responceDto.AdvertId) is not null)
+                {
+                    responceDto.IsFavourite = true;
+                }
+            }
+
             return responceDtos;
         }
 
@@ -137,7 +165,15 @@ namespace BusinessLayer.Services
 
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
+            bool isFavourite = false;
             var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
+            if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                var favourite = await _favouriteRepository.GetByAdvertAndUserIds(userAdvert.Id, user.Id);
+                isFavourite = favourite is not null ? true : false;
+            }
 
             return new GetAdvertCardResponceDto
             {
@@ -158,7 +194,9 @@ namespace BusinessLayer.Services
                 NickName = userAdvert.User.NickName,
                 UserName = userAdvert.User.UserName,
                 UserPhoto = userAdvert.User.Photo,
-                SubsectionName = userAdvert.Subsection.Name
+                SubsectionName = userAdvert.Subsection.Name,
+                IsFavourite = isFavourite,
+                PhoneNumber = userAdvert.PhoneNumber
             };
         }
 
@@ -178,14 +216,27 @@ namespace BusinessLayer.Services
         {
             var adverts = await _advertRepository.GetBySectionName(requestDto.SectionName);
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+            if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                return await CheckFavourites(responceDtos, user.Id);
+            }
             return responceDtos;
         }
 
         public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
-            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+            if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                return await CheckFavourites(responceDtos, user.Id);
+            }
             return responceDtos;
+
         }
     }
 }

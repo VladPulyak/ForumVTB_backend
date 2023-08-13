@@ -20,6 +20,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public DateTime DateOfCreation { get; set; }
 
+        public bool IsFavourite { get; set; }
+
         public GetAdvertFileResponceDto? File { get; set; }
     }
 }

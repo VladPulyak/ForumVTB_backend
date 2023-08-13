@@ -19,6 +19,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
+        public bool? IsFavourite { get; set; }
+
         public List<GetCommentResponceDto>? Comments { get; set; }
 
         public DateTime DateOfCreation { get; set; }

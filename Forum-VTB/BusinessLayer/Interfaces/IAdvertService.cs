@@ -27,5 +27,7 @@ namespace BusinessLayer.Interfaces
         Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto);
 
         Task<List<AdvertResponceDto>> GetFourNewestAdverts();
+
+        Task<List<AdvertResponceDto>> CheckFavourites(List<AdvertResponceDto> responceDtos, string userId);
     }
 }

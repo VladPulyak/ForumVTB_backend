@@ -21,6 +21,7 @@ namespace DataAccessLayer.Repositories
         {
             return _set.Include(q => q.Files)
                 .Include(q => q.Subsection)
+                .Include(q=>q.Favourites)
                 .AsNoTracking();
         }
 
@@ -74,5 +75,12 @@ namespace DataAccessLayer.Repositories
             return entity;
         }
 
+        public async Task<List<Advert>> SearchByKeyPhrase(string keyPhrase)
+        {
+            keyPhrase = keyPhrase.Trim();
+            return await _set.Where(q => q.Title.Contains(keyPhrase, StringComparison.OrdinalIgnoreCase) || q.Description.Contains(keyPhrase, StringComparison.OrdinalIgnoreCase))
+                .Include(q => q.Files)
+                .ToListAsync();
+        }
     }
 }

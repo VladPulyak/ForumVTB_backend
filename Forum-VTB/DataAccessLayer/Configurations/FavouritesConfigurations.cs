@@ -17,6 +17,11 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(q => q.Id);
             builder.HasOne(q => q.User).WithMany(w => w.Favourites).HasForeignKey(q => q.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.Advert).WithMany(w => w.Favourites).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(q => new
+            {
+                q.UserId,
+                q.AdvertId
+            }).IsUnique();
         }
     }
 }
