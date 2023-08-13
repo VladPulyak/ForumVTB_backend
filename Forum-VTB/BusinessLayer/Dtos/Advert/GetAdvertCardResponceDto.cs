@@ -29,6 +29,10 @@ namespace BusinessLayer.Dtos.Advert
 
         public DateTime DateOfCreation { get; set; }
 
+        public bool IsFavourite { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
         public List<GetCommentResponceDto>? Comments { get; set; }
 
         public List<GetAdvertFileResponceDto>? Files { get; set; }

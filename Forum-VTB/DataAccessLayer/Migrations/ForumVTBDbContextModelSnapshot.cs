@@ -172,7 +172,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AdvertId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId", "AdvertId")
+                        .IsUnique();
 
                     b.ToTable("Favourites", (string)null);
                 });

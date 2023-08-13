@@ -162,7 +162,7 @@ namespace Forum_VTB.Controllers
                     Message = ex.Message
                 });
             }
-             
+
             return Ok(responceDto);
         }
 
