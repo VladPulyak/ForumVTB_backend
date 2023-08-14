@@ -32,6 +32,6 @@ namespace BusinessLayer.Interfaces
 
         Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto);
 
-        Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto)
+        Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto);
     }
 }
