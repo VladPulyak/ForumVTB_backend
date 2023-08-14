@@ -19,5 +19,7 @@ namespace DataAccessLayer.Models
         public Section? Section { get; set; }
 
         public ICollection<Event> Events { get; set; }
+
+        public ICollection<Work>? Works { get; set; }
     }
 }

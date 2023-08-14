@@ -16,7 +16,7 @@ namespace BusinessLayer.Interfaces
 
         Task DeleteAdvert(DeleteAdvertRequestDto requestDto);
 
-        Task<List<UserAdvertResponceDto>> GetUserAdverts();
+        Task<List<AdvertResponceDto>> GetUserAdverts();
 
         Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto);
 
@@ -29,5 +29,9 @@ namespace BusinessLayer.Interfaces
         Task<List<AdvertResponceDto>> GetFourNewestAdverts();
 
         Task<List<AdvertResponceDto>> CheckFavourites(List<AdvertResponceDto> responceDtos, string userId);
+
+        Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto);
+
+        Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto);
     }
 }

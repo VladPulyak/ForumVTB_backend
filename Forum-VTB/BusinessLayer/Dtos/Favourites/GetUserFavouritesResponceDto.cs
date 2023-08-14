@@ -1,3 +1,4 @@
+using BusinessLayer.Dtos.Advert;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,5 +9,6 @@ namespace BusinessLayer.Dtos.Favourites
 {
     public class GetUserFavouritesResponceDto
     {
+        public List<AdvertResponceDto> Adverts { get; set; }
     }
 }

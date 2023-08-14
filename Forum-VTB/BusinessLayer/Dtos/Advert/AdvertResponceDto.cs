@@ -18,6 +18,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
+        public string? Status { get; set; }
+
         public DateTime DateOfCreation { get; set; }
 
         public bool IsFavourite { get; set; }

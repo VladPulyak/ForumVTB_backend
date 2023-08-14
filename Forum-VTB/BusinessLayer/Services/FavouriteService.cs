@@ -17,12 +17,12 @@ namespace BusinessLayer.Services
 {
     public class FavouriteService : IFavouriteService
     {
-        private readonly IFavouriteRepository _favouriteRepository;
+        private readonly IAdvertFavouriteRepository _favouriteRepository;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly UserManager<UserProfile> _userManager;
         private readonly IMapper _mapper;
 
-        public FavouriteService(IFavouriteRepository favouriteRepository, IHttpContextAccessor httpContextAccessor, UserManager<UserProfile> userManager, IMapper mapper)
+        public FavouriteService(IAdvertFavouriteRepository favouriteRepository, IHttpContextAccessor httpContextAccessor, UserManager<UserProfile> userManager, IMapper mapper)
         {
             _favouriteRepository = favouriteRepository;
             _contextAccessor = httpContextAccessor;
@@ -30,11 +30,11 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task AddToFavourites(AddToFavouritesRequestDto requestDto)
+        public async Task AddToAdvertFavourites(AddToFavouritesRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var addedFavourite = await _favouriteRepository.Add(new Favourite
+            var addedFavourite = await _favouriteRepository.Add(new AdvertFavourite
             {
                 AdvertId = requestDto.AdvertId,
                 UserId = user.Id,
@@ -43,7 +43,7 @@ namespace BusinessLayer.Services
             await _favouriteRepository.Save();
         }
 
-        public async Task DeleteFromFavourites(DeleteFromFavouritesRequestDto requestDto)
+        public async Task DeleteFromAdvertFavourites(DeleteFromFavouritesRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -51,13 +51,21 @@ namespace BusinessLayer.Services
             await _favouriteRepository.Save();
         }
 
-        public async Task<List<AdvertResponceDto>> GetUserFavourites()
+        private async Task<List<AdvertResponceDto>> GetUserAdvertFavourites()
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var adverts = await _favouriteRepository.GetByUserId(user.Id);
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             return responceDtos;
+        }
+
+        public async Task<GetUserFavouritesResponceDto> GetUserFavourites()
+        {
+            return new GetUserFavouritesResponceDto
+            {
+                Adverts = await GetUserAdvertFavourites()
+            };
         }
     }
 }

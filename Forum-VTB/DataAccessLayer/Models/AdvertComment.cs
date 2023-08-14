@@ -18,8 +18,6 @@ namespace DataAccessLayer.Models
 
         public string? Text { get; set; }
 
-        public bool IsReply { get; set; }   
-
         public DateTime DateOfCreation { get; set; }
 
         public Advert? Advert { get; set; }

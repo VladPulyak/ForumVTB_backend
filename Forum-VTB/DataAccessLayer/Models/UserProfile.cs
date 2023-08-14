@@ -12,7 +12,7 @@ namespace DataAccessLayer.Models
 
         public long? ChatId { get; set; }
 
-        public ICollection<AdvertComment>? Comments { get; set; }
+        public ICollection<AdvertComment>? AdvertComments { get; set; }
 
         public ICollection<UserMessage>? SentMessages { get; set; }
 
@@ -20,12 +20,19 @@ namespace DataAccessLayer.Models
 
         public ICollection<Advert>? Adverts { get; set; }
 
-        public ICollection<Favourite>? Favourites { get; set; }
+        public ICollection<AdvertFavourite>? AdvertFavourites { get; set; }
 
         public UserTheme? Theme { get; set; }
 
         public ICollection<UserChat>? ChatsAsFirstUser { get; set; }
 
         public ICollection<UserChat>? ChatsAsSecondUser { get; set; }
+
+        public ICollection<WorkComment>? WorkComments { get; set; }
+
+        public ICollection<Work>? Works { get; set; }
+
+        public ICollection<WorkFavourite>? WorkFavourites { get; set; }
+
     }
 }
