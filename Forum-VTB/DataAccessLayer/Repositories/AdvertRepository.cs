@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
         {
             return _set.Include(q => q.Files)
                 .Include(q => q.Subsection)
-                .Include(q=>q.Favourites)
+                .Include(q => q.Favourites)
                 .AsNoTracking();
         }
 
@@ -34,7 +34,11 @@ namespace DataAccessLayer.Repositories
 
         public async Task<List<Advert>> GetByUserId(string userId)
         {
-            var adverts = await _set.Where(q => q.UserId == userId).Include(q => q.Comments).ToListAsync();
+            var adverts = await _set.Where(q => q.UserId == userId)
+                .Include(q => q.AdvertComments)
+                .Include(q => q.Files)
+                .OrderBy(q => q.DateOfCreation)
+                .ToListAsync();
             return adverts;
         }
 
@@ -42,7 +46,7 @@ namespace DataAccessLayer.Repositories
         {
             var advert = await _set.Where(q => q.Id == advertId)
                 .Include(q => q.User)
-                .Include(q => q.Comments)
+                .Include(q => q.AdvertComments)
                 .Include(q => q.Subsection)
                 .Include(q => q.Files)
                 .SingleAsync();
@@ -79,7 +83,7 @@ namespace DataAccessLayer.Repositories
         {
             keyPhrase = keyPhrase.Trim();
             return await _set.Where(a => a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper()))
-                .Include(q=>q.Files)
+                .Include(q => q.Files)
                 .ToListAsync();
         }
     }

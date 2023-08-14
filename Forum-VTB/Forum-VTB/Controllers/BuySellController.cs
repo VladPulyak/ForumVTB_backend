@@ -33,7 +33,7 @@ namespace Forum_VTB.Controllers
         [HttpGet("/Adverts/GetUserAdverts")]
         public async Task<ActionResult> GetUserAdverts()
         {
-            List<UserAdvertResponceDto> responceDtos;
+            List<AdvertResponceDto> responceDtos;
             try
             {
                 responceDtos = await _advertService.GetUserAdverts();
@@ -128,6 +128,40 @@ namespace Forum_VTB.Controllers
             return Ok("Advert delete successfully!");
         }
 
+        [HttpPost("/Advert/ChangeAdvertStatusToActive")]
+        public async Task<ActionResult> ChangeAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto)
+        {
+            try
+            {
+                await _advertService.ChangedAdvertStatusToActive(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok("Status changed successfully!");
+        }
+
+        [HttpPost("/Advert/ChangeAdvertStatusToDisabled")]
+        public async Task<ActionResult> ChangeAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto)
+        {
+            try
+            {
+                await _advertService.ChangedAdvertStatusToDisabled(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok("Status changed successfully!");
+        }
+
         [HttpDelete("/AdvertFiles/DeletePhoto")]
         public async Task<ActionResult> DeletePhoto(DeleteAdvertFileRequestDto requestDto)
         {
@@ -171,7 +205,7 @@ namespace Forum_VTB.Controllers
         {
             try
             {
-                await _favouriteService.AddToFavourites(requestDto);
+                await _favouriteService.AddToAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
@@ -189,7 +223,7 @@ namespace Forum_VTB.Controllers
         {
             try
             {
-                await _favouriteService.DeleteFromFavourites(requestDto);
+                await _favouriteService.DeleteFromAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
@@ -205,10 +239,10 @@ namespace Forum_VTB.Controllers
         [HttpGet("GetUserFavourites")]
         public async Task<ActionResult> GetUserFavourites()
         {
-            List<AdvertResponceDto> responceDtos;
+            GetUserFavouritesResponceDto responceDto;
             try
             {
-                responceDtos = await _favouriteService.GetUserFavourites();
+                responceDto = await _favouriteService.GetUserFavourites();
             }
             catch (Exception ex)
             {
@@ -218,7 +252,7 @@ namespace Forum_VTB.Controllers
                 });
             }
 
-            return Ok(responceDtos);
+            return Ok(responceDto);
         }
 
         [AllowAnonymous]

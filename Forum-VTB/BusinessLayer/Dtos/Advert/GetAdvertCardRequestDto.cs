@@ -9,7 +9,5 @@ namespace BusinessLayer.Dtos.Advert
     public class GetAdvertCardRequestDto
     {
         public string? AdvertId { get; set; }
-
-        public string? UserId { get; set; }
     }
 }

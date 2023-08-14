@@ -18,6 +18,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
+        public string? Status { get; set; }
+
         public List<AdvertComment>? Comments { get; set; }
 
         public DateTime DateOfCreation { get; set; }

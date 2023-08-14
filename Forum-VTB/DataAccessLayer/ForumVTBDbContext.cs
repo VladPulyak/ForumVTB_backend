@@ -24,9 +24,9 @@ namespace DataAccessLayer
 
         public DbSet<UserProfile> UserProfiles { get; set; }
 
-        public DbSet<AdvertComment> TopicMessages { get; set; }
+        public DbSet<AdvertComment> AdvertComments { get; set; }
 
-        public DbSet<MessageFile> Files { get; set; }
+        public DbSet<MessageFile> MessageFiles { get; set; }
 
         public DbSet<Advert> Adverts { get; set; }
 
@@ -38,13 +38,21 @@ namespace DataAccessLayer
 
         public DbSet<UserMessage> UserMessages { get; set; }
 
-        public DbSet<Favourite> Favourites { get; set; }
+        public DbSet<AdvertFavourite> AdvertFavourites { get; set; }
 
         public DbSet<Event> Events { get; set; }
 
         public DbSet<UserTheme> Themes { get; set; }
 
         public DbSet<UserChat> UserChats { get; set; }
+
+        public DbSet<Work> Works { get; set; }
+
+        public DbSet<WorkComment> WorkComments { get; set; }
+
+        public DbSet<WorkFavourite> WorkFavourites { get; set; }
+
+        public DbSet<WorkFile> WorkFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,10 +64,14 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new SectionConfigurations());
             modelBuilder.ApplyConfiguration(new UserMessageConfiguration());
             modelBuilder.ApplyConfiguration(new AdvertFileConfugiration());
-            modelBuilder.ApplyConfiguration(new FavouritesConfigurations());
+            modelBuilder.ApplyConfiguration(new AdvertFavouriteConfigurations());
             modelBuilder.ApplyConfiguration(new EventConfigurations());
             modelBuilder.ApplyConfiguration(new UserThemeConfigurations());
             modelBuilder.ApplyConfiguration(new UserChatConfigurations());
+            modelBuilder.ApplyConfiguration(new WorkConfigurations());
+            modelBuilder.ApplyConfiguration(new WorkCommentConfigurations());
+            modelBuilder.ApplyConfiguration(new WorkFavouriteConfigurations());
+            modelBuilder.ApplyConfiguration(new WorkFileConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

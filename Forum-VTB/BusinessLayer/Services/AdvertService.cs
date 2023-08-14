@@ -30,10 +30,10 @@ namespace BusinessLayer.Services
         private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
-        private readonly IFavouriteRepository _favouriteRepository;
+        private readonly IAdvertFavouriteRepository _favouriteRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -57,6 +57,7 @@ namespace BusinessLayer.Services
             advert.Subsection = subsection;
             advert.Price = requestDto.Price;
             advert.UserId = user.Id;
+            advert.Status = Status.Active.ToString();
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Id = Guid.NewGuid().ToString();
             advert.PhoneNumber = requestDto.PhoneNumber;
@@ -76,6 +77,7 @@ namespace BusinessLayer.Services
                 Price = addedAdvert.Price,
                 Comments = new List<AdvertComment>(),
                 DateOfCreation = advert.DateOfCreation,
+                Status = addedAdvert.Status,
                 Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
                 {
                     AdvertId = addedAdvert.Id
@@ -92,6 +94,7 @@ namespace BusinessLayer.Services
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
             advert.DateOfCreation = DateTime.UtcNow;
+            advert.Status = Status.Active.ToString();
             await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
             {
                 Advert = advert,
@@ -108,7 +111,8 @@ namespace BusinessLayer.Services
                 Description = updatedAdvert.Description,
                 Price = updatedAdvert.Price,
                 DateOfCreation = updatedAdvert.DateOfCreation,
-                Comments = updatedAdvert.Comments is null ? new List<GetCommentResponceDto>() :
+                Status = updatedAdvert.Status,
+                Comments = updatedAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
                 await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
                 {
                     AdvertId = updatedAdvert.Id
@@ -154,13 +158,13 @@ namespace BusinessLayer.Services
             await _advertRepository.Save();
         }
 
-        public async Task<List<UserAdvertResponceDto>> GetUserAdverts()
+        public async Task<List<AdvertResponceDto>> GetUserAdverts()
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var userAdverts = await _advertRepository.GetByUserId(user.Id);
-            var userAdvertResponceDtos = _mapper.Map<List<UserAdvertResponceDto>>(userAdverts);
-            return userAdvertResponceDtos;
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(userAdverts);
+            return await CheckFavourites(responceDtos, user.Id);
         }
 
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
@@ -182,7 +186,7 @@ namespace BusinessLayer.Services
                 Description = userAdvert.Description,
                 DateOfCreation = userAdvert.DateOfCreation,
                 Price = userAdvert.Price,
-                Comments = userAdvert.Comments is null ? new List<GetCommentResponceDto>() :
+                Comments = userAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
                 await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
                 {
                     AdvertId = userAdvert.Id
@@ -228,7 +232,7 @@ namespace BusinessLayer.Services
         public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
-             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
@@ -236,7 +240,22 @@ namespace BusinessLayer.Services
                 return await CheckFavourites(responceDtos, user.Id);
             }
             return responceDtos;
+        }
 
+        public async Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto)
+        {
+            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
+            userAdvert.Status = Status.Active.ToString();
+            var updatedAdvert = _advertRepository.Update(userAdvert);
+            await _advertRepository.Save();
+        }
+
+        public async Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto)
+        {
+            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
+            userAdvert.Status = Status.Disabled.ToString();
+            var updatedAdvert = _advertRepository.Update(userAdvert);
+            await _advertRepository.Save();
         }
     }
 }
