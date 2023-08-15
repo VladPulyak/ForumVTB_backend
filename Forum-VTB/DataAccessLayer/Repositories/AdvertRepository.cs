@@ -18,21 +18,6 @@ namespace DataAccessLayer.Repositories
             _forumVTBDbContext = forumVTBDbContext;
         }
 
-        public void ChangedMainPhoto()
-        {
-            var adverts = _set.Include(q => q.Files).ToList();
-            foreach (var advert in adverts)
-            {
-                if (advert.Files.ToList().Count != 0 && advert.Files is not null)
-                {
-                    advert.MainPhoto = advert.Files.OrderBy(q => q.DateOfCreation).First().FileURL;
-                    advert.Status = "Active";
-                    _forumVTBDbContext.Update(advert);
-                    _forumVTBDbContext.SaveChanges();
-                }
-            }
-        }
-
         public override IQueryable<Advert> GetAll()
         {
             return _set.Where(q => q.Status == "Active")

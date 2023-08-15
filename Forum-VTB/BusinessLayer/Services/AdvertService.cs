@@ -131,7 +131,6 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
         {
-            _advertRepository.ChangedMainPhoto();
             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
