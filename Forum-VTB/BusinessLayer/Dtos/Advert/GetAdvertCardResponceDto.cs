@@ -33,6 +33,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? PhoneNumber { get; set; }
 
+        public string? MainPhoto { get; set; }
+
         public List<GetCommentResponceDto>? Comments { get; set; }
 
         public List<GetAdvertFileResponceDto>? Files { get; set; }

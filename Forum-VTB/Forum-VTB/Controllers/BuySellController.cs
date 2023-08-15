@@ -236,7 +236,7 @@ namespace Forum_VTB.Controllers
             return Ok("Advert deleted from favourites successfully!");
         }
 
-        [HttpGet("GetUserFavourites")]
+        [HttpGet("/Favourites/GetUserFavourites")]
         public async Task<ActionResult> GetUserFavourites()
         {
             GetUserFavouritesResponceDto responceDto;

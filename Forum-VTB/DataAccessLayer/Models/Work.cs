@@ -26,6 +26,8 @@ namespace DataAccessLayer.Models
 
         public string? Status { get; set; }
 
+        public string? MainPhoto { get; set; }
+
         public ICollection<WorkFile>? Files { get; set; }
 
         public UserProfile? User { get; set; }

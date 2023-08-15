@@ -1,3 +1,4 @@
+using BusinessLayer.Dtos.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,16 @@ namespace BusinessLayer.Dtos.UserChat
 
         public string? NickName { get; set; }
 
-        public string? Photo { get; set; }
+        public string? UserPhoto { get; set; }
+
+        public string? AdvertId { get; set; }
+
+        public string? AdvertTitle { get; set; }
+
+        public string? AdvertPrice { get; set; }
+
+        public string? AdvertPhoto { get; set; }
+
+        public List<GetChatMessageResponceDto> Messages { get; set; }
     }
 }

@@ -12,19 +12,35 @@ namespace DataAccessLayer.Repositories
 {
     public class AdvertRepository : Repository<Advert>, IAdvertRepository
     {
-        public AdvertRepository(ForumVTBDbContext context) : base(context)
+        private readonly ForumVTBDbContext _forumVTBDbContext;
+        public AdvertRepository(ForumVTBDbContext context, ForumVTBDbContext forumVTBDbContext) : base(context)
         {
+            _forumVTBDbContext = forumVTBDbContext;
+        }
 
+        public void ChangedMainPhoto()
+        {
+            var adverts = _set.Include(q => q.Files).ToList();
+            foreach (var advert in adverts)
+            {
+                if (advert.Files.ToList().Count != 0 && advert.Files is not null)
+                {
+                    advert.MainPhoto = advert.Files.OrderBy(q => q.DateOfCreation).First().FileURL;
+                    advert.Status = "Active";
+                    _forumVTBDbContext.Update(advert);
+                    _forumVTBDbContext.SaveChanges();
+                }
+            }
         }
 
         public override IQueryable<Advert> GetAll()
         {
-            return _set.Include(q => q.Files)
+            return _set.Where(q => q.Status == "Active")
+                .Include(q => q.Files)
                 .Include(q => q.Subsection)
                 .Include(q => q.Favourites)
                 .AsNoTracking();
         }
-
 
         public async Task Delete(string advertId)
         {
@@ -44,7 +60,7 @@ namespace DataAccessLayer.Repositories
 
         public async Task<Advert> GetById(string advertId)
         {
-            var advert = await _set.Where(q => q.Id == advertId)
+            var advert = await _set.Where(q => q.Id == advertId && q.Status == "Active")
                 .Include(q => q.User)
                 .Include(q => q.AdvertComments)
                 .Include(q => q.Subsection)
@@ -63,7 +79,7 @@ namespace DataAccessLayer.Repositories
             var entity = await _set.Include(q => q.Files)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
-                .Where(q => q.Subsection.Section.Name == sectionName)
+                .Where(q => q.Subsection.Section.Name == sectionName && q.Status == "Active")
                 .ToListAsync();
 
             return entity;
@@ -73,7 +89,7 @@ namespace DataAccessLayer.Repositories
         {
             var entity = await _set.Include(q => q.Files)
                 .Include(q => q.Subsection)
-                .Where(q => q.Subsection.Name == subsectionName)
+                .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active")
                 .ToListAsync();
 
             return entity;
@@ -82,7 +98,7 @@ namespace DataAccessLayer.Repositories
         public async Task<List<Advert>> SearchByKeyPhrase(string keyPhrase)
         {
             keyPhrase = keyPhrase.Trim();
-            return await _set.Where(a => a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper()))
+            return await _set.Where(a => (a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper())) && a.Status == "Active")
                 .Include(q => q.Files)
                 .ToListAsync();
         }

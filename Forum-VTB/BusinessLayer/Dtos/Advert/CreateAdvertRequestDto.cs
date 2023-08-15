@@ -14,6 +14,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
+        public string? MainPhoto { get; set; }
+
         public string? SubsectionName { get; set; }
 
         public string? PhoneNumber { get; set; }

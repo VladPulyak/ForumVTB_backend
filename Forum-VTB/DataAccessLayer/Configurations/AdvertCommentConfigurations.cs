@@ -18,7 +18,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.Text).IsRequired();
             builder.Property(q => q.Text).HasMaxLength(300);
             builder.Property(q => q.DateOfCreation).HasColumnType("timestamp with time zone").IsRequired();
-            builder.HasOne(q => q.UserProfile).WithMany(w => w.AdvertComments).HasForeignKey(q => q.UserId);
+            builder.HasOne(q => q.UserProfile).WithMany(w => w.AdvertComments).HasForeignKey(q => q.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.Advert).WithMany(w => w.AdvertComments).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.ParentComment).WithMany(q => q.Replies).HasForeignKey(q => q.ParentCommentId);
         }

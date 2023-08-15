@@ -41,7 +41,11 @@ namespace BusinessLayer.Services
             {
                 NickName = advert.User.NickName,
                 Username = advert.User.UserName,
-                Photo = advert.User.Photo
+                UserPhoto = advert.User.Photo,
+                AdvertPrice = advert.Price,
+                AdvertTitle = advert.Title,
+                AdvertPhoto = advert.Files.First().FileURL,
+                AdvertId = advert.Id
             };
         }
 
@@ -57,8 +61,10 @@ namespace BusinessLayer.Services
                 {
                     FirstUserId = user.Id,
                     SecondUserId = receiver.Id,
-                    Id = Guid.NewGuid().ToString()
+                    Id = Guid.NewGuid().ToString(),
+                    AdvertId = requestDto.AdvertId
                 });
+                await _userChatRepository.Save();
             }
             var message = _mapper.Map<UserMessage>(requestDto);
             message.SenderId = user.Id;
@@ -86,14 +92,23 @@ namespace BusinessLayer.Services
             {
                 return new List<UserChatResponceDto>();
             }
+
             var chatDtos = chats.Select(chat => new UserChatResponceDto
             {
                 ChatId = chat.Id,
                 Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
                 NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-                Photo = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo
+                UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
+                AdvertId = chat.Advert.Id,
+                AdvertTitle = chat.Advert.Title,
+                AdvertPrice = chat.Advert.Price,
+                AdvertPhoto = chat.Advert.Files.First().FileURL
             }).ToList();
 
+            foreach (var chatDto in chatDtos)
+            {
+                chatDto.Messages = await GetChatMessages(chatDto.ChatId);
+            }
             return chatDtos;
         }
 

@@ -35,6 +35,9 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("character varying(3000)");
 
+                    b.Property<string>("MainPhoto")
+                        .HasColumnType("text");
+
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)");
@@ -244,6 +247,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("AdvertId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstUserId")
                         .HasColumnType("text");
 
@@ -251,6 +258,8 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
 
                     b.HasIndex("FirstUserId");
 
@@ -410,6 +419,9 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(3000)
                         .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("MainPhoto")
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(13)
@@ -657,11 +669,13 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
                         .WithMany("Adverts")
-                        .HasForeignKey("SubsectionId");
+                        .HasForeignKey("SubsectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
                         .WithMany("Adverts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Subsection");
 
@@ -681,7 +695,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
                         .WithMany("AdvertComments")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Advert");
 
@@ -733,7 +748,8 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.UserMessage", "UserMessage")
                         .WithMany("Files")
-                        .HasForeignKey("MessageId");
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("UserMessage");
                 });
@@ -751,6 +767,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
                 {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithMany("Chats")
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DataAccessLayer.Models.UserProfile", "FirstUser")
                         .WithMany("ChatsAsFirstUser")
                         .HasForeignKey("FirstUserId")
@@ -761,6 +783,8 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("SecondUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.Navigation("Advert");
+
                     b.Navigation("FirstUser");
 
                     b.Navigation("SecondUser");
@@ -770,7 +794,8 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.UserChat", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("DataAccessLayer.Models.UserMessage", "ParentMessage")
                         .WithMany()
@@ -778,11 +803,13 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "Receiver")
                         .WithMany("ReceivedMessages")
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "Sender")
                         .WithMany("SentMessages")
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Chat");
 
@@ -807,11 +834,13 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
                         .WithMany("Works")
-                        .HasForeignKey("SubsectionId");
+                        .HasForeignKey("SubsectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
                         .WithMany("Works")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Subsection");
 
@@ -826,7 +855,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
                         .WithMany("WorkComments")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.Work", "Work")
                         .WithMany("Comments")
@@ -923,6 +953,8 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
                     b.Navigation("AdvertComments");
+
+                    b.Navigation("Chats");
 
                     b.Navigation("Favourites");
 

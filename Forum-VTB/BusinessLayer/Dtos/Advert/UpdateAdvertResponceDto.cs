@@ -19,6 +19,8 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Price { get; set; }
 
+        public string? MainPhoto { get; set; }
+
         public bool? IsFavourite { get; set; }
 
         public string? Status { get; set; }

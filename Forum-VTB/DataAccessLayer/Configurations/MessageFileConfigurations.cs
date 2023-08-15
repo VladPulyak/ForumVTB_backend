@@ -17,7 +17,7 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(q => q.FileURL).IsRequired();
             builder.Property(q => q.FileURL).HasMaxLength(150);
-            builder.HasOne(q => q.UserMessage).WithMany(w => w.Files).HasForeignKey(q => q.MessageId);
+            builder.HasOne(q => q.UserMessage).WithMany(w => w.Files).HasForeignKey(q => q.MessageId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
