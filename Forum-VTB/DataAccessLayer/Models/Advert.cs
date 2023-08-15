@@ -29,6 +29,8 @@ namespace DataAccessLayer.Models
 
         public string? Status { get; set; }
 
+        public string? MainPhoto { get; set; }
+
         public ICollection<AdvertFile>? Files { get; set; }
 
         public UserProfile? User { get; set; }
@@ -38,5 +40,7 @@ namespace DataAccessLayer.Models
         public Subsection? Subsection { get; set; }
 
         public ICollection<AdvertFavourite>? Favourites { get; set; }
+
+        public ICollection<UserChat>? Chats { get; set; }
     }
 }

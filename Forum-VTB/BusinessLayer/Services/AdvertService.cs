@@ -57,6 +57,7 @@ namespace BusinessLayer.Services
             advert.Subsection = subsection;
             advert.Price = requestDto.Price;
             advert.UserId = user.Id;
+            advert.MainPhoto = requestDto.MainPhoto;
             advert.Status = Status.Active.ToString();
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Id = Guid.NewGuid().ToString();
@@ -77,6 +78,7 @@ namespace BusinessLayer.Services
                 Price = addedAdvert.Price,
                 Comments = new List<AdvertComment>(),
                 DateOfCreation = advert.DateOfCreation,
+                MainPhoto = addedAdvert.MainPhoto,
                 Status = addedAdvert.Status,
                 Files = await _advertFileService.GetAdvertFiles(new GetAdvertFileRequestDto
                 {
@@ -93,6 +95,7 @@ namespace BusinessLayer.Services
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
+            advert.MainPhoto = requestDto.MainPhoto;
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Status = Status.Active.ToString();
             await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
@@ -112,6 +115,7 @@ namespace BusinessLayer.Services
                 Price = updatedAdvert.Price,
                 DateOfCreation = updatedAdvert.DateOfCreation,
                 Status = updatedAdvert.Status,
+                MainPhoto = updatedAdvert.MainPhoto,
                 Comments = updatedAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
                 await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
                 {
@@ -127,6 +131,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
         {
+            _advertRepository.ChangedMainPhoto();
             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
@@ -200,7 +205,8 @@ namespace BusinessLayer.Services
                 UserPhoto = userAdvert.User.Photo,
                 SubsectionName = userAdvert.Subsection.Name,
                 IsFavourite = isFavourite,
-                PhoneNumber = userAdvert.PhoneNumber
+                PhoneNumber = userAdvert.PhoneNumber,
+                MainPhoto = userAdvert.MainPhoto
             };
         }
 

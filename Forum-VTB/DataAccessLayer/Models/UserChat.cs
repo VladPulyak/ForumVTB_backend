@@ -14,10 +14,14 @@ namespace DataAccessLayer.Models
 
         public string? SecondUserId { get; set; }
 
+        public string? AdvertId { get; set; }
+
         public UserProfile? FirstUser { get; set; }
 
         public UserProfile? SecondUser { get; set; }
 
         public ICollection<UserMessage>? Messages { get; set; }
+
+        public Advert Advert { get; set; }
     }
 }

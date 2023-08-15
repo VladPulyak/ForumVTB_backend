@@ -23,8 +23,8 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.Price).HasMaxLength(10);
             builder.Property(q => q.PhoneNumber).HasMaxLength(13);
             builder.Property(q => q.DateOfCreation).HasColumnType("timestamp with time zone");
-            builder.HasOne(q => q.Subsection).WithMany(w => w.Adverts).HasForeignKey(q => q.SubsectionId);
-            builder.HasOne(q => q.User).WithMany(w => w.Adverts).HasForeignKey(q => q.UserId);
+            builder.HasOne(q => q.Subsection).WithMany(w => w.Adverts).HasForeignKey(q => q.SubsectionId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(q => q.User).WithMany(w => w.Adverts).HasForeignKey(q => q.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

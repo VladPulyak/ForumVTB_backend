@@ -17,6 +17,7 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(q => q.Id);
             builder.HasOne(q => q.FirstUser).WithMany(w => w.ChatsAsFirstUser).HasForeignKey(q => q.FirstUserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.SecondUser).WithMany(w => w.ChatsAsSecondUser).HasForeignKey(q => q.SecondUserId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(q => q.Advert).WithMany(w => w.Chats).HasForeignKey(q => q.AdvertId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

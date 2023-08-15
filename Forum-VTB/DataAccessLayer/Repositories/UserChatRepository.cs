@@ -26,6 +26,8 @@ namespace DataAccessLayer.Repositories
             return await _set.Where(q => q.FirstUserId == userId || q.SecondUserId == userId)
                 .Include(q => q.FirstUser)
                 .Include(q => q.SecondUser)
+                .Include(q => q.Advert)
+                .Include(q => q.Advert.Files)
                 .ToListAsync();
         }
     }

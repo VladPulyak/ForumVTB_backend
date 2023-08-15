@@ -24,6 +24,6 @@ namespace BusinessLayer.Dtos.Advert
 
         public bool IsFavourite { get; set; }
 
-        public GetAdvertFileResponceDto? File { get; set; }
+        public string? MainPhoto { get; set; }
     }
 }
