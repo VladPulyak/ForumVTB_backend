@@ -25,5 +25,9 @@ namespace BusinessLayer.Dtos.Advert
         public bool IsFavourite { get; set; }
 
         public string? MainPhoto { get; set; }
+
+        public string? SectionName { get; set; }
+
+        public string? SubsectionName { get; set; }
     }
 }

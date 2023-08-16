@@ -23,6 +23,7 @@ namespace BusinessLayer.Services
                 await RealEstateSubsectionsSeedDataAsync(dbContext);
                 await ClothesAndPersonalThingsSubsectionsSeedDataAsync(dbContext);
                 await HouseAndGardenSubsectionsSeedDataAsync(dbContext);
+                await ServicesSubsectionsSeedDataAsync(dbContext);
             }
         }
 
@@ -52,7 +53,43 @@ namespace BusinessLayer.Services
                     new Section {Name = "Animals"},
                     new Section {Name = "Real estate"},
                     new Section {Name = "Clothes and personal things"},
-                    new Section {Name = "House and garden"}
+                    new Section {Name = "House and garden"},
+                    new Section {Name = "Services"}
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            if (!await dbContext.Sections.Where(q=>q.Name == "Services").AnyAsync())
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section {Name = "Services"}
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task ServicesSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Work", SectionId = 8},
+                    new Subsection {Name = "Domestic", SectionId = 8},
+                    new Subsection {Name = "Electronics", SectionId = 8},
+                    new Subsection {Name = "Beauty and health", SectionId = 8},
+                    new Subsection {Name = "Educational", SectionId = 8},
+                    new Subsection {Name = "Transportation", SectionId = 8},
+                    new Subsection {Name = "Advertising", SectionId = 8},
+                    new Subsection {Name = "Buildings", SectionId = 8},
+                    new Subsection {Name = "Buildings", SectionId = 8},
+                    new Subsection {Name = "Animal", SectionId = 8},
+                    new Subsection {Name = "Photo and video", SectionId = 8},
+                    new Subsection {Name = "Legal", SectionId = 8},
+                    new Subsection {Name = "Other", SectionId = 8},
                 });
 
                 await dbContext.SaveChangesAsync();

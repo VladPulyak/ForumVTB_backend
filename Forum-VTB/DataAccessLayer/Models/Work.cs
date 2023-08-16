@@ -32,8 +32,6 @@ namespace DataAccessLayer.Models
 
         public UserProfile? User { get; set; }
 
-        public ICollection<WorkComment>? Comments { get; set; }
-
         public Subsection? Subsection { get; set; }
 
         public ICollection<WorkFavourite>? Favourites { get; set; }

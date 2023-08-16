@@ -48,8 +48,6 @@ namespace DataAccessLayer
 
         public DbSet<Work> Works { get; set; }
 
-        public DbSet<WorkComment> WorkComments { get; set; }
-
         public DbSet<WorkFavourite> WorkFavourites { get; set; }
 
         public DbSet<WorkFile> WorkFiles { get; set; }
@@ -69,7 +67,6 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new UserThemeConfigurations());
             modelBuilder.ApplyConfiguration(new UserChatConfigurations());
             modelBuilder.ApplyConfiguration(new WorkConfigurations());
-            modelBuilder.ApplyConfiguration(new WorkCommentConfigurations());
             modelBuilder.ApplyConfiguration(new WorkFavouriteConfigurations());
             modelBuilder.ApplyConfiguration(new WorkFileConfigurations());
             base.OnModelCreating(modelBuilder);

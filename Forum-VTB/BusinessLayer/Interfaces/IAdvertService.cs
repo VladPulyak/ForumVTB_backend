@@ -30,8 +30,6 @@ namespace BusinessLayer.Interfaces
 
         Task<List<AdvertResponceDto>> CheckFavourites(List<AdvertResponceDto> responceDtos, string userId);
 
-        Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto);
-
-        Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto);
+        Task ChangeAdvertStatus(ChangeAdvertStatusRequestDto requestDto);
     }
 }
