@@ -92,7 +92,7 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var advert = await _advertRepository.GetActiveById(requestDto.AdvertId);
+            var advert = await _advertRepository.GetById(requestDto.AdvertId);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
@@ -175,7 +175,7 @@ namespace BusinessLayer.Services
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
             bool isFavourite = false;
-            var userAdvert = await _advertRepository.GetActiveById(requestDto.AdvertId);
+            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
