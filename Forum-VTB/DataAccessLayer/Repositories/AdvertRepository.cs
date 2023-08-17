@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
             return _set.Where(q => q.Status == "Active")
                 .Include(q => q.Files)
                 .Include(q => q.Subsection)
-                .Include(q=>q.Subsection.Section)
+                .Include(q => q.Subsection.Section)
                 .Include(q => q.Favourites)
                 .AsNoTracking();
         }
@@ -44,7 +44,7 @@ namespace DataAccessLayer.Repositories
             return adverts;
         }
 
-        public async Task<Advert> GetById(string advertId)
+        public async Task<Advert> GetActiveById(string advertId)
         {
             var advert = await _set.Where(q => q.Id == advertId && q.Status == "Active")
                 .Include(q => q.User)
@@ -58,6 +58,23 @@ namespace DataAccessLayer.Repositories
             }
 
             return advert;
+        }
+
+        public async Task<Advert> GetById(string advertId)
+        {
+            var advert = await _set.Where(q => q.Id == advertId)
+                .Include(q => q.User)
+                .Include(q => q.AdvertComments)
+                .Include(q => q.Subsection)
+                .Include(q => q.Files)
+                .SingleAsync();
+            if (advert is null)
+            {
+                throw new ObjectNotFoundException("Adverts with this id is not found");
+            }
+
+            return advert;
+
         }
 
         public async Task<List<Advert>> GetBySectionName(string sectionName)

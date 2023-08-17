@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.Common;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;

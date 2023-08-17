@@ -1,14 +1,14 @@
 ﻿using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
-using BusinessLayer.Dtos.AdvertFiles;
 using BusinessLayer.Dtos.Common;
-using BusinessLayer.Dtos.Favourites;
+using BusinessLayer.Dtos.AdvertFavourites;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using BusinessLayer.Dtos.AdvertFiles;
 
 namespace Forum_VTB.Controllers
 {
@@ -184,7 +184,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Favourites/AddToFavourites")]
-        public async Task<ActionResult> AddToFavourites(AddToFavouritesRequestDto requestDto)
+        public async Task<ActionResult> AddToFavourites(AddToFAdvertFavouritesRequestDto requestDto)
         {
             try
             {
@@ -202,7 +202,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpDelete("/Favourites/DeleteFromFavourites")]
-        public async Task<ActionResult> DeleteFromFavourites(DeleteFromFavouritesRequestDto requestDto)
+        public async Task<ActionResult> DeleteFromFavourites(DeleteFromAdvertFavouritesRequestDto requestDto)
         {
             try
             {

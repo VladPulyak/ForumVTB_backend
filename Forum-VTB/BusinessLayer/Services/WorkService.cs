@@ -2,6 +2,7 @@ using AutoMapper;
 using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
 using BusinessLayer.Dtos.AdvertFiles;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Interfaces;
@@ -90,7 +91,7 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var advert = await _advertRepository.GetById(requestDto.AdvertId);
+            var advert = await _advertRepository.GetActiveById(requestDto.AdvertId);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
@@ -173,7 +174,7 @@ namespace BusinessLayer.Services
         public async Task<GetAdvertCardResponceDto> GetAdvertCard(GetAdvertCardRequestDto requestDto)
         {
             bool isFavourite = false;
-            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
+            var userAdvert = await _advertRepository.GetActiveById(requestDto.AdvertId);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
@@ -248,7 +249,7 @@ namespace BusinessLayer.Services
 
         public async Task ChangeAdvertStatus(ChangeAdvertStatusRequestDto requestDto)
         {
-            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
+            var userAdvert = await _advertRepository.GetActiveById(requestDto.AdvertId);
 
             if (userAdvert.Status == "Active")
             {

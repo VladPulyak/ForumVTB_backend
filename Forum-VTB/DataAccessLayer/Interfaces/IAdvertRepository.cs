@@ -13,6 +13,8 @@ namespace DataAccessLayer.Interfaces
 
         Task Delete(string advertId);
 
+        Task<Advert> GetActiveById(string advertId);
+
         Task<Advert> GetById(string advertId);
 
         Task<List<Advert>> GetBySectionName(string sectionName);
