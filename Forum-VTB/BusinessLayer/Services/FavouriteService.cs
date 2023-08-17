@@ -1,6 +1,7 @@
 using AutoMapper;
 using BusinessLayer.Dtos.Advert;
-using BusinessLayer.Dtos.Favourites;
+using BusinessLayer.Dtos.AdvertFavourites;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -30,7 +31,7 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task AddToAdvertFavourites(AddToFavouritesRequestDto requestDto)
+        public async Task AddToAdvertFavourites(AddToFAdvertFavouritesRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -43,7 +44,7 @@ namespace BusinessLayer.Services
             await _favouriteRepository.Save();
         }
 
-        public async Task DeleteFromAdvertFavourites(DeleteFromFavouritesRequestDto requestDto)
+        public async Task DeleteFromAdvertFavourites(DeleteFromAdvertFavouritesRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);

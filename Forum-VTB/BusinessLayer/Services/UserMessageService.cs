@@ -36,7 +36,7 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var advert = await _advertRepository.GetById(requestDto.AdvertId);
+            var advert = await _advertRepository.GetActiveById(requestDto.AdvertId);
             return new UserChatResponceDto
             {
                 NickName = advert.User.NickName,

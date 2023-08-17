@@ -17,7 +17,9 @@ namespace BusinessLayer.MapProfiles
             CreateMap<AdvertResponceDto, Advert>().ReverseMap();
             CreateMap<Advert, AdvertResponceDto>()
                 .ForMember(dest => dest.AdvertId, q => q.MapFrom(src => src.Id))
-                .ForMember(dest => dest.MainPhoto, q => q.MapFrom(src => src.MainPhoto));
+                .ForMember(dest => dest.MainPhoto, q => q.MapFrom(src => src.MainPhoto))
+                .ForMember(dest => dest.SectionName, q => q.MapFrom(src => src.Subsection.Section.Name))
+                .ForMember(dest => dest.SubsectionName, q => q.MapFrom(src => src.Subsection.Name));
             CreateMap<Advert, UpdateAdvertRequestDto>().ReverseMap();
             CreateMap<Advert, UserAdvertResponceDto>().ReverseMap();
         }

@@ -2,6 +2,7 @@
 using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
 using BusinessLayer.Dtos.AdvertFiles;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Exceptions;
 using DataAccessLayer.Interfaces;
@@ -131,7 +132,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
         {
-            var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
+             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
@@ -247,18 +248,18 @@ namespace BusinessLayer.Services
             return responceDtos;
         }
 
-        public async Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto)
+        public async Task ChangeAdvertStatus(ChangeAdvertStatusRequestDto requestDto)
         {
             var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
-            userAdvert.Status = Status.Active.ToString();
-            var updatedAdvert = _advertRepository.Update(userAdvert);
-            await _advertRepository.Save();
-        }
 
-        public async Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto)
-        {
-            var userAdvert = await _advertRepository.GetById(requestDto.AdvertId);
-            userAdvert.Status = Status.Disabled.ToString();
+            if (userAdvert.Status == "Active")
+            {
+                userAdvert.Status = Status.Disabled.ToString();
+            }
+            else
+            {
+                userAdvert.Status = Status.Active.ToString();
+            }
             var updatedAdvert = _advertRepository.Update(userAdvert);
             await _advertRepository.Save();
         }

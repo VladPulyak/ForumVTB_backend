@@ -1,14 +1,14 @@
 ﻿using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.AdvertComments;
-using BusinessLayer.Dtos.AdvertFiles;
 using BusinessLayer.Dtos.Common;
-using BusinessLayer.Dtos.Favourites;
+using BusinessLayer.Dtos.AdvertFavourites;
 using BusinessLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using BusinessLayer.Dtos.AdvertFiles;
 
 namespace Forum_VTB.Controllers
 {
@@ -128,29 +128,12 @@ namespace Forum_VTB.Controllers
             return Ok("Advert delete successfully!");
         }
 
-        [HttpPost("/Advert/ChangeAdvertStatusToActive")]
-        public async Task<ActionResult> ChangeAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto)
+        [HttpPost("/Adverts/ChangeAdvertStatus")]
+        public async Task<ActionResult> ChangeAdvertStatus(ChangeAdvertStatusRequestDto requestDto)
         {
             try
             {
-                await _advertService.ChangedAdvertStatusToActive(requestDto);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-            return Ok("Status changed successfully!");
-        }
-
-        [HttpPost("/Advert/ChangeAdvertStatusToDisabled")]
-        public async Task<ActionResult> ChangeAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto)
-        {
-            try
-            {
-                await _advertService.ChangedAdvertStatusToDisabled(requestDto);
+                await _advertService.ChangeAdvertStatus(requestDto);
             }
             catch (Exception ex)
             {
@@ -201,7 +184,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Favourites/AddToFavourites")]
-        public async Task<ActionResult> AddToFavourites(AddToFavouritesRequestDto requestDto)
+        public async Task<ActionResult> AddToFavourites(AddToFAdvertFavouritesRequestDto requestDto)
         {
             try
             {
@@ -219,7 +202,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpDelete("/Favourites/DeleteFromFavourites")]
-        public async Task<ActionResult> DeleteFromFavourites(DeleteFromFavouritesRequestDto requestDto)
+        public async Task<ActionResult> DeleteFromFavourites(DeleteFromAdvertFavouritesRequestDto requestDto)
         {
             try
             {
@@ -277,7 +260,7 @@ namespace Forum_VTB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/Advert/FindBySectionName")]
+        [HttpPost("/Adverts/FindBySectionName")]
         public async Task<ActionResult> FindBySectionName(FindBySectionNameRequestDto requestDto)
         {
             List<AdvertResponceDto> responceDtos;
@@ -297,7 +280,7 @@ namespace Forum_VTB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/Advert/FindBySubsectionName")]
+        [HttpPost("/Adverts/FindBySubsectionName")]
         public async Task<ActionResult> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             List<AdvertResponceDto> responceDtos;

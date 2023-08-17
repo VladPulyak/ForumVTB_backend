@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos.Advert
+namespace BusinessLayer.Dtos.WorkFiles
 {
-    public class FindBySectionNameRequestDto
+    public class GetWorkFileResponceDto
     {
-        public string? SectionName { get; set; }
+        public string? FileString { get; set; }
     }
 }

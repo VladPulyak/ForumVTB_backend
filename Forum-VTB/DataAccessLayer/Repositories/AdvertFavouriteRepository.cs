@@ -38,6 +38,8 @@ namespace DataAccessLayer.Repositories
         {
             var adverts = await _set.Where(q => q.UserId == userId)
                 .Include(q => q.Advert.Files)
+                .Include(q => q.Advert.Subsection)
+                .Include(q => q.Advert.Subsection.Section)
                 .Select(q => q.Advert)
                 .ToListAsync();
             return adverts;

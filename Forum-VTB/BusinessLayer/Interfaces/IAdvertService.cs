@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.Common;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -30,8 +31,6 @@ namespace BusinessLayer.Interfaces
 
         Task<List<AdvertResponceDto>> CheckFavourites(List<AdvertResponceDto> responceDtos, string userId);
 
-        Task ChangedAdvertStatusToActive(ChangeAdvertStatusRequestDto requestDto);
-
-        Task ChangedAdvertStatusToDisabled(ChangeAdvertStatusRequestDto requestDto);
+        Task ChangeAdvertStatus(ChangeAdvertStatusRequestDto requestDto);
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos.Favourites
+namespace BusinessLayer.Dtos.AdvertFavourites
 {
-    public class DeleteFromFavouritesRequestDto
+    public class DeleteFromAdvertFavouritesRequestDto
     {
         public string? AdvertId { get; set; }
     }

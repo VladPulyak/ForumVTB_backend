@@ -455,39 +455,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Works", (string)null);
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.WorkComment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ParentCommentId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WorkId");
-
-                    b.ToTable("WorkComments", (string)null);
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.WorkFavourite", b =>
                 {
                     b.Property<string>("Id")
@@ -847,29 +814,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.WorkComment", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.WorkComment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
-                    b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
-                        .WithMany("WorkComments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataAccessLayer.Models.Work", "Work")
-                        .WithMany("Comments")
-                        .HasForeignKey("WorkId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("ParentComment");
-
-                    b.Navigation("UserProfile");
-
-                    b.Navigation("Work");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.WorkFavourite", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
@@ -1008,8 +952,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("Theme");
 
-                    b.Navigation("WorkComments");
-
                     b.Navigation("WorkFavourites");
 
                     b.Navigation("Works");
@@ -1017,16 +959,9 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Work", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Favourites");
 
                     b.Navigation("Files");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkComment", b =>
-                {
-                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

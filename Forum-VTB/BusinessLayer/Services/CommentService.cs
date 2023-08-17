@@ -80,8 +80,7 @@ namespace BusinessLayer.Services
         public async Task<List<GetCommentResponceDto>> GetCommentsByAdvertId(GetCommentsRequestDto requestDto)
         {
             var comments = await _advertCommentRepository.GetByAdvertId(requestDto.AdvertId);
-            comments.Reverse();
-            var commentResponceDtos = _mapper.Map<List<GetCommentResponceDto>>(comments);
+            var commentResponceDtos = _mapper.Map<List<GetCommentResponceDto>>(comments.OrderBy(q => q.DateOfCreation));
             return commentResponceDtos;
         }
 
