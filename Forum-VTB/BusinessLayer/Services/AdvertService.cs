@@ -28,13 +28,12 @@ namespace BusinessLayer.Services
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
         private readonly IAdvertFileService _advertFileService;
-        private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
         private readonly IAdvertFavouriteRepository _favouriteRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -42,7 +41,6 @@ namespace BusinessLayer.Services
             _mapper = mapper;
             _subsectionRepository = subsectionRepository;
             _commentService = commentService;
-            _fileService = fileService;
             _advertFileService = advertFileService;
             _sectionRepository = sectionRepository;
             _favouriteRepository = favouriteRepository;
@@ -65,7 +63,7 @@ namespace BusinessLayer.Services
             advert.PhoneNumber = requestDto.PhoneNumber;
             var addedAdvert = await _advertRepository.Add(advert);
             await _advertRepository.Save();
-            await _fileService.AddFiles(new AddAdvertFilesRequestDto
+            await _advertFileService.AddFiles(new AddAdvertFilesRequestDto
             {
                 AdvertId = advert.Id,
                 FileStrings = requestDto.FileStrings
@@ -99,7 +97,7 @@ namespace BusinessLayer.Services
             advert.MainPhoto = requestDto.MainPhoto;
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Status = Status.Active.ToString();
-            await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
+            await _advertFileService.AddMissingFiles(new AddMissingAdvertFilesRequestDto
             {
                 Advert = advert,
                 FileStrings = requestDto.FileStrings
@@ -132,7 +130,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
         {
-             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
+            var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
@@ -206,7 +204,8 @@ namespace BusinessLayer.Services
                 SubsectionName = userAdvert.Subsection.Name,
                 IsFavourite = isFavourite,
                 PhoneNumber = userAdvert.PhoneNumber,
-                MainPhoto = userAdvert.MainPhoto
+                MainPhoto = userAdvert.MainPhoto,
+                Status = userAdvert.Status
             };
         }
 

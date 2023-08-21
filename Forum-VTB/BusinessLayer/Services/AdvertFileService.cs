@@ -44,7 +44,7 @@ namespace BusinessLayer.Services
             return responceDtos;
         }
 
-        public async Task AddMissingFiles(AddMissingFilesRequestDto requestDto)
+        public async Task AddMissingFiles(AddMissingAdvertFilesRequestDto requestDto)
         {
             var advertFiles = await GetAdvertFiles(new GetAdvertFileRequestDto
             {

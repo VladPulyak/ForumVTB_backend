@@ -148,6 +148,23 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AdvertFiles", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Chapter", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int?>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chapters", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Event", b =>
                 {
                     b.Property<string>("Id")
@@ -181,6 +198,99 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Events", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("MainPhoto")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SubsectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsectionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Jobs", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.JobFavourite", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("JobId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("UserId", "JobId")
+                        .IsUnique();
+
+                    b.ToTable("JobFavourites", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.JobFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("JobId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.ToTable("JobFiles", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
                     b.Property<string>("Id")
@@ -209,12 +319,17 @@ namespace DataAccessLayer.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ChapterId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChapterId");
 
                     b.ToTable("Sections", (string)null);
                 });
@@ -405,99 +520,6 @@ namespace DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("UserThemes", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Work", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(3000)
-                        .HasColumnType("character varying(3000)");
-
-                    b.Property<string>("MainPhoto")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
-
-                    b.Property<string>("Price")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("SubsectionId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubsectionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Works", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkFavourite", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkId");
-
-                    b.HasIndex("UserId", "WorkId")
-                        .IsUnique();
-
-                    b.ToTable("WorkFavourites", (string)null);
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkFile", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("DateOfCreation")
-                        .HasColumnType("timestamp");
-
-                    b.Property<string>("FileURL")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("WorkId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkId");
-
-                    b.ToTable("WorkFiles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -711,6 +733,52 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Subsection");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
+                        .WithMany("Jobs")
+                        .HasForeignKey("SubsectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("Jobs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Subsection");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.JobFavourite", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Job", "Job")
+                        .WithMany("Favourites")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("JobFavourites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.JobFile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Job", "Job")
+                        .WithMany("Files")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Job");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.MessageFile", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.UserMessage", "UserMessage")
@@ -719,6 +787,15 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("UserMessage");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Section", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Chapter", "Chapter")
+                        .WithMany("Sections")
+                        .HasForeignKey("ChapterId");
+
+                    b.Navigation("Chapter");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Subsection", b =>
@@ -797,52 +874,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Work", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
-                        .WithMany("Works")
-                        .HasForeignKey("SubsectionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
-                        .WithMany("Works")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Subsection");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkFavourite", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
-                        .WithMany("WorkFavourites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.Work", "Work")
-                        .WithMany("Favourites")
-                        .HasForeignKey("WorkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Work");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.WorkFile", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Work", "Work")
-                        .WithMany("Files")
-                        .HasForeignKey("WorkId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Work");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -910,6 +941,18 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Replies");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Chapter", b =>
+                {
+                    b.Navigation("Sections");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
+                {
+                    b.Navigation("Favourites");
+
+                    b.Navigation("Files");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Section", b =>
                 {
                     b.Navigation("Subsections");
@@ -921,7 +964,7 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("Events");
 
-                    b.Navigation("Works");
+                    b.Navigation("Jobs");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
@@ -946,22 +989,15 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("ChatsAsSecondUser");
 
+                    b.Navigation("JobFavourites");
+
+                    b.Navigation("Jobs");
+
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");
 
                     b.Navigation("Theme");
-
-                    b.Navigation("WorkFavourites");
-
-                    b.Navigation("Works");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Work", b =>
-                {
-                    b.Navigation("Favourites");
-
-                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }

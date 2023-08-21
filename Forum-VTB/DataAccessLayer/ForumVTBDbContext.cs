@@ -46,11 +46,13 @@ namespace DataAccessLayer
 
         public DbSet<UserChat> UserChats { get; set; }
 
-        public DbSet<Work> Works { get; set; }
+        public DbSet<Job> Works { get; set; }
 
-        public DbSet<WorkFavourite> WorkFavourites { get; set; }
+        public DbSet<JobFavourite> WorkFavourites { get; set; }
 
-        public DbSet<WorkFile> WorkFiles { get; set; }
+        public DbSet<JobFile> WorkFiles { get; set; }
+
+        public DbSet<Chapter> Chapters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -66,9 +68,10 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new EventConfigurations());
             modelBuilder.ApplyConfiguration(new UserThemeConfigurations());
             modelBuilder.ApplyConfiguration(new UserChatConfigurations());
-            modelBuilder.ApplyConfiguration(new WorkConfigurations());
-            modelBuilder.ApplyConfiguration(new WorkFavouriteConfigurations());
-            modelBuilder.ApplyConfiguration(new WorkFileConfigurations());
+            modelBuilder.ApplyConfiguration(new JobConfigurations());
+            modelBuilder.ApplyConfiguration(new JobFavouriteConfigurations());
+            modelBuilder.ApplyConfiguration(new JobFileConfigurations());
+            modelBuilder.ApplyConfiguration(new ChapterConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

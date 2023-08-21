@@ -17,6 +17,7 @@ namespace DataAccessLayer.Configurations
             builder.HasKey(q => q.Id);
             builder.Property(q => q.Name).IsRequired();
             builder.Property(q => q.Name).HasMaxLength(40);
+            builder.HasOne(q => q.Chapter).WithMany(w => w.Sections).HasForeignKey(q => q.ChapterId);
         }
     }
 }

@@ -23,7 +23,25 @@ namespace BusinessLayer.Services
                 await RealEstateSubsectionsSeedDataAsync(dbContext);
                 await ClothesAndPersonalThingsSubsectionsSeedDataAsync(dbContext);
                 await HouseAndGardenSubsectionsSeedDataAsync(dbContext);
-                await ServicesSubsectionsSeedDataAsync(dbContext);
+                await ChaptersSeedData(dbContext);
+                //await ServicesSubsectionsSeedDataAsync(dbContext);
+            }
+        }
+
+        private static async Task ChaptersSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Chapters.AnyAsync())
+            {
+                await dbContext.Chapters.AddRangeAsync(new List<Chapter>
+                {
+                    new Chapter {Name = "Buy-Sell"},
+                    new Chapter {Name = "Services"},
+                    new Chapter {Name = "Finds"},
+                    new Chapter {Name = "Events"},
+                    new Chapter {Name = "Forum"}
+                });
+
+                await dbContext.SaveChangesAsync();
             }
         }
 
@@ -47,14 +65,15 @@ namespace BusinessLayer.Services
             {
                 await dbContext.Sections.AddRangeAsync(new List<Section>
                 {
-                    new Section {Name = "Transport"},
-                    new Section {Name = "Electronics"},
-                    new Section {Name = "Sports and relax"},
-                    new Section {Name = "Animals"},
-                    new Section {Name = "Real estate"},
-                    new Section {Name = "Clothes and personal things"},
-                    new Section {Name = "House and garden"},
-                    new Section {Name = "Services"}
+                    new Section {Name = "Transport", ChapterId = 1},
+                    new Section {Name = "Electronics", ChapterId = 1},
+                    new Section {Name = "Sports and relax", ChapterId = 1},
+                    new Section {Name = "Animals", ChapterId = 1},
+                    new Section {Name = "Real estate", ChapterId = 1},
+                    new Section {Name = "Clothes and personal things", ChapterId = 1},
+                    new Section {Name = "House and garden", ChapterId = 1},
+                    new Section {Name = "I suggest", ChapterId = 2},
+                    new Section {Name = "I search", ChapterId = 2}
                 });
 
                 await dbContext.SaveChangesAsync();
@@ -71,30 +90,29 @@ namespace BusinessLayer.Services
             }
         }
 
-        private static async Task ServicesSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
-        {
-            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
-            {
-                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
-                {
-                    new Subsection {Name = "Work", SectionId = 8},
-                    new Subsection {Name = "Domestic", SectionId = 8},
-                    new Subsection {Name = "Electronics", SectionId = 8},
-                    new Subsection {Name = "Beauty and health", SectionId = 8},
-                    new Subsection {Name = "Educational", SectionId = 8},
-                    new Subsection {Name = "Transportation", SectionId = 8},
-                    new Subsection {Name = "Advertising", SectionId = 8},
-                    new Subsection {Name = "Buildings", SectionId = 8},
-                    new Subsection {Name = "Buildings", SectionId = 8},
-                    new Subsection {Name = "Animal", SectionId = 8},
-                    new Subsection {Name = "Photo and video", SectionId = 8},
-                    new Subsection {Name = "Legal", SectionId = 8},
-                    new Subsection {Name = "Other", SectionId = 8},
-                });
+        //private static async Task ServicesSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
+        //{
+        //    if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
+        //    {
+        //        await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+        //        {
+        //            new Subsection {Name = "Work", SectionId = 8},
+        //            new Subsection {Name = "Domestic", SectionId = 8},
+        //            new Subsection {Name = "Electronics", SectionId = 8},
+        //            new Subsection {Name = "Beauty and health", SectionId = 8},
+        //            new Subsection {Name = "Educational", SectionId = 8},
+        //            new Subsection {Name = "Transportation", SectionId = 8},
+        //            new Subsection {Name = "Advertising", SectionId = 8},
+        //            new Subsection {Name = "Buildings", SectionId = 8},
+        //            new Subsection {Name = "Animal", SectionId = 8},
+        //            new Subsection {Name = "Photo and video", SectionId = 8},
+        //            new Subsection {Name = "Legal", SectionId = 8},
+        //            new Subsection {Name = "Other", SectionId = 8},
+        //        });
 
-                await dbContext.SaveChangesAsync();
-            }
-        }
+        //        await dbContext.SaveChangesAsync();
+        //    }
+        //}
 
         private static async Task TransportSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
         {

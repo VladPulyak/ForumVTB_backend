@@ -11,10 +11,6 @@ namespace BusinessLayer.Interfaces
 {
     public interface IFavouriteService
     {
-        Task AddToAdvertFavourites(AddToFAdvertFavouritesRequestDto requestDto);
-
-        Task DeleteFromAdvertFavourites(DeleteFromAdvertFavouritesRequestDto requestDto);
-
         Task<GetUserFavouritesResponceDto> GetUserFavourites();
     }
 }

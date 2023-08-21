@@ -21,13 +21,15 @@ namespace Forum_VTB.Controllers
         private readonly IAdvertFileService _advertFileService;
         private readonly ICommentService _commentService;
         private readonly IFavouriteService _favouriteService;
+        private readonly IAdvertFavouriteService _advertFavouriteService;
 
-        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService, IAdvertFileService advertFileService)
+        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService, IAdvertFileService advertFileService, IAdvertFavouriteService advertFavouriteService)
         {
             _advertService = advertService;
             _commentService = commentService;
             _favouriteService = favouriteService;
             _advertFileService = advertFileService;
+            _advertFavouriteService = advertFavouriteService;
         }
 
         [HttpGet("/Adverts/GetUserAdverts")]
@@ -184,11 +186,11 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Favourites/AddToFavourites")]
-        public async Task<ActionResult> AddToFavourites(AddToFAdvertFavouritesRequestDto requestDto)
+        public async Task<ActionResult> AddToFavourites(AddToAdvertFavouritesRequestDto requestDto)
         {
             try
             {
-                await _favouriteService.AddToAdvertFavourites(requestDto);
+                await _advertFavouriteService.AddToAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
@@ -206,7 +208,7 @@ namespace Forum_VTB.Controllers
         {
             try
             {
-                await _favouriteService.DeleteFromAdvertFavourites(requestDto);
+                await _advertFavouriteService.DeleteFromAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
