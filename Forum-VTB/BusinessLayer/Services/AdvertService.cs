@@ -52,7 +52,7 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = _mapper.Map<Advert>(requestDto);
-            var subsection = await _subsectionRepository.GetByName(requestDto.SubsectionName);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             advert.Subsection = subsection;
             advert.Price = requestDto.Price;
             advert.UserId = user.Id;

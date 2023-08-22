@@ -90,6 +90,7 @@ namespace DataAccessLayer.Repositories
         {
             var jobs = await _set.Include(q => q.Files)
                 .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active")
                 .ToListAsync();
 
@@ -101,6 +102,8 @@ namespace DataAccessLayer.Repositories
             keyPhrase = keyPhrase.Trim();
             return await _set.Where(a => (a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper())) && a.Status == "Active")
                 .Include(q => q.Files)
+                .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .ToListAsync();
         }
     }

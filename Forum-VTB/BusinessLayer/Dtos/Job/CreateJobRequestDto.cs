@@ -18,6 +18,8 @@ namespace BusinessLayer.Dtos.Job
 
         public string? SubsectionName { get; set; }
 
+        public string? SectionName { get; set; }
+
         public string? PhoneNumber { get; set; }
 
         public List<string>? FileStrings { get; set; }

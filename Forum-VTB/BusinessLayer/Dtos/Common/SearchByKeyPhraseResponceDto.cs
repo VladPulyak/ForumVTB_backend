@@ -1,4 +1,5 @@
 using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.Job;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace BusinessLayer.Dtos.Common
     public class SearchByKeyPhraseResponceDto
     {
         public List<AdvertResponceDto>? Adverts { get; set; }
+
+        public List<JobResponceDto>? Jobs { get; set; }
     }
 }

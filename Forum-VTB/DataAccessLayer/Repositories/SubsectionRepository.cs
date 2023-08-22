@@ -17,9 +17,10 @@ namespace DataAccessLayer.Repositories
 
         }
 
-        public async Task<Subsection> GetByName(string name)
+        public async Task<Subsection> GetBySubsectionAndSectionNames(string sectionName, string subsectionName)
         {
-            var entity = await _set.SingleOrDefaultAsync(q => q.Name == name);
+            var entity = await _set.Include(q => q.Section)
+                .SingleOrDefaultAsync(q => q.Name == subsectionName && q.Section.Name == sectionName);
 
             if (entity is null)
             {
