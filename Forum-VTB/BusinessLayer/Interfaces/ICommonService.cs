@@ -10,5 +10,7 @@ namespace BusinessLayer.Interfaces
     public interface ICommonService
     {
         Task<SearchByKeyPhraseResponceDto> GetByKeyPhrase(string keyPhrase);
+
+        Task<GetAllUserAdvertsResponceDto> GetUserAdverts();
     }
 }

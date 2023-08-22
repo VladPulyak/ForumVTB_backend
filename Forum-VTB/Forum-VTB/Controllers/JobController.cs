@@ -24,24 +24,24 @@ namespace Forum_VTB.Controllers
             _jobFileService = jobFileService;
         }
 
-        [HttpGet("/Jobs/GetUserJobs")]
-        public async Task<ActionResult> GetUserJobs()
-        {
-            List<JobResponceDto> responceDtos;
-            try
-            {
-                responceDtos = await _jobService.GetUserJobs();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
+        //[HttpGet("/Jobs/GetUserJobs")]
+        //public async Task<ActionResult> GetUserJobs()
+        //{
+        //    List<JobResponceDto> responceDtos;
+        //    try
+        //    {
+        //        responceDtos = await _jobService.GetUserJobs();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ExceptionResponceDto
+        //        {
+        //            Message = ex.Message
+        //        });
+        //    }
 
-            return Ok(responceDtos);
-        }
+        //    return Ok(responceDtos);
+        //}
 
         [AllowAnonymous]
         [HttpGet("/Jobs/GetFourNewestJobs")]

@@ -71,5 +71,14 @@ namespace BusinessLayer.Services
                 Jobs = await GetJobByKeyPhrase(keyPhrase)
             };
         }
+
+        public async Task<GetAllUserAdvertsResponceDto> GetUserAdverts()
+        {
+            return new GetAllUserAdvertsResponceDto
+            {
+                Adverts = await _advertService.GetUserAdverts(),
+                Jobs = await _jobService.GetUserJobs()
+            };
+        }
     }
 }

@@ -32,25 +32,25 @@ namespace Forum_VTB.Controllers
             _advertFavouriteService = advertFavouriteService;
         }
 
-        [HttpGet("/Adverts/GetUserAdverts")]
-        public async Task<ActionResult> GetUserAdverts()
-        {
-            List<AdvertResponceDto> responceDtos;
-            try
-            {
-                responceDtos = await _advertService.GetUserAdverts();
+        //[HttpGet("/Adverts/GetUserAdverts")]
+        //public async Task<ActionResult> GetUserAdverts()
+        //{
+        //    List<AdvertResponceDto> responceDtos;
+        //    try
+        //    {
+        //        responceDtos = await _advertService.GetUserAdverts();
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new ExceptionResponceDto
+        //        {
+        //            Message = ex.Message
+        //        });
+        //    }
 
-            return Ok(responceDtos);
-        }
+        //    return Ok(responceDtos);
+        //}
 
         [AllowAnonymous]
         [HttpGet("/Adverts/GetFourNewestAdverts")]
