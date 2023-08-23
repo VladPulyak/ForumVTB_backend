@@ -214,7 +214,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<JobResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
-            var jobs = await _jobRepository.GetBySubsectionName(requestDto.SubsectionName);
+            var jobs = await _jobRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
             var responceDtos = _mapper.Map<List<JobResponceDto>>(jobs.OrderBy(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {

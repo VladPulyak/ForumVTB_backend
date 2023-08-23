@@ -19,7 +19,7 @@ namespace DataAccessLayer.Interfaces
 
         Task<List<Job>> GetBySectionName(string sectionName);
 
-        Task<List<Job>> GetBySubsectionName(string subsectionName);
+        Task<List<Job>> GetBySubsectionName(string subsectionName, string sectionName);
 
         Task<List<Job>> SearchByKeyPhrase(string keyPhrase);
 

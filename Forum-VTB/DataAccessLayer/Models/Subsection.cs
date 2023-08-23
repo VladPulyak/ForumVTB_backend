@@ -18,8 +18,10 @@ namespace DataAccessLayer.Models
 
         public Section? Section { get; set; }
 
-        public ICollection<Event> Events { get; set; }
+        public ICollection<Event>? Events { get; set; }
 
         public ICollection<Job>? Jobs { get; set; }
+
+        public ICollection<Find>? Finds { get; set; }
     }
 }

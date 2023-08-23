@@ -22,6 +22,6 @@ namespace DataAccessLayer.Models
 
         public ICollection<UserMessage>? Messages { get; set; }
 
-        public Advert Advert { get; set; }
+        public Advert? Advert { get; set; }
     }
 }

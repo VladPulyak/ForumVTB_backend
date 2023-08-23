@@ -32,5 +32,12 @@ namespace DataAccessLayer.Models
 
         public ICollection<JobFavourite>? JobFavourites { get; set; }
 
+        public ICollection<Find>? Finds { get; set; }
+
+        public ICollection<FindFavourite>? FindFavourites { get; set; }
+
+        public ICollection<FindComment>? FindComments { get; set; }
+
+
     }
 }

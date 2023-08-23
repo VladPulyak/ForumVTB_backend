@@ -54,6 +54,14 @@ namespace DataAccessLayer
 
         public DbSet<Chapter> Chapters { get; set; }
 
+        public DbSet<Find> Finds { get; set; }
+
+        public DbSet<FindComment> FindComments { get; set; }
+
+        public DbSet<FindFavourite> FindFavourites { get; set; }
+
+        public DbSet<FindFile> FindFiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
@@ -72,6 +80,10 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new JobFavouriteConfigurations());
             modelBuilder.ApplyConfiguration(new JobFileConfigurations());
             modelBuilder.ApplyConfiguration(new ChapterConfigurations());
+            modelBuilder.ApplyConfiguration(new FindCommnetConfigurations());
+            modelBuilder.ApplyConfiguration(new FindConfigurations());
+            modelBuilder.ApplyConfiguration(new FindFavouriteConfigurations());
+            modelBuilder.ApplyConfiguration(new FindFileConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

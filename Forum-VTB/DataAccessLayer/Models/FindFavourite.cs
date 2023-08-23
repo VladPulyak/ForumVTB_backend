@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Models
 {
-    public class AdvertFavourite
+    public class FindFavourite
     {
         public string? Id { get; set; }
 
         public string? UserId { get; set; }
 
-        public string? AdvertId { get; set; }
+        public string? FindId { get; set; }
 
         public UserProfile? User { get; set; }
 
-        public Advert? Advert { get; set; }
+        public Find? Find { get; set; }
     }
 }

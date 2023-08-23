@@ -86,12 +86,13 @@ namespace DataAccessLayer.Repositories
             return jobs;
         }
 
-        public async Task<List<Job>> GetBySubsectionName(string subsectionName)
+        public async Task<List<Job>> GetBySubsectionName(string subsectionName, string sectionName)
         {
-            var jobs = await _set.Include(q => q.Files)
+            var jobs = await _set
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
-                .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active")
+                .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active" && q.Subsection.Section.Name == sectionName)
+                .Include(q => q.Files)
                 .ToListAsync();
 
             return jobs;

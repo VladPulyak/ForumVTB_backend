@@ -236,7 +236,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
-            var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
+            var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
