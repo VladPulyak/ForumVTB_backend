@@ -109,11 +109,9 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AdvertId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -198,6 +196,125 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Events", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Find", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("MainPhoto")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SubsectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsectionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Finds", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FindId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ParentCommentId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FindId");
+
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FindComments", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindFavourite", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FindId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FindId");
+
+                    b.HasIndex("UserId", "FindId")
+                        .IsUnique();
+
+                    b.ToTable("FindFavourites", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FindId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FindId");
+
+                    b.ToTable("FindFiles", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
                 {
                     b.Property<string>("Id")
@@ -252,11 +369,9 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("JobId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -363,7 +478,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AdvertId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstUserId")
@@ -699,14 +813,12 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Favourites")
                         .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
                         .WithMany("AdvertFavourites")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Advert");
 
@@ -733,6 +845,73 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Subsection");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Find", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
+                        .WithMany("Finds")
+                        .HasForeignKey("SubsectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("Finds")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Subsection");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindComment", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Find", "Find")
+                        .WithMany("FindComments")
+                        .HasForeignKey("FindId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.FindComment", "ParentComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentCommentId");
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
+                        .WithMany("FindComments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Find");
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindFavourite", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Find", "Find")
+                        .WithMany("Favourites")
+                        .HasForeignKey("FindId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("FindFavourites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Find");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindFile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Find", "Find")
+                        .WithMany("Files")
+                        .HasForeignKey("FindId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Find");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
@@ -755,14 +934,12 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.Job", "Job")
                         .WithMany("Favourites")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "User")
                         .WithMany("JobFavourites")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Job");
 
@@ -814,8 +991,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Chats")
                         .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "FirstUser")
                         .WithMany("ChatsAsFirstUser")
@@ -946,6 +1122,20 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Sections");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Find", b =>
+                {
+                    b.Navigation("Favourites");
+
+                    b.Navigation("Files");
+
+                    b.Navigation("FindComments");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.FindComment", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Job", b =>
                 {
                     b.Navigation("Favourites");
@@ -963,6 +1153,8 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Adverts");
 
                     b.Navigation("Events");
+
+                    b.Navigation("Finds");
 
                     b.Navigation("Jobs");
                 });
@@ -988,6 +1180,12 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("ChatsAsFirstUser");
 
                     b.Navigation("ChatsAsSecondUser");
+
+                    b.Navigation("FindComments");
+
+                    b.Navigation("FindFavourites");
+
+                    b.Navigation("Finds");
 
                     b.Navigation("JobFavourites");
 

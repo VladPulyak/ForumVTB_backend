@@ -202,7 +202,7 @@ namespace BusinessLayer.Services
         public async Task<List<JobResponceDto>> FindBySectionName(FindBySectionNameRequestDto requestDto)
         {
             var jobs = await _jobRepository.GetBySectionName(requestDto.SectionName);
-            var responceDtos = _mapper.Map<List<JobResponceDto>>(jobs.OrderBy(q => q.DateOfCreation).ToList());
+            var responceDtos = _mapper.Map<List<JobResponceDto>>(jobs.OrderByDescending(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
@@ -215,7 +215,7 @@ namespace BusinessLayer.Services
         public async Task<List<JobResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             var jobs = await _jobRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
-            var responceDtos = _mapper.Map<List<JobResponceDto>>(jobs.OrderBy(q => q.DateOfCreation).ToList());
+            var responceDtos = _mapper.Map<List<JobResponceDto>>(jobs.OrderByDescending(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
