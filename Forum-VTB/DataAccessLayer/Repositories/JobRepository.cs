@@ -49,6 +49,7 @@ namespace DataAccessLayer.Repositories
             var job = await _set.Where(q => q.Id == jobId)
                 .Include(q => q.User)
                 .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .Include(q => q.Files)
                 .SingleAsync();
             if (job is null)

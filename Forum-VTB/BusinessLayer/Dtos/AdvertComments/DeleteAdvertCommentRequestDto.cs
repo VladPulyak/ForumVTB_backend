@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Dtos.AdvertComments
 {
-    public class DeleteCommentRequestDto
+    public class DeleteAdvertCommentRequestDto
     {
         public string? CommentId { get; set; }
-        //public DateTime DateOfCreation { get; set; }
-
-        //public string? Username { get; set; }
     }
 }

@@ -62,6 +62,10 @@ namespace DataAccessLayer.Extensions
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IJobFileRepository, JobFileRepository>();
             services.AddScoped<IJobFavouriteRepository, JobFavouriteRepository>();
+            services.AddScoped<IFindRepository, FindRepository>();
+            services.AddScoped<IFindCommentRepository, FindCommentRepository>();
+            services.AddScoped<IFindFavouriteRepository, FindFavouriteRepository>();
+            services.AddScoped<IFindFileRepository, FindFileRepository>();
             services.AddScoped<IReadOnlyRepository<AgriculturalMachineryInfo>, AgriculturalMachineryInfoRepository>();
             services.AddScoped<IReadOnlyRepository<BusesInfo>, BusesInfoRepository>();
             services.AddScoped<IReadOnlyRepository<CarsInfo>, CarsInfoRepository>();

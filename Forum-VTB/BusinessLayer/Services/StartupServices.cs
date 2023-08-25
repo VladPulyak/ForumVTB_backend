@@ -26,6 +26,7 @@ namespace BusinessLayer.Services
                 await ChaptersSeedData(dbContext);
                 await ISuggestSubsectionsSeedDataAsync(dbContext);
                 await ISearchSubsectionsSeedDataAsync(dbContext);
+                await FindsSubsectionsSeedData(dbContext);
             }
         }
 
@@ -74,7 +75,30 @@ namespace BusinessLayer.Services
                     new Section {Name = "Clothes and personal things", ChapterId = 1},
                     new Section {Name = "House and garden", ChapterId = 1},
                     new Section {Name = "I suggest", ChapterId = 2},
-                    new Section {Name = "I search", ChapterId = 2}
+                    new Section {Name = "I search", ChapterId = 2},
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 3))
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section { Name = "Finds", ChapterId = 3 }
+                });
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task FindsSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 10))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Losses", SectionId = 10},
+                    new Subsection {Name = "Finds", SectionId = 10}
                 });
 
                 await dbContext.SaveChangesAsync();
@@ -104,6 +128,7 @@ namespace BusinessLayer.Services
                 await dbContext.SaveChangesAsync();
             }
         }
+
         private static async Task ISearchSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
         {
             if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 9))

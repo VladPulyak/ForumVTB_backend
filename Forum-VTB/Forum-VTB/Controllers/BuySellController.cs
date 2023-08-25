@@ -221,25 +221,6 @@ namespace Forum_VTB.Controllers
             return Ok("Advert deleted from favourites successfully!");
         }
 
-        [HttpGet("/Favourites/GetUserFavourites")]
-        public async Task<ActionResult> GetUserFavourites()
-        {
-            GetUserFavouritesResponceDto responceDto;
-            try
-            {
-                responceDto = await _favouriteService.GetUserFavourites();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-
-            return Ok(responceDto);
-        }
-
         [AllowAnonymous]
         [HttpGet("/Adverts/GetAllAdverts")]
         public async Task<ActionResult> GetAllAdverts()
@@ -302,9 +283,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Comments/CreateComment")]
-        public async Task<ActionResult> CreateComment(CreateCommentRequestDto requestDto)
+        public async Task<ActionResult> CreateComment(CreateAdvertCommentRequestDto requestDto)
         {
-            CreateCommentResponceDto responceDto;
+            CreateAdvertCommentResponceDto responceDto;
             try
             {
                 responceDto = await _commentService.CreateComment(requestDto);
@@ -321,9 +302,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPut("/Comments/UpdateComment")]
-        public async Task<ActionResult> UpdateComment(UpdateCommentRequestDto requestDto)
+        public async Task<ActionResult> UpdateComment(UpdateAdvertCommentRequestDto requestDto)
         {
-            UpdateCommentResponceDto responceDto;
+            UpdateAdvertCommentResponceDto responceDto;
 
             try
             {
@@ -341,7 +322,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpDelete("/Comments/DeleteComment")]
-        public async Task<ActionResult> DeleteComment(DeleteCommentRequestDto requestDto)
+        public async Task<ActionResult> DeleteComment(DeleteAdvertCommentRequestDto requestDto)
         {
             try
             {
@@ -359,9 +340,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Comments/ReplyComment")]
-        public async Task<ActionResult> ReplyComment(ReplyCommentRequestDto requestDto)
+        public async Task<ActionResult> ReplyComment(ReplyAdvertCommentRequestDto requestDto)
         {
-            ReplyCommentResponceDto responceDto;
+            ReplyAdvertCommentResponceDto responceDto;
 
             try
             {

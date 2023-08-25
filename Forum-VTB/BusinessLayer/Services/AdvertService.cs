@@ -115,8 +115,8 @@ namespace BusinessLayer.Services
                 DateOfCreation = updatedAdvert.DateOfCreation,
                 Status = updatedAdvert.Status,
                 MainPhoto = updatedAdvert.MainPhoto,
-                Comments = updatedAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
-                await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
+                Comments = updatedAdvert.AdvertComments is null ? new List<GetAdvertCommentResponceDto>() :
+                await _commentService.GetCommentsByAdvertId(new GetAdvertCommentRequestDto
                 {
                     AdvertId = updatedAdvert.Id
                 }),
@@ -189,8 +189,8 @@ namespace BusinessLayer.Services
                 Description = userAdvert.Description,
                 DateOfCreation = userAdvert.DateOfCreation,
                 Price = userAdvert.Price,
-                Comments = userAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
-                await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
+                Comments = userAdvert.AdvertComments is null ? new List<GetAdvertCommentResponceDto>() :
+                await _commentService.GetCommentsByAdvertId(new GetAdvertCommentRequestDto
                 {
                     AdvertId = userAdvert.Id
                 }),

@@ -35,6 +35,10 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IJobFileService, JobFileService>();
             services.AddScoped<IJobFavouriteService, JobFavouriteService>();
             services.AddScoped<IAdvertFavouriteService, AdvertFavouriteService>();
+            services.AddScoped<IFindService, FindService>();
+            services.AddScoped<IFindCommentService, FindCommentService>();
+            services.AddScoped<IFindFavouriteService, FindFavouriteService>();
+            services.AddScoped<IFindFileService, FindFileService>();
             services.AddSingleton<TelegramBotService>();
             services.AddAutoMapper(typeof(UserMapProfile));
             return services;

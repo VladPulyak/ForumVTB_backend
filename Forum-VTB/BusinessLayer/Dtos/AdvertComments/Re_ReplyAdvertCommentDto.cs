@@ -1,4 +1,3 @@
-﻿using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Dtos.AdvertComments
 {
-    public class GetCommentResponceDto
+    public class Re_ReplyAdvertCommentDto
     {
         public string? CommentId { get; set; }
+
+        public string? ParentCommentId { get; set; }
 
         public string? UserPhoto { get; set; }
 
@@ -21,6 +22,5 @@ namespace BusinessLayer.Dtos.AdvertComments
 
         public DateTime DateOfCreation { get; set; }
 
-        public List<Re_ReplyCommentDto>? Replies { get; set; }
     }
 }

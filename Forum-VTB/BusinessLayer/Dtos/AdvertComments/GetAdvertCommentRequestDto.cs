@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Dtos.AdvertComments
 {
-    public class GetCommentsRequestDto
+    public class GetAdvertCommentRequestDto
     {
         public string? AdvertId { get; set; }
     }

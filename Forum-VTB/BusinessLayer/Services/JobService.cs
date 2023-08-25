@@ -181,6 +181,7 @@ namespace BusinessLayer.Services
                 UserName = userJob.User.UserName,
                 UserPhoto = userJob.User.Photo,
                 SubsectionName = userJob.Subsection.Name,
+                SectionName = userJob.Subsection.Section.Name,
                 IsFavourite = isFavourite,
                 PhoneNumber = userJob.PhoneNumber,
                 MainPhoto = userJob.MainPhoto

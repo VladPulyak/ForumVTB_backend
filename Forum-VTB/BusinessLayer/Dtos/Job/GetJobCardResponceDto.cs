@@ -18,6 +18,8 @@ namespace BusinessLayer.Dtos.Job
 
         public string? SubsectionName { get; set; }
 
+        public string? SectionName { get; set; }
+
         public string? Price { get; set; }
 
         public DateTime DateOfCreation { get; set; }

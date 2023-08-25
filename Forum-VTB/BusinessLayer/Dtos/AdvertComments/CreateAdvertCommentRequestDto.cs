@@ -6,16 +6,10 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Dtos.AdvertComments
 {
-    public class ReplyCommentRequestDto
+    public class CreateAdvertCommentRequestDto
     {
         public string? AdvertId { get; set; }
 
         public string? Text { get; set; }
-
-        public string? ParentCommentId { get; set; }
-
-        //public DateTime ParentCommentDateOfCreation { get; set; }
-
-        //public string? ParentCommentUserName { get; set; }
     }
 }

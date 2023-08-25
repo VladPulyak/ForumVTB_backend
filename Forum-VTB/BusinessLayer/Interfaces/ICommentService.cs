@@ -10,14 +10,14 @@ namespace BusinessLayer.Interfaces
 {
     public interface ICommentService
     {
-        Task<CreateCommentResponceDto> CreateComment(CreateCommentRequestDto requestDto);
+        Task<CreateAdvertCommentResponceDto> CreateComment(CreateAdvertCommentRequestDto requestDto);
 
-        Task<UpdateCommentResponceDto> UpdateComment(UpdateCommentRequestDto requestDto);
+        Task<UpdateAdvertCommentResponceDto> UpdateComment(UpdateAdvertCommentRequestDto requestDto);
 
-        Task DeleteComment(DeleteCommentRequestDto requestDto);
+        Task DeleteComment(DeleteAdvertCommentRequestDto requestDto);
 
-        Task<List<GetCommentResponceDto>> GetCommentsByAdvertId(GetCommentsRequestDto requestDto);
+        Task<List<GetAdvertCommentResponceDto>> GetCommentsByAdvertId(GetAdvertCommentRequestDto requestDto);
 
-        Task<ReplyCommentResponceDto> ReplyComment(ReplyCommentRequestDto requestDto);
+        Task<ReplyAdvertCommentResponceDto> ReplyComment(ReplyAdvertCommentRequestDto requestDto);
     }
 }

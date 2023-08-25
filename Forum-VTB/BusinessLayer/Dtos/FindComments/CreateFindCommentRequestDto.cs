@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos.AdvertComments
+namespace BusinessLayer.Dtos.FindComments
 {
-    public class CreateCommentRequestDto
+    public class CreateFindCommentRequestDto
     {
-        public string? AdvertId { get; set; }
+        public string? FindId { get; set; }
 
         public string? Text { get; set; }
     }

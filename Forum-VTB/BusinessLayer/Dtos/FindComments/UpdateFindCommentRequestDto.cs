@@ -1,18 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLayer.Dtos.AdvertComments
+namespace BusinessLayer.Dtos.FindComments
 {
-    public class UpdateCommentRequestDto
+    public class UpdateFindCommentRequestDto
     {
-
         public string? CommentId { get; set; }
-        //public DateTime DateOfCreation { get; set; }
-
-        //public string? Username { get; set; }
 
         public string? Text { get; set; }
     }
