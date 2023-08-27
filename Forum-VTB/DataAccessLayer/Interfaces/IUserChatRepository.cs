@@ -12,5 +12,7 @@ namespace DataAccessLayer.Interfaces
         Task<UserChat> GetByUserIds(string firstUserId, string secondUserId);
 
         Task<List<UserChat>> GetByUserId(string userId);
+
+        Task<UserChat> GetByUserIdsAndAdvertId(string firstUserId, string secondUserId, string advertId);
     }
 }

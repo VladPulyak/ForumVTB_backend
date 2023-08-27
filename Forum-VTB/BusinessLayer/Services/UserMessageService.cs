@@ -21,8 +21,10 @@ namespace BusinessLayer.Services
         private readonly IUserChatRepository _userChatRepository;
         private readonly IUserMessageRepository _userMessageRepository;
         private readonly IAdvertRepository _advertRepository;
+        private readonly IJobRepository _jobRepository;
+        private readonly IFindRepository _findRepository;
 
-        public UserMessageService(IMapper mapper, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IUserMessageRepository userMessageRepository, IUserChatRepository userChatRepository, IAdvertRepository advertRepository)
+        public UserMessageService(IMapper mapper, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IUserMessageRepository userMessageRepository, IUserChatRepository userChatRepository, IAdvertRepository advertRepository, IJobRepository jobRepository, IFindRepository findRepository)
         {
             _mapper = mapper;
             _contextAccessor = contextAccessor;
@@ -30,23 +32,62 @@ namespace BusinessLayer.Services
             _userMessageRepository = userMessageRepository;
             _userChatRepository = userChatRepository;
             _advertRepository = advertRepository;
+            _jobRepository = jobRepository;
+            _findRepository = findRepository;
         }
 
         public async Task<UserChatResponceDto> CreateChat(CreateChatRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
-            var advert = await _advertRepository.GetActiveById(requestDto.AdvertId);
-            return new UserChatResponceDto
+            var receiver = await _userManager.FindByNameAsync(requestDto.ReceiverUsername);
+            if (requestDto.ChapterName == "Buy-Sell")
             {
-                NickName = advert.User.NickName,
-                Username = advert.User.UserName,
-                UserPhoto = advert.User.Photo,
-                AdvertPrice = advert.Price,
-                AdvertTitle = advert.Title,
-                AdvertPhoto = advert.Files.First().FileURL,
-                AdvertId = advert.Id
-            };
+                var advert = await _advertRepository.GetActiveById(requestDto.AdvertId);
+                var searchedChat = await _userChatRepository.GetByUserIdsAndAdvertId(user.Id, receiver.Id, advert.Id);
+                return new UserChatResponceDto
+                {
+                    ChatId = searchedChat is not null ? searchedChat.Id : null,
+                    NickName = advert.User.NickName,
+                    Username = advert.User.UserName,
+                    UserPhoto = advert.User.Photo,
+                    AdvertPrice = advert.Price,
+                    AdvertTitle = advert.Title,
+                    AdvertPhoto = advert.Files.First().FileURL,
+                    AdvertId = advert.Id
+                };
+            }
+            else if (requestDto.ChapterName == "Services")
+            {
+                var job = await _jobRepository.GetActiveById(requestDto.AdvertId);
+                var searchedChat = await _userChatRepository.GetByUserIdsAndAdvertId(user.Id, receiver.Id, job.Id);
+                return new UserChatResponceDto
+                {
+                    ChatId = searchedChat is not null ? searchedChat.Id : null,
+                    NickName = job.User.NickName,
+                    Username = job.User.UserName,
+                    UserPhoto = job.User.Photo,
+                    AdvertPrice = job.Price,
+                    AdvertTitle = job.Title,
+                    AdvertPhoto = job.Files.First().FileURL,
+                    AdvertId = job.Id
+                };
+            }
+            else
+            {
+                var find = await _findRepository.GetActiveById(requestDto.AdvertId);
+                var searchedChat = await _userChatRepository.GetByUserIdsAndAdvertId(user.Id, receiver.Id, find.Id);
+                return new UserChatResponceDto
+                {
+                    ChatId = searchedChat is not null ? searchedChat.Id : null,
+                    NickName = find.User.NickName,
+                    Username = find.User.UserName,
+                    UserPhoto = find.User.Photo,
+                    AdvertTitle = find.Title,
+                    AdvertPhoto = find.Files.First().FileURL,
+                    AdvertId = find.Id
+                };
+            }
         }
 
         public async Task<UserMessageResponceDto> SendMessage(SendMessageRequestDto requestDto)
@@ -102,7 +143,7 @@ namespace BusinessLayer.Services
                 AdvertId = chat.Advert.Id,
                 AdvertTitle = chat.Advert.Title,
                 AdvertPrice = chat.Advert.Price,
-                AdvertPhoto = chat.Advert.Files.First().FileURL
+                AdvertPhoto = chat.Advert.MainPhoto
             }).ToList();
 
             foreach (var chatDto in chatDtos)
