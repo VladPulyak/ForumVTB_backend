@@ -95,7 +95,7 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var receiver = await _userManager.FindByNameAsync(requestDto.ReceiverUsername);
-            var searchedChat = await _userChatRepository.GetByUserIds(user.Id, receiver.Id);
+            var searchedChat = await _userChatRepository.GetByUserIdsAndAdvertId(user.Id, receiver.Id, requestDto.AdvertId);
             if (searchedChat == null)
             {
                 searchedChat = await _userChatRepository.Add(new UserChat
