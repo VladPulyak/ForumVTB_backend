@@ -91,12 +91,15 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = await _advertRepository.GetById(requestDto.AdvertId);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
             advert.MainPhoto = requestDto.MainPhoto;
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Status = Status.Active.ToString();
+            advert.Subsection = subsection;
+            advert.SubsectionId = subsection.Id;
             await _advertFileService.AddMissingFiles(new AddMissingAdvertFilesRequestDto
             {
                 Advert = advert,

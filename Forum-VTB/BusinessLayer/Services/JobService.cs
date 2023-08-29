@@ -80,12 +80,15 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var job = await _jobRepository.GetActiveById(requestDto.JobId);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             job.Title = requestDto.Title;
             job.Description = requestDto.Description;
             job.Price = requestDto.Price;
             job.MainPhoto = requestDto.MainPhoto;
             job.DateOfCreation = DateTime.UtcNow;
             job.Status = Status.Active.ToString();
+            job.Subsection = subsection;
+            job.SubsectionId = subsection.Id;
             await _jobFileService.AddMissingFiles(new AddMissingJobFilesRequestDto
             {
                 Job = job,

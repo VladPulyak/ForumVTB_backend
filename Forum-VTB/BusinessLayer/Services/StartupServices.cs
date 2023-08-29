@@ -30,6 +30,31 @@ namespace BusinessLayer.Services
             }
         }
 
+        //private static async Task ISuggestSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
+        //{
+        //    if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
+        //    {
+        //        await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+        //        {
+        //            new Subsection {Name = "Work", SectionId = 8},
+        //            new Subsection {Name = "Domestic", SectionId = 8},
+        //            new Subsection {Name = "Electronics", SectionId = 8},
+        //            new Subsection {Name = "Beauty and health", SectionId = 8},
+        //            new Subsection {Name = "Educational", SectionId = 8},
+        //            new Subsection {Name = "Transportation", SectionId = 8},
+        //            new Subsection {Name = "Advertising", SectionId = 8},
+        //            new Subsection {Name = "Buildings", SectionId = 8},
+        //            new Subsection {Name = "Animal", SectionId = 8},
+        //            new Subsection {Name = "Photo and video", SectionId = 8},
+        //            new Subsection {Name = "Legal", SectionId = 8},
+        //            new Subsection {Name = "Other", SectionId = 8},
+        //        });
+
+        //        await dbContext.SaveChangesAsync();
+        //    }
+        //}
+
+
         private static async Task ChaptersSeedData(ForumVTBDbContext dbContext)
         {
             if (!await dbContext.Chapters.AnyAsync())
@@ -89,6 +114,15 @@ namespace BusinessLayer.Services
                 });
                 await dbContext.SaveChangesAsync();
             }
+
+            //if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 3))
+            //{
+            //    await dbContext.Sections.AddRangeAsync(new List<Section>
+            //    {
+            //        new Section { Name = "Finds", ChapterId = 3 }
+            //    });
+            //    await dbContext.SaveChangesAsync();
+            //}
         }
 
         private static async Task FindsSubsectionsSeedData(ForumVTBDbContext dbContext)
