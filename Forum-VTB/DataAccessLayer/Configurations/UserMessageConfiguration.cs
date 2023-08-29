@@ -21,7 +21,7 @@ namespace DataAccessLayer.Configurations
             builder.HasOne(q => q.Sender).WithMany(w => w.SentMessages).HasForeignKey(q => q.SenderId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.Receiver).WithMany(w => w.ReceivedMessages).HasForeignKey(q => q.ReceiverId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.ParentMessage).WithMany().HasForeignKey(q => q.ParentMessageId);
-            builder.HasOne(q => q.Chat).WithMany(w => w.Messages).HasForeignKey(q => q.ChatId).OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(q => q.Chat).WithMany(w => w.Messages).HasForeignKey(q => q.ChatId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

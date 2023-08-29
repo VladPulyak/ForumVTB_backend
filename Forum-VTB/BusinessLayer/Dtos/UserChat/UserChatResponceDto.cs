@@ -25,6 +25,8 @@ namespace BusinessLayer.Dtos.UserChat
 
         public string? AdvertPhoto { get; set; }
 
+        public string? ChapterName { get; set; }
+
         public List<GetChatMessageResponceDto> Messages { get; set; }
     }
 }

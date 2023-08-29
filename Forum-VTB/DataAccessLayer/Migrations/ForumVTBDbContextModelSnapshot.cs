@@ -480,6 +480,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<string>("AdvertId")
                         .HasColumnType("text");
 
+                    b.Property<string>("ChapterName")
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstUserId")
                         .HasColumnType("text");
 
@@ -487,8 +490,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdvertId");
 
                     b.HasIndex("FirstUserId");
 
@@ -988,11 +989,6 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
-                        .WithMany("Chats")
-                        .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("DataAccessLayer.Models.UserProfile", "FirstUser")
                         .WithMany("ChatsAsFirstUser")
                         .HasForeignKey("FirstUserId")
@@ -1002,8 +998,6 @@ namespace DataAccessLayer.Migrations
                         .WithMany("ChatsAsSecondUser")
                         .HasForeignKey("SecondUserId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Advert");
 
                     b.Navigation("FirstUser");
 
@@ -1015,7 +1009,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("DataAccessLayer.Models.UserChat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserMessage", "ParentMessage")
                         .WithMany()
@@ -1104,8 +1098,6 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
                     b.Navigation("AdvertComments");
-
-                    b.Navigation("Chats");
 
                     b.Navigation("Favourites");
 

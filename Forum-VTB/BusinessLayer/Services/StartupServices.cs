@@ -15,6 +15,7 @@ namespace BusinessLayer.Services
                 var dbContext = scope.ServiceProvider.GetRequiredService<ForumVTBDbContext>();
                 dbContext.Database.Migrate();
                 await RolesSeedDataAsync(dbContext);
+                await ChaptersSeedData(dbContext);
                 await SectionsSeedDataAsync(dbContext);
                 await TransportSubsectionsSeedDataAsync(dbContext);
                 await ElectronicsSubsectionsSeedDataAsync(dbContext);
@@ -23,7 +24,6 @@ namespace BusinessLayer.Services
                 await RealEstateSubsectionsSeedDataAsync(dbContext);
                 await ClothesAndPersonalThingsSubsectionsSeedDataAsync(dbContext);
                 await HouseAndGardenSubsectionsSeedDataAsync(dbContext);
-                await ChaptersSeedData(dbContext);
                 await ISuggestSubsectionsSeedDataAsync(dbContext);
                 await ISearchSubsectionsSeedDataAsync(dbContext);
                 await FindsSubsectionsSeedData(dbContext);
