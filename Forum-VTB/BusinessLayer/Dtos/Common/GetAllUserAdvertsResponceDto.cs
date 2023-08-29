@@ -1,4 +1,5 @@
 using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.Find;
 using BusinessLayer.Dtos.Job;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace BusinessLayer.Dtos.Common
         public List<AdvertResponceDto>? Adverts { get; set; }
 
         public List<JobResponceDto>? Jobs { get; set; }
+
+        public List<FindResponceDto>? Finds { get; set; }
     }
 }

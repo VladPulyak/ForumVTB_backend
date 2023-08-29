@@ -27,33 +27,9 @@ namespace BusinessLayer.Services
                 await ISuggestSubsectionsSeedDataAsync(dbContext);
                 await ISearchSubsectionsSeedDataAsync(dbContext);
                 await FindsSubsectionsSeedData(dbContext);
+                await ForumSubsectionsSeedData(dbContext);
             }
         }
-
-        //private static async Task ISuggestSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
-        //{
-        //    if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
-        //    {
-        //        await dbContext.Subsections.AddRangeAsync(new List<Subsection>
-        //        {
-        //            new Subsection {Name = "Work", SectionId = 8},
-        //            new Subsection {Name = "Domestic", SectionId = 8},
-        //            new Subsection {Name = "Electronics", SectionId = 8},
-        //            new Subsection {Name = "Beauty and health", SectionId = 8},
-        //            new Subsection {Name = "Educational", SectionId = 8},
-        //            new Subsection {Name = "Transportation", SectionId = 8},
-        //            new Subsection {Name = "Advertising", SectionId = 8},
-        //            new Subsection {Name = "Buildings", SectionId = 8},
-        //            new Subsection {Name = "Animal", SectionId = 8},
-        //            new Subsection {Name = "Photo and video", SectionId = 8},
-        //            new Subsection {Name = "Legal", SectionId = 8},
-        //            new Subsection {Name = "Other", SectionId = 8},
-        //        });
-
-        //        await dbContext.SaveChangesAsync();
-        //    }
-        //}
-
 
         private static async Task ChaptersSeedData(ForumVTBDbContext dbContext)
         {
@@ -115,14 +91,44 @@ namespace BusinessLayer.Services
                 await dbContext.SaveChangesAsync();
             }
 
-            //if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 3))
-            //{
-            //    await dbContext.Sections.AddRangeAsync(new List<Section>
-            //    {
-            //        new Section { Name = "Finds", ChapterId = 3 }
-            //    });
-            //    await dbContext.SaveChangesAsync();
-            //}
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 5))
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section { Name = "Forum", ChapterId = 5 }
+                });
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task ForumSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 11))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Tourism", SectionId = 11},
+                    new Subsection {Name = "Real Estate", SectionId = 11},
+                    new Subsection {Name = "Sport", SectionId = 11},
+                    new Subsection {Name = "Hunting", SectionId = 11},
+                    new Subsection {Name = "Repairing", SectionId = 11},
+                    new Subsection {Name = "Games", SectionId = 11},
+                    new Subsection {Name = "Fishing", SectionId = 11},
+                    new Subsection {Name = "Electronics", SectionId = 11},
+                    new Subsection {Name = "Health and beauty", SectionId = 11},
+                    new Subsection {Name = "Travelling", SectionId = 11},
+                    new Subsection {Name = "Documents", SectionId = 11},
+                    new Subsection {Name = "For parents", SectionId = 11},
+                    new Subsection {Name = "All about city", SectionId = 11},
+                    new Subsection {Name = "Auto", SectionId = 11},
+                    new Subsection {Name = "Animals", SectionId = 11},
+                    new Subsection {Name = "Cooking", SectionId = 11},
+                    new Subsection {Name = "Plants", SectionId = 11},
+                    new Subsection {Name = "Other", SectionId = 11}
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
         }
 
         private static async Task FindsSubsectionsSeedData(ForumVTBDbContext dbContext)

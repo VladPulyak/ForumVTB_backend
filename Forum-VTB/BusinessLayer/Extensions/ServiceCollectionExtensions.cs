@@ -28,7 +28,6 @@ namespace BusinessLayer.Extensions
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IAdvertFileService, AdvertFileService>();
             services.AddScoped<IEventService, EventService>();
-            services.AddScoped<IFavouriteService, FavouriteService>();
             services.AddScoped<IUserThemeService, UserThemeService>();
             services.AddScoped<ICommonService, CommonService>();
             services.AddScoped<IJobService, JobService>();

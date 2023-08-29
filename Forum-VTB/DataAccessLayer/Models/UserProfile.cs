@@ -38,6 +38,12 @@ namespace DataAccessLayer.Models
 
         public ICollection<FindComment>? FindComments { get; set; }
 
+        public ICollection<Topic>? Topics { get; set; }
+
+        public ICollection<TopicFavourite>? TopicFavourites { get; set; }
+
+        public ICollection<TopicMessage>? TopicMessages { get; set; }
+
 
     }
 }

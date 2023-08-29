@@ -62,6 +62,14 @@ namespace DataAccessLayer
 
         public DbSet<FindFile> FindFiles { get; set; }
 
+        public DbSet<Topic> Topics { get; set; }
+
+        public DbSet<TopicMessage> TopicMessages { get; set; }
+
+        public DbSet<TopicFavourite> TopicFavourites { get; set; }
+
+        public DbSet<TopicFile> TopicFiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserProfileConfigurations());
@@ -80,10 +88,14 @@ namespace DataAccessLayer
             modelBuilder.ApplyConfiguration(new JobFavouriteConfigurations());
             modelBuilder.ApplyConfiguration(new JobFileConfigurations());
             modelBuilder.ApplyConfiguration(new ChapterConfigurations());
-            modelBuilder.ApplyConfiguration(new FindCommnetConfigurations());
+            modelBuilder.ApplyConfiguration(new FindCommentConfigurations());
             modelBuilder.ApplyConfiguration(new FindConfigurations());
             modelBuilder.ApplyConfiguration(new FindFavouriteConfigurations());
             modelBuilder.ApplyConfiguration(new FindFileConfigurations());
+            modelBuilder.ApplyConfiguration(new TopicMessageConfigurations());
+            modelBuilder.ApplyConfiguration(new TopicConfigurations());
+            modelBuilder.ApplyConfiguration(new TopicFavouriteConfigurations());
+            modelBuilder.ApplyConfiguration(new TopicFileConfigurations());
             base.OnModelCreating(modelBuilder);
         }
     }

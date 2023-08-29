@@ -12,5 +12,7 @@ namespace BusinessLayer.Interfaces
         Task<SearchByKeyPhraseResponceDto> GetByKeyPhrase(string keyPhrase);
 
         Task<GetAllUserAdvertsResponceDto> GetUserAdverts();
+
+        Task<GetUserFavouritesResponceDto> GetUserFavourites();
     }
 }

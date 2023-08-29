@@ -55,5 +55,23 @@ namespace Forum_VTB.Controllers
             }
             return Ok(responceDto);
         }
+
+        [HttpGet("/GetUserFavourites")]
+        public async Task<ActionResult> GetUserFavourites()
+        {
+            GetUserFavouritesResponceDto responceDto;
+            try
+            {
+                responceDto = await _commonService.GetUserFavourites();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
+        }
     }
 }

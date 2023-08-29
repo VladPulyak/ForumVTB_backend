@@ -22,14 +22,12 @@ namespace Forum_VTB.Controllers
         private readonly IFindService _findService;
         private readonly IFindFileService _findFileService;
         private readonly IFindCommentService _findCommentService;
-        private readonly IFavouriteService _favouriteService;
         private readonly IFindFavouriteService _findFavouriteService;
 
-        public FindController(IFindService findService, IFindCommentService findCommentService, IFavouriteService favouriteService, IFindFileService findFileService, IFindFavouriteService findFavouriteService)
+        public FindController(IFindService findService, IFindCommentService findCommentService, IFindFileService findFileService, IFindFavouriteService findFavouriteService)
         {
             _findService = findService;
             _findCommentService = findCommentService;
-            _favouriteService = favouriteService;
             _findFileService = findFileService;
             _findFavouriteService = findFavouriteService;
         }

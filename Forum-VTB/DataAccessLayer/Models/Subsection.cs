@@ -23,5 +23,7 @@ namespace DataAccessLayer.Models
         public ICollection<Job>? Jobs { get; set; }
 
         public ICollection<Find>? Finds { get; set; }
+
+        public ICollection<Topic>? Topics { get; set; }
     }
 }
