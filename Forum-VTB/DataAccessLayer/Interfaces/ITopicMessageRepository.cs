@@ -9,5 +9,10 @@ namespace DataAccessLayer.Interfaces
 {
     public interface ITopicMessageRepository : IRepository<TopicMessage>
     {
+        Task<TopicMessage> GetById(string id);
+
+        Task<List<TopicMessage>> GetByTopicId(string topicId);
+
+        Task Delete(string messageId);
     }
 }

@@ -60,6 +60,5 @@ namespace BusinessLayer.Services
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             return responceDtos;
         }
-
     }
 }

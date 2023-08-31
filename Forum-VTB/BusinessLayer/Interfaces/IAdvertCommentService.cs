@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Interfaces
 {
-    public interface ICommentService
+    public interface IAdvertCommentService
     {
         Task<CreateAdvertCommentResponceDto> CreateComment(CreateAdvertCommentRequestDto requestDto);
 

@@ -8,7 +8,6 @@ namespace BusinessLayer.Dtos.AdvertComments
 {
     public class UpdateAdvertCommentRequestDto
     {
-
         public string? CommentId { get; set; }
 
         public string? Text { get; set; }

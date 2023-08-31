@@ -472,6 +472,118 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Subsections", (string)null);
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("character varying(3000)");
+
+                    b.Property<string>("MainPhoto")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SubsectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubsectionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Topics", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicFavourite", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId", "TopicId")
+                        .IsUnique();
+
+                    b.ToTable("TopicFavourites", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("FileURL")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("TopicFiles", (string)null);
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ParentMessageId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<string>("TopicId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentMessageId");
+
+                    b.HasIndex("TopicId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TopicMessages", (string)null);
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
                 {
                     b.Property<string>("Id")
@@ -872,7 +984,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.FindComment", "ParentComment")
                         .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
+                        .HasForeignKey("ParentCommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
                         .WithMany("FindComments")
@@ -987,6 +1100,74 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Section");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Subsection", "Subsection")
+                        .WithMany("Topics")
+                        .HasForeignKey("SubsectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("Topics")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Subsection");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicFavourite", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Topic", "Topic")
+                        .WithMany("Favourites")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "User")
+                        .WithMany("TopicFavourites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Topic");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicFile", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Topic", "Topic")
+                        .WithMany("Files")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.TopicMessage", "ParentMessage")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentMessageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.Topic", "Topic")
+                        .WithMany("Messages")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DataAccessLayer.Models.UserProfile", "UserProfile")
+                        .WithMany("TopicMessages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("ParentMessage");
+
+                    b.Navigation("Topic");
+
+                    b.Navigation("UserProfile");
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.UserProfile", "FirstUser")
@@ -1013,7 +1194,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasOne("DataAccessLayer.Models.UserMessage", "ParentMessage")
                         .WithMany()
-                        .HasForeignKey("ParentMessageId");
+                        .HasForeignKey("ParentMessageId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataAccessLayer.Models.UserProfile", "Receiver")
                         .WithMany("ReceivedMessages")
@@ -1149,6 +1331,22 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Finds");
 
                     b.Navigation("Jobs");
+
+                    b.Navigation("Topics");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.Topic", b =>
+                {
+                    b.Navigation("Favourites");
+
+                    b.Navigation("Files");
+
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.TopicMessage", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.UserChat", b =>
@@ -1188,6 +1386,12 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("SentMessages");
 
                     b.Navigation("Theme");
+
+                    b.Navigation("TopicFavourites");
+
+                    b.Navigation("TopicMessages");
+
+                    b.Navigation("Topics");
                 });
 #pragma warning restore 612, 618
         }

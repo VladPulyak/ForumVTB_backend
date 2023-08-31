@@ -20,7 +20,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(q => q.DateOfCreation).HasColumnType("timestamp with time zone").IsRequired();
             builder.HasOne(q => q.UserProfile).WithMany(w => w.TopicMessages).HasForeignKey(q => q.UserId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(q => q.Topic).WithMany(w => w.Messages).HasForeignKey(q => q.TopicId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(q => q.ParentMessage).WithMany(q => q.Replies).HasForeignKey(q => q.ParentMessageId);
+            builder.HasOne(q => q.ParentMessage).WithMany(q => q.Replies).HasForeignKey(q => q.ParentMessageId).OnDelete(DeleteBehavior.Cascade);
 
         }
     }

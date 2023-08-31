@@ -19,10 +19,10 @@ namespace Forum_VTB.Controllers
     {
         private readonly IAdvertService _advertService;
         private readonly IAdvertFileService _advertFileService;
-        private readonly ICommentService _commentService;
+        private readonly IAdvertCommentService _commentService;
         private readonly IAdvertFavouriteService _advertFavouriteService;
 
-        public BuySellController(IAdvertService advertService, ICommentService commentService, IAdvertFileService advertFileService, IAdvertFavouriteService advertFavouriteService)
+        public BuySellController(IAdvertService advertService, IAdvertCommentService commentService, IAdvertFileService advertFileService, IAdvertFavouriteService advertFavouriteService)
         {
             _advertService = advertService;
             _commentService = commentService;

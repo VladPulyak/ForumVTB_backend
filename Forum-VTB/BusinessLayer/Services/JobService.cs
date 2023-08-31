@@ -187,7 +187,8 @@ namespace BusinessLayer.Services
                 SectionName = userJob.Subsection.Section.Name,
                 IsFavourite = isFavourite,
                 PhoneNumber = userJob.PhoneNumber,
-                MainPhoto = userJob.MainPhoto
+                MainPhoto = userJob.MainPhoto,
+                Status = userJob.Status
             };
         }
 

@@ -30,6 +30,8 @@ namespace BusinessLayer.Dtos.Job
 
         public string? MainPhoto { get; set; }
 
+        public string? Status { get; set; }
+
         public List<GetJobFileResponceDto>? Files { get; set; }
     }
 }

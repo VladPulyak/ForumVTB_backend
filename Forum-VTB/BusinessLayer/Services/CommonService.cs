@@ -3,6 +3,7 @@ using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Find;
 using BusinessLayer.Dtos.Job;
+using BusinessLayer.Dtos.Topic;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
@@ -31,8 +32,11 @@ namespace BusinessLayer.Services
         private readonly IAdvertFavouriteService _advertFavouriteService;
         private readonly IJobFavouriteService _jobFavouriteService;
         private readonly IFindFavouriteService _findFavouriteService;
+        private readonly ITopicRepository _topicRepository;
+        private readonly ITopicService _topicService;
+        private readonly ITopicFavouriteService _topicFavouriteService;
 
-        public CommonService(IAdvertRepository advertRepository, IMapper mapper, IAdvertService advertService, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IJobRepository jobRepository, IJobService jobService, IFindService findService, IFindRepository findRepository, IAdvertFavouriteService advertFavouriteService, IJobFavouriteService jobFavouriteService, IFindFavouriteService findFavouriteService)
+        public CommonService(IAdvertRepository advertRepository, IMapper mapper, IAdvertService advertService, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IJobRepository jobRepository, IJobService jobService, IFindService findService, IFindRepository findRepository, IAdvertFavouriteService advertFavouriteService, IJobFavouriteService jobFavouriteService, IFindFavouriteService findFavouriteService, ITopicRepository topicRepository, ITopicService topicService, ITopicFavouriteService topicFavouriteService)
         {
             _advertRepository = advertRepository;
             _mapper = mapper;
@@ -46,6 +50,9 @@ namespace BusinessLayer.Services
             _advertFavouriteService = advertFavouriteService;
             _jobFavouriteService = jobFavouriteService;
             _findFavouriteService = findFavouriteService;
+            _topicRepository = topicRepository;
+            _topicService = topicService;
+            _topicFavouriteService = topicFavouriteService;
         }
 
         private async Task<List<AdvertResponceDto>> GetAdvertByKeyPhrase(string keyPhrase)
@@ -87,13 +94,27 @@ namespace BusinessLayer.Services
             return responceDtos;
         }
 
+        private async Task<List<TopicResponceDto>> GetTopicByKeyPhrase(string keyPhrase)
+        {
+            var topics = await _topicRepository.SearchByKeyPhrase(keyPhrase);
+            var responceDtos = _mapper.Map<List<TopicResponceDto>>(topics);
+            if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                return await _topicService.CheckFavourites(responceDtos, user.Id);
+            }
+            return responceDtos;
+        }
+
         public async Task<SearchByKeyPhraseResponceDto> GetByKeyPhrase(string keyPhrase)
         {
             return new SearchByKeyPhraseResponceDto
             {
                 Adverts = await GetAdvertByKeyPhrase(keyPhrase),
                 Jobs = await GetJobByKeyPhrase(keyPhrase),
-                Finds = await GetFindByKeyPhrase(keyPhrase)
+                Finds = await GetFindByKeyPhrase(keyPhrase),
+                Topics = await GetTopicByKeyPhrase(keyPhrase)
             };
         }
 
@@ -103,7 +124,8 @@ namespace BusinessLayer.Services
             {
                 Adverts = await _advertService.GetUserAdverts(),
                 Jobs = await _jobService.GetUserJobs(),
-                Finds = await _findService.GetUserFinds()
+                Finds = await _findService.GetUserFinds(),
+                Topics = await _topicService.GetUserTopics()
             };
         }
 
@@ -113,7 +135,8 @@ namespace BusinessLayer.Services
             {
                 Adverts = await _advertFavouriteService.GetUserAdvertFavourites(),
                 Jobs = await _jobFavouriteService.GetUserJobFavourites(),
-                Finds = await _findFavouriteService.GetUserFindFavourites()
+                Finds = await _findFavouriteService.GetUserFindFavourites(),
+                Topics = await _topicFavouriteService.GetUserTopicFavourites()
             };
         }
 

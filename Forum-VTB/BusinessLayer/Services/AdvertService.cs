@@ -26,14 +26,14 @@ namespace BusinessLayer.Services
         private readonly ISubsectionRepository _subsectionRepository;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        private readonly ICommentService _commentService;
+        private readonly IAdvertCommentService _commentService;
         private readonly IAdvertFileService _advertFileService;
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
         private readonly IAdvertFavouriteRepository _favouriteRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, IAdvertCommentService commentService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;

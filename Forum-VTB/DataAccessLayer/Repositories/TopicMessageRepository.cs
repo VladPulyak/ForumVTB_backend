@@ -17,33 +17,32 @@ namespace DataAccessLayer.Repositories
             
         }
 
-        //public async Task<TopicMessage> GetById(string id)
-        //{
-        //    var message = await _set.Where(q => q.Id == id).Include(q => q.Topic).Include(q => q.UserProfile).SingleAsync();
+        public async Task<TopicMessage> GetById(string id)
+        {
+            var message = await _set.Where(q => q.Id == id).Include(q => q.Topic).Include(q => q.UserProfile).SingleAsync();
 
-        //    if (message is null)
-        //    {
-        //        throw new ObjectNotFoundException("Message not found");
-        //    }
+            if (message is null)
+            {
+                throw new ObjectNotFoundException("Message not found");
+            }
 
-        //    return message;
-        //}
+            return message;
+        }
 
-        //public async Task Delete(string commentId)
-        //{
-        //    var comment = await GetById(commentId);
-        //    _set.Remove(comment);
-        //}
+        public async Task Delete(string commentId)
+        {
+            var comment = await GetById(commentId);
+            _set.Remove(comment);
+        }
 
-        //public async Task<List<AdvertComment>> GetByAdvertId(string advertId)
-        //{
-        //    var comments = await _set.Where(q => q.AdvertId == advertId && q.ParentCommentId == null)
-        //                             .Include(q => q.UserProfile)
-        //                             .Include(q => q.Replies)
-        //                             .ToListAsync();
+        public async Task<List<TopicMessage>> GetByTopicId(string topicId)
+        {
+            var messages = await _set.Where(q => q.TopicId == topicId && q.ParentMessageId == null)
+                                     .Include(q => q.UserProfile)
+                                     .Include(q => q.Replies)
+                                     .ToListAsync();
 
-        //    return comments;
-        //}
-
+            return messages;
+        }
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class CommentService : ICommentService
+    public class CommentService : IAdvertCommentService
     {
         private readonly IAdvertCommentRepository _advertCommentRepository;
         private readonly IMapper _mapper;

@@ -25,7 +25,7 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUserMessageService, UserMessageService>();
             services.AddScoped<IAdvertService, AdvertService>();
-            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IAdvertCommentService, CommentService>();
             services.AddScoped<IAdvertFileService, AdvertFileService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserThemeService, UserThemeService>();
@@ -38,6 +38,10 @@ namespace BusinessLayer.Extensions
             services.AddScoped<IFindCommentService, FindCommentService>();
             services.AddScoped<IFindFavouriteService, FindFavouriteService>();
             services.AddScoped<IFindFileService, FindFileService>();
+            services.AddScoped<ITopicService, TopicService>();
+            services.AddScoped<ITopicMessageService, TopicMessageService>();
+            services.AddScoped<ITopicFavouriteService, TopicFavouriteService>();
+            services.AddScoped<ITopicFileService, TopicFileService>();
             services.AddSingleton<TelegramBotService>();
             services.AddAutoMapper(typeof(UserMapProfile));
             return services;
