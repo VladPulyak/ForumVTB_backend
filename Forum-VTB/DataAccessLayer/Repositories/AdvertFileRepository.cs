@@ -40,5 +40,11 @@ namespace DataAccessLayer.Repositories
             var entity = await GetById(fileId);
             _set.Remove(entity);
         }
+
+        public async Task DeleteRange(string advertId)
+        {
+            var files = await _set.Where(q => q.AdvertId == advertId).ToArrayAsync();
+            _set.RemoveRange(files);
+        }
     }
 }

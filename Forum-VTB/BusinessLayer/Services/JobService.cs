@@ -89,9 +89,9 @@ namespace BusinessLayer.Services
             job.Status = Status.Active.ToString();
             job.Subsection = subsection;
             job.SubsectionId = subsection.Id;
-            await _jobFileService.AddMissingFiles(new AddMissingJobFilesRequestDto
+            await _jobFileService.UpdateJobFiles(new UpdateJobFilesRequestDto
             {
-                Job = job,
+                JobId = job.Id,
                 FileStrings = requestDto.FileStrings
             });
             var updatedJob = _jobRepository.Update(job);

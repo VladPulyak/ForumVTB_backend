@@ -4,6 +4,7 @@ using BusinessLayer.Dtos.FindFIles;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
+using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,5 +66,20 @@ namespace BusinessLayer.Services
             await _findFileRepository.Delete(requestDto.FileId);
         }
 
+        private async Task DeleteFilesById(string findId)
+        {
+            await _findFileRepository.DeleteRange(findId);
+            await _findFileRepository.Save();
+        }
+
+        public async Task UpdateFindFiles(UpdateFindFilesRequestDto requestDto)
+        {
+            await DeleteFilesById(requestDto.FindId);
+            await AddFiles(new AddFindFilesRequestDto
+            {
+                FindId = requestDto.FindId,
+                FileStrings = requestDto.FileStrings
+            });
+        }
     }
 }

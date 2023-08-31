@@ -63,5 +63,21 @@ namespace BusinessLayer.Services
         {
             await _advertFileRepository.Delete(requestDto.FileId);
         }
+
+        private async Task DeleteFilesById(string advertId)
+        {
+            await _advertFileRepository.DeleteRange(advertId);
+            await _advertFileRepository.Save();
+        }
+
+        public async Task UpdateAdvertFiles(UpdateAdvertFilesRequestDto requestDto)
+        {
+            await DeleteFilesById(requestDto.AdvertId);
+            await AddFiles(new AddAdvertFilesRequestDto
+            {
+                AdvertId = requestDto.AdvertId,
+                FileStrings = requestDto.FileStrings
+            });
+        }
     }
 }

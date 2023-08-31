@@ -14,5 +14,7 @@ namespace DataAccessLayer.Interfaces
         Task<List<JobFile>> GetByJobId(string jobId);
 
         Task Delete(string fileId);
+
+        Task DeleteRange(string jobId);
     }
 }

@@ -99,9 +99,9 @@ namespace BusinessLayer.Services
             find.Status = Status.Active.ToString();
             find.Subsection = subsection;
             find.SubsectionId = subsection.Id;
-            await _findFileService.AddMissingFiles(new AddMissingFindFilesRequestDto
+            await _findFileService.UpdateFindFiles(new UpdateFindFilesRequestDto
             {
-                Find = find,
+                FindId = find.Id,
                 FileStrings = requestDto.FileStrings
             });
             var updatedFind = _findRepository.Update(find);

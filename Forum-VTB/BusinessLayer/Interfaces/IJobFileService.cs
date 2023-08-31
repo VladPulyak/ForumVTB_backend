@@ -12,5 +12,7 @@ namespace BusinessLayer.Interfaces
         Task DeleteJobFile(DeleteJobFileRequestDto requestDto);
 
         Task AddMissingFiles(AddMissingJobFilesRequestDto requestDto);
+
+        Task UpdateJobFiles(UpdateJobFilesRequestDto requestDto);
     }
 }

@@ -14,5 +14,7 @@ namespace DataAccessLayer.Interfaces
         Task<List<AdvertFile>> GetByAdvertId(string advertId);
 
         Task Delete(string fileId);
+
+        Task DeleteRange(string advertId);
     }
 }

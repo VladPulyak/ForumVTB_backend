@@ -14,5 +14,7 @@ namespace DataAccessLayer.Interfaces
         Task<List<FindFile>> GetByFindId(string findId);
 
         Task Delete(string fileId);
+
+        Task DeleteRange(string findId);
     }
 }

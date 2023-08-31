@@ -17,5 +17,7 @@ namespace BusinessLayer.Interfaces
         Task DeleteFindFile(DeleteFindFileRequestDto requestDto);
 
         Task AddMissingFiles(AddMissingFindFilesRequestDto requestDto);
+
+        Task UpdateFindFiles(UpdateFindFilesRequestDto requestDto);
     }
 }

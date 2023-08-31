@@ -100,10 +100,10 @@ namespace BusinessLayer.Services
             advert.Status = Status.Active.ToString();
             advert.Subsection = subsection;
             advert.SubsectionId = subsection.Id;
-            await _advertFileService.AddMissingFiles(new AddMissingAdvertFilesRequestDto
+            await _advertFileService.UpdateAdvertFiles(new UpdateAdvertFilesRequestDto
             {
-                Advert = advert,
-                FileStrings = requestDto.FileStrings
+                FileStrings = requestDto.FileStrings,
+                AdvertId = advert.Id
             });
             var updatedAdvert = _advertRepository.Update(advert);
             await _advertRepository.Save();

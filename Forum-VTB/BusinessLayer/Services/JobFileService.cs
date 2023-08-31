@@ -1,9 +1,11 @@
 using AutoMapper;
 using BusinessLayer.Dtos.AdvertFiles;
+using BusinessLayer.Dtos.FindFIles;
 using BusinessLayer.Dtos.JobFiles;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
+using DataAccessLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +68,22 @@ namespace BusinessLayer.Services
         public async Task DeleteJobFile(DeleteJobFileRequestDto requestDto)
         {
             await _jobFileRepository.Delete(requestDto.FileId);
+        }
+
+        private async Task DeleteFilesById(string findId)
+        {
+            await _jobFileRepository.DeleteRange(findId);
+            await _jobFileRepository.Save();
+        }
+
+        public async Task UpdateJobFiles(UpdateJobFilesRequestDto requestDto)
+        {
+            await DeleteFilesById(requestDto.JobId);
+            await AddFiles(new AddJobFilesRequestDto
+            {
+                JobId = requestDto.JobId,
+                FileStrings = requestDto.FileStrings
+            });
         }
     }
 }
