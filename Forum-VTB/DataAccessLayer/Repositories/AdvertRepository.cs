@@ -50,6 +50,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.User)
                 .Include(q => q.AdvertComments)
                 .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .Include(q => q.Files)
                 .SingleAsync();
             if (advert is null)

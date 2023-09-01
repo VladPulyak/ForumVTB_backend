@@ -1,32 +1,126 @@
 using AutoMapper;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Events;
 using BusinessLayer.Interfaces;
 using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BusinessLayer.Services
 {
     public class EventService : IEventService
     {
-        private readonly IRepository<Event> _eventRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly UserManager<UserProfile> _userManager;
+        private readonly ISubsectionRepository _subsectionRepository;
 
-        public EventService(IRepository<Event> eventRepository, IMapper mapper)
+        public EventService(IEventRepository eventRepository, IMapper mapper, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, ISubsectionRepository subsectionRepository)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
+            _contextAccessor = contextAccessor;
+            _userManager = userManager;
+            _subsectionRepository = subsectionRepository;
         }
 
-        public async Task<Event> CreateEvent(CreateEventDto requestDto)
+        public async Task<CreateEventResponceDto> CreateEvent(CreateEventRequestDto requestDto)
         {
-            var forumEvent = _mapper.Map<Event>(requestDto);
-            forumEvent.Id = Guid.NewGuid().ToString();
-            return forumEvent;
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var @event = _mapper.Map<Event>(requestDto);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
+            @event.Subsection = subsection;
+            @event.SubsectionId = subsection.Id;
+            @event.DateOfCreation = DateTime.UtcNow;
+            @event.Id = Guid.NewGuid().ToString();
+            var addedEvent = await _eventRepository.Add(@event);
+            await _eventRepository.Save();
+            return new CreateEventResponceDto
+            {
+                EventId = addedEvent.Id,
+                Title = addedEvent.Title,
+                Description = addedEvent.Description,
+                Price = addedEvent.Price,
+                DateOfCreation = @event.DateOfCreation,
+                Address = addedEvent.Address,
+                PhoneNumber = addedEvent.PhoneNumber,
+                Poster = addedEvent.Poster,
+                SectionName = requestDto.SectionName,
+                SubsectionName = requestDto.SubsectionName
+            };
+        }
+
+        public async Task<UpdateEventResponceDto> UpdateEvent(UpdateEventRequestDto requestDto)
+        {
+            var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var @event = await _eventRepository.GetById(requestDto.EventId);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
+            @event.Title = requestDto.Title;
+            @event.Description = requestDto.Description;
+            @event.Price = requestDto.Price;
+            @event.DateOfCreation = DateTime.UtcNow;
+            @event.Subsection = subsection;
+            @event.SubsectionId = subsection.Id;
+            var updatedEvent = _eventRepository.Update(@event);
+            await _eventRepository.Save();
+            return new UpdateEventResponceDto
+            {
+                EventId = updatedEvent.Id,
+                Title = updatedEvent.Title,
+                Description = updatedEvent.Description,
+                Price = updatedEvent.Price,
+                DateOfCreation = updatedEvent.DateOfCreation,
+                Address = updatedEvent.Address,
+                PhoneNumber = updatedEvent.PhoneNumber,
+                Poster = updatedEvent.Poster,
+                SectionName = requestDto.SectionName,
+                SubsectionName = requestDto.SubsectionName
+            };
+        }
+
+        public async Task<List<EventResponceDto>> GetFourNewestEvents()
+        {
+            var events = await _eventRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
+            var responceDtos = _mapper.Map<List<EventResponceDto>>(events);
+            return responceDtos;
+        }
+
+        public async Task DeleteEvent(DeleteEventRequestDto requestDto)
+        {
+            await _eventRepository.Delete(requestDto.EventId);
+            await _eventRepository.Save();
+        }
+
+        public async Task<EventResponceDto> GetEventCard(GetEventCardRequestDto requestDto)
+        {
+            var @event = await _eventRepository.GetById(requestDto.EventId);
+
+            return new EventResponceDto
+            {
+                EventId = @event.Id,
+                Title = @event.Title,
+                Description = @event.Description,
+                Price = @event.Price,
+                DateOfCreation = @event.DateOfCreation,
+                Address = @event.Address,
+                PhoneNumber = @event.PhoneNumber,
+                Poster = @event.Poster,
+                SectionName = @event.Subsection.Section.Name,
+                SubsectionName = @event.Subsection.Name
+            };
+        }
+
+        public async Task<List<EventResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
+        {
+            var events = await _eventRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
+            var responceDtos = _mapper.Map<List<EventResponceDto>>(events.OrderByDescending(q => q.DateOfCreation).ToList());
+            return responceDtos;
         }
     }
 }

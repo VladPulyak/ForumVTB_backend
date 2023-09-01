@@ -196,6 +196,8 @@ namespace BusinessLayer.Services
                                     AdvertPrice = advert.Price,
                                     AdvertPhoto = advert.MainPhoto,
                                     ChapterName = chat.ChapterName,
+                                    SectionName = advert.Subsection.Name,
+                                    SubsectionName = advert.Subsection.Section.Name
                                 };
                             }
                         case "Services":
@@ -212,6 +214,8 @@ namespace BusinessLayer.Services
                                     AdvertPrice = job.Price,
                                     AdvertPhoto = job.MainPhoto,
                                     ChapterName = chat.ChapterName,
+                                    SectionName = job.Subsection.Name,
+                                    SubsectionName = job.Subsection.Section.Name
                                 };
                             }
                         case "Finds":
@@ -228,6 +232,8 @@ namespace BusinessLayer.Services
                                     AdvertPrice = string.Empty,
                                     AdvertPhoto = find.MainPhoto,
                                     ChapterName = chat.ChapterName,
+                                    SectionName = find.Subsection.Name,
+                                    SubsectionName = find.Subsection.Section.Name
                                 };
                             }
                         default:

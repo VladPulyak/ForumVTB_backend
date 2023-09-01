@@ -1,4 +1,5 @@
-﻿using DataAccessLayer;
+﻿using BusinessLayer.Interfaces;
+using DataAccessLayer;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +29,20 @@ namespace BusinessLayer.Services
                 await ISearchSubsectionsSeedDataAsync(dbContext);
                 await FindsSubsectionsSeedData(dbContext);
                 await ForumSubsectionsSeedData(dbContext);
+                await EventsSubsectionsSeedData(dbContext);
             }
         }
 
+        private static async Task AdminAccountSeedData(ForumVTBDbContext dbContext)
+        {
+            var adminRole = await dbContext.Roles.SingleOrDefaultAsync(q => q.Name == "Admin");
+            if (!await dbContext.UserRoles.AnyAsync(q => q.RoleId == adminRole.Id))
+            {
+
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
         private static async Task ChaptersSeedData(ForumVTBDbContext dbContext)
         {
             if (!await dbContext.Chapters.AnyAsync())
@@ -91,12 +103,40 @@ namespace BusinessLayer.Services
                 await dbContext.SaveChangesAsync();
             }
 
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 4))
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section { Name = "Events", ChapterId = 4 }
+                });
+                await dbContext.SaveChangesAsync();
+            }
+
             if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 5))
             {
                 await dbContext.Sections.AddRangeAsync(new List<Section>
                 {
                     new Section { Name = "Forum", ChapterId = 5 }
                 });
+                await dbContext.SaveChangesAsync();
+
+            }
+        }
+
+        private static async Task EventsSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 12))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Cinema", SectionId = 12},
+                    new Subsection {Name = "Theaters and museums", SectionId = 12},
+                    new Subsection {Name = "Concerts", SectionId = 12},
+                    new Subsection {Name = "Quests", SectionId = 12},
+                    new Subsection {Name = "Sport", SectionId = 12},
+                    new Subsection {Name = "Excursions", SectionId = 12}
+                });
+
                 await dbContext.SaveChangesAsync();
             }
         }

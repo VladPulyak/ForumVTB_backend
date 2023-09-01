@@ -1,4 +1,5 @@
 using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.Events;
 using BusinessLayer.Dtos.Find;
 using BusinessLayer.Dtos.Job;
 using BusinessLayer.Dtos.Topic;
@@ -19,5 +20,7 @@ namespace BusinessLayer.Dtos.Common
         public List<FindResponceDto>? Finds { get; set; }
 
         public List<TopicResponceDto>? Topics { get; set; }
+
+        public List<EventResponceDto>? Events { get; set; }
     }
 }

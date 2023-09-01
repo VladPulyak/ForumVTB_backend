@@ -1,6 +1,7 @@
 using AutoMapper;
 using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.Events;
 using BusinessLayer.Dtos.Find;
 using BusinessLayer.Dtos.Job;
 using BusinessLayer.Dtos.Topic;
@@ -35,8 +36,9 @@ namespace BusinessLayer.Services
         private readonly ITopicRepository _topicRepository;
         private readonly ITopicService _topicService;
         private readonly ITopicFavouriteService _topicFavouriteService;
+        private readonly IEventRepository _eventRepository;
 
-        public CommonService(IAdvertRepository advertRepository, IMapper mapper, IAdvertService advertService, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IJobRepository jobRepository, IJobService jobService, IFindService findService, IFindRepository findRepository, IAdvertFavouriteService advertFavouriteService, IJobFavouriteService jobFavouriteService, IFindFavouriteService findFavouriteService, ITopicRepository topicRepository, ITopicService topicService, ITopicFavouriteService topicFavouriteService)
+        public CommonService(IAdvertRepository advertRepository, IMapper mapper, IAdvertService advertService, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IJobRepository jobRepository, IJobService jobService, IFindService findService, IFindRepository findRepository, IAdvertFavouriteService advertFavouriteService, IJobFavouriteService jobFavouriteService, IFindFavouriteService findFavouriteService, ITopicRepository topicRepository, ITopicService topicService, ITopicFavouriteService topicFavouriteService, IEventRepository eventRepository)
         {
             _advertRepository = advertRepository;
             _mapper = mapper;
@@ -53,6 +55,7 @@ namespace BusinessLayer.Services
             _topicRepository = topicRepository;
             _topicService = topicService;
             _topicFavouriteService = topicFavouriteService;
+            _eventRepository = eventRepository;
         }
 
         private async Task<List<AdvertResponceDto>> GetAdvertByKeyPhrase(string keyPhrase)
@@ -107,6 +110,13 @@ namespace BusinessLayer.Services
             return responceDtos;
         }
 
+        private async Task<List<EventResponceDto>> GetEventByKeyPhrase(string keyPhrase)
+        {
+            var events = await _eventRepository.SearchByKeyPhrase(keyPhrase);
+            var responceDtos = _mapper.Map<List<EventResponceDto>>(events);
+            return responceDtos;
+        }
+
         public async Task<SearchByKeyPhraseResponceDto> GetByKeyPhrase(string keyPhrase)
         {
             return new SearchByKeyPhraseResponceDto
@@ -114,7 +124,8 @@ namespace BusinessLayer.Services
                 Adverts = await GetAdvertByKeyPhrase(keyPhrase),
                 Jobs = await GetJobByKeyPhrase(keyPhrase),
                 Finds = await GetFindByKeyPhrase(keyPhrase),
-                Topics = await GetTopicByKeyPhrase(keyPhrase)
+                Topics = await GetTopicByKeyPhrase(keyPhrase),
+                Events = await GetEventByKeyPhrase(keyPhrase)
             };
         }
 
@@ -139,6 +150,5 @@ namespace BusinessLayer.Services
                 Topics = await _topicFavouriteService.GetUserTopicFavourites()
             };
         }
-
     }
 }

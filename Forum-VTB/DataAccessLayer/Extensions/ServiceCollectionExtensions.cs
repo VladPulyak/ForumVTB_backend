@@ -54,7 +54,7 @@ namespace DataAccessLayer.Extensions
             services.AddScoped<IAdvertCommentRepository, AdvertCommentRepository>();
             services.AddScoped<IUserMessageRepository, UserMessageRepository>();
             services.AddScoped<IRepository<MessageFile>, MessageFileRepository>();
-            services.AddScoped<IRepository<Event>, EventRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserChatRepository, UserChatRepository>();
             services.AddScoped<IUserThemeRepository, UserThemeRepository>();
             services.AddScoped<IAdvertFavouriteRepository, AdvertFavouriteRepository>();

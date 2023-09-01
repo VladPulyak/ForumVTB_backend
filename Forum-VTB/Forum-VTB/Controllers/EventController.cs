@@ -1,6 +1,9 @@
-﻿using BusinessLayer.Dtos.Common;
+﻿using BusinessLayer.Dtos.Advert;
+using BusinessLayer.Dtos.AdvertFiles;
+using BusinessLayer.Dtos.Common;
 using BusinessLayer.Dtos.Events;
 using BusinessLayer.Interfaces;
+using BusinessLayer.Services;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +13,7 @@ namespace Forum_VTB.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
@@ -19,14 +23,13 @@ namespace Forum_VTB.Controllers
             _eventService = eventService;
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("CreateEvent")]
-        public async Task<ActionResult> CreateEvent(CreateEventDto requestDto)
+        [HttpPost("/Events/CreateEvent")]
+        public async Task<ActionResult> CreateEvent(CreateEventRequestDto requestDto)
         {
-            Event forumEvent; 
+            CreateEventResponceDto responceDto; 
             try
             {
-                forumEvent = await _eventService.CreateEvent(requestDto);
+                responceDto = await _eventService.CreateEvent(requestDto);
             }
             catch (Exception ex)
             {
@@ -35,7 +38,106 @@ namespace Forum_VTB.Controllers
                     Message = ex.Message
                 });
             }
-            return Ok(forumEvent);
+            return Ok(responceDto);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("/Events/GetFourNewestEvents")]
+        public async Task<ActionResult> GetFourNewestEvents()
+        {
+            List<EventResponceDto> responceDtos;
+            try
+            {
+                responceDtos = await _eventService.GetFourNewestEvents();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDtos);
+        }
+
+
+        [HttpPut("/Events/UpdateEvent")]
+        public async Task<ActionResult> UpdateEvent(UpdateEventRequestDto requestDto)
+        {
+            UpdateEventResponceDto responceDto;
+            try
+            {
+                responceDto = await _eventService.UpdateEvent(requestDto);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDto);
+        }
+
+        [HttpDelete("/Events/DeleteEvent")]
+        public async Task<ActionResult> DeleteEvent(DeleteEventRequestDto requestDto)
+        {
+            try
+            {
+                await _eventService.DeleteEvent(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok("Event delete successfully!");
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/Events/GetEventCard")]
+        public async Task<ActionResult> GetEventCard(GetEventCardRequestDto requestDto)
+        {
+            EventResponceDto responceDto;
+            try
+            {
+                responceDto = await _eventService.GetEventCard(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+
+            return Ok(responceDto);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/Events/FindBySubsectionName")]
+        public async Task<ActionResult> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
+        {
+            List<EventResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _eventService.FindBySubsectionName(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDtos);
         }
     }
 }

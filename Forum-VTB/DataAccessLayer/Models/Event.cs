@@ -18,7 +18,13 @@ namespace DataAccessLayer.Models
 
         public string? Poster { get; set; }
 
-        public string? OtherInfo { get; set; }
+        public string? Address { get; set; }
+
+        public string? Price { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public DateTime DateOfCreation { get; set; }
 
         public Subsection? Subsection { get; set; }
     }
