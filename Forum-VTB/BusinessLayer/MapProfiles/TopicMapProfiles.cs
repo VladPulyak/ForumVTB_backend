@@ -20,7 +20,9 @@ namespace BusinessLayer.MapProfiles
                 .ForMember(dest => dest.TopicId, q => q.MapFrom(src => src.Id))
                 .ForMember(dest => dest.MainPhoto, q => q.MapFrom(src => src.MainPhoto))
                 .ForMember(dest => dest.SectionName, q => q.MapFrom(src => src.Subsection.Section.Name))
-                .ForMember(dest => dest.SubsectionName, q => q.MapFrom(src => src.Subsection.Name));
+                .ForMember(dest => dest.SubsectionName, q => q.MapFrom(src => src.Subsection.Name))
+                .ForMember(dest => dest.MessagesCount, q => q.MapFrom(src => src.Messages.Count))
+                .ForMember(dest => dest.DateOfLastMessage, q => q.MapFrom(src => src.Messages.Last().DateOfCreation));
             CreateMap<Topic, UpdateTopicRequestDto>().ReverseMap();
             CreateMap<Topic, UserTopicResponceDto>().ReverseMap();
 

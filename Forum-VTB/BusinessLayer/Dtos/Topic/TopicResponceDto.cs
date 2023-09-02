@@ -24,6 +24,10 @@ namespace BusinessLayer.Dtos.Topic
 
         public string? MainPhoto { get; set; }
 
+        public DateTime DateOfLastMessage { get; set; }
+
+        public int? MessagesCount { get; set; }
+
         public string? SectionName { get; set; }
 
         public string? SubsectionName { get; set; }

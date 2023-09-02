@@ -68,6 +68,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Section.Name == sectionName)
+                .Include(q => q.Messages)
                 .ToListAsync();
 
             return entity;
@@ -80,6 +81,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Name == subsectionName && q.Subsection.Section.Name == sectionName)
                 .Include(q => q.Files)
+                .Include(q => q.Messages)
                 .ToListAsync();
 
             return entity;

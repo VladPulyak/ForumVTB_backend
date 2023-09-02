@@ -1,9 +1,11 @@
-﻿using BusinessLayer.Interfaces;
+﻿using BusinessLayer.Dtos.UserThemes;
+using BusinessLayer.Interfaces;
 using DataAccessLayer;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot.Types;
 
 namespace BusinessLayer.Services
 {
@@ -30,6 +32,7 @@ namespace BusinessLayer.Services
                 await FindsSubsectionsSeedData(dbContext);
                 await ForumSubsectionsSeedData(dbContext);
                 await EventsSubsectionsSeedData(dbContext);
+                await AdminAccountSeedData(dbContext);
             }
         }
 
@@ -38,7 +41,34 @@ namespace BusinessLayer.Services
             var adminRole = await dbContext.Roles.SingleOrDefaultAsync(q => q.Name == "Admin");
             if (!await dbContext.UserRoles.AnyAsync(q => q.RoleId == adminRole.Id))
             {
+                var user = await dbContext.UserProfiles.AddAsync(new UserProfile
+                {
+                    BirthDate = DateTime.Now,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    Email = "vitfor@dreamsoft.by",
+                    Id = Guid.NewGuid().ToString(),
+                    NickName = "Support",
+                    UserName = "Support",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    PasswordHash = "AQAAAAIAAYagAAAAEBa6vGdEJvoWCLvcE/fP9vc5LrqH1f3QMyLI8XqRwgNXl2wlpMOE+OgMX0P1kP/QQg==",
+                    NormalizedEmail = "VITFOR@DREAMSOFT.BY",
+                    NormalizedUserName = "SUPPORT"
+                });
 
+                await dbContext.SaveChangesAsync();
+
+                await dbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+                {
+                    RoleId = adminRole.Id,
+                    UserId = user.Entity.Id
+                });
+
+                await dbContext.Themes.AddAsync(new UserTheme
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = user.Entity.Id,
+                    Theme = "dark"
+                });
 
                 await dbContext.SaveChangesAsync();
             }
