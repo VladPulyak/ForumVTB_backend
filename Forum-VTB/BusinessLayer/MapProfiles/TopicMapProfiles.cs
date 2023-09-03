@@ -2,6 +2,7 @@ using AutoMapper;
 using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.Topic;
 using DataAccessLayer.Models;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,8 @@ namespace BusinessLayer.MapProfiles
                 .ForMember(dest => dest.MainPhoto, q => q.MapFrom(src => src.MainPhoto))
                 .ForMember(dest => dest.SectionName, q => q.MapFrom(src => src.Subsection.Section.Name))
                 .ForMember(dest => dest.SubsectionName, q => q.MapFrom(src => src.Subsection.Name))
-                .ForMember(dest => dest.MessagesCount, q => q.MapFrom(src => src.Messages.Count))
-                .ForMember(dest => dest.DateOfLastMessage, q => q.MapFrom(src => src.Messages.Last().DateOfCreation));
+                .ForMember(dest => dest.MessagesCount, q => q.MapFrom(src => src.Messages.IsNullOrEmpty() ? 0 : src.Messages.Count))
+                .ForMember(dest => dest.DateOfLastMessage, q => q.MapFrom(src => src.Messages.IsNullOrEmpty() ? default(DateTime) : src.Messages.Last().DateOfCreation));
             CreateMap<Topic, UpdateTopicRequestDto>().ReverseMap();
             CreateMap<Topic, UserTopicResponceDto>().ReverseMap();
 

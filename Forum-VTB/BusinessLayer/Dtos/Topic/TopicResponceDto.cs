@@ -14,17 +14,11 @@ namespace BusinessLayer.Dtos.Topic
 
         public string? Description { get; set; }
 
-        public string? Price { get; set; }
-
-        public string? Status { get; set; }
-
-        public DateTime DateOfCreation { get; set; }
-
         public bool IsFavourite { get; set; }
 
         public string? MainPhoto { get; set; }
 
-        public DateTime DateOfLastMessage { get; set; }
+        public DateTime? DateOfLastMessage { get; set; }
 
         public int? MessagesCount { get; set; }
 
