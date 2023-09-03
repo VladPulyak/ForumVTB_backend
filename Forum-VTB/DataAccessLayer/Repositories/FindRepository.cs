@@ -19,6 +19,7 @@ namespace DataAccessLayer.Repositories
         public override IQueryable<Find> GetAll()
         {
             return _set.Where(q => q.Status == "Active")
+                .Include(q => q.User)
                 .Include(q => q.Files)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
@@ -37,6 +38,7 @@ namespace DataAccessLayer.Repositories
             var adverts = await _set.Where(q => q.UserId == userId)
                 .Include(q => q.FindComments)
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .OrderBy(q => q.DateOfCreation)
@@ -84,6 +86,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Section.Name == sectionName && q.Status == "Active")
+                .Include(q => q.User)
                 .ToListAsync();
 
             return finds;
@@ -96,6 +99,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active" && q.Subsection.Section.Name == sectionName)
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .ToListAsync();
 
             return finds;
@@ -106,6 +110,7 @@ namespace DataAccessLayer.Repositories
             keyPhrase = keyPhrase.Trim();
             return await _set.Where(a => (a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper())) && a.Status == "Active")
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .ToListAsync();

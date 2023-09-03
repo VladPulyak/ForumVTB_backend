@@ -18,6 +18,8 @@ namespace BusinessLayer.Dtos.Find
 
         public string? Status { get; set; }
 
+        public string? UserName { get; set; }
+
         public DateTime DateOfCreation { get; set; }
 
         public bool IsFavourite { get; set; }
