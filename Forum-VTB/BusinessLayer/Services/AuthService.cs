@@ -84,6 +84,61 @@ namespace BusinessLayer.Services
             }
         }
 
+        public async Task<UserRegisterResponceDto> RegisterAdminAccount(UserRegisterDto registerUserDto)
+        {
+            UserProfile user;
+
+            if (await _userManager.FindByEmailAsync(registerUserDto.Email) is not null)
+            {
+                throw new DuplicateUserException("User with this email already exists");
+            }
+            user = _mapper.Map<UserProfile>(registerUserDto);
+            user.UserName = registerUserDto.Email;
+            var result = await _userManager.CreateAsync(user, registerUserDto.Password);
+            try
+            {
+                if (result.Succeeded)
+                {
+                    var addToRoleResult = await _userManager.AddToRoleAsync(user, "Admin");
+                    if (addToRoleResult.Succeeded)
+                    {
+                        user.Theme = await _userThemeService.AddUserTheme(new AddUserThemeDto
+                        {
+                            Theme = "dark",
+                            UserId = user.Id
+                        });
+                        var authResponceDto = await Login(new UserLoginDto
+                        {
+                            Login = registerUserDto.Email,
+                            Password = registerUserDto.Password
+                        });
+                        return new UserRegisterResponceDto
+                        {
+                            Token = authResponceDto.Token,
+                            UserEmail = authResponceDto.UserEmail,
+                            RefreshToken = authResponceDto.RefreshToken
+                        };
+                    }
+                    else
+                    {
+                        await _userManager.DeleteAsync(user);
+                        throw new InvalidOperationException(addToRoleResult.Errors.First().Description);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException(result.Errors.First().Description);
+                }
+
+            }
+            catch (Exception)
+            {
+                await _userManager.DeleteAsync(user);
+                throw;
+            }
+        }
+
+
         public async Task<AuthResponceDto> Login(UserLoginDto loginUserDto)
         {
             var user = await _userManager.FindByEmailAsync(loginUserDto.Login);

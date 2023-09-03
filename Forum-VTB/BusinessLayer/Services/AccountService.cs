@@ -116,6 +116,30 @@ namespace BusinessLayer.Services
             }
         }
 
+        //public async Task Support(SupportMessageRequestDto requestDto)
+        //{
+        //    var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
+        //    string senderEmail = "forumvtbds@gmail.com";
+        //    string senderPassword = "mzioajhajzrrhikz";
+        //    MailMessage mailMessage = new MailMessage();
+        //    mailMessage.From = new MailAddress(senderEmail);
+        //    mailMessage.To.Add(new MailAddress("forumvtbds@gmail.com"));
+        //    mailMessage.Subject = "Support";
+        //    mailMessage.Body = requestDto.Text + $"\n Message from {userEmail}";
+        //    mailMessage.IsBodyHtml = true;
+        //    mailMessage.BodyEncoding = Encoding.UTF8;
+        //    foreach (var fileString in requestDto.Files)
+        //    {
+        //        byte[] bytes = Convert.FromBase64String(fileString);
+        //        mailMessage.Attachments.Add(new Attachment(new MemoryStream(bytes), "hello.png"));
+        //    }
+        //    SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+        //    smtpClient.EnableSsl = true;
+        //    smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
+
+        //    await smtpClient.SendMailAsync(mailMessage);
+        //}
+
         public async Task Support(SupportMessageRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
@@ -138,7 +162,6 @@ namespace BusinessLayer.Services
             smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
 
             await smtpClient.SendMailAsync(mailMessage);
-
         }
     }
 }

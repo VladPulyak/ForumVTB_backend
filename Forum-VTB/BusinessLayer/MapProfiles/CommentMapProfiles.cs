@@ -14,17 +14,17 @@ namespace BusinessLayer.MapProfiles
     {
         public CommentMapProfiles()
         {
-            CreateMap<AdvertComment, CreateCommentRequestDto>().ReverseMap();
-            CreateMap<AdvertComment, ReplyCommentRequestDto>().ReverseMap();
-            CreateMap<AdvertComment, ReplyCommentResponceDto>().ReverseMap();
-            CreateMap<AdvertComment, Re_ReplyCommentDto>()
+            CreateMap<AdvertComment, CreateAdvertCommentRequestDto>().ReverseMap();
+            CreateMap<AdvertComment, ReplyAdvertCommentRequestDto>().ReverseMap();
+            CreateMap<AdvertComment, ReplyAdvertCommentResponceDto>().ReverseMap();
+            CreateMap<AdvertComment, Re_ReplyAdvertCommentDto>()
                 .ForMember(dest => dest.NickName, q => q.MapFrom(src => src.UserProfile.NickName))
                 .ForMember(dest => dest.UserName, q => q.MapFrom(src => src.UserProfile.UserName))
                 .ForMember(dest => dest.UserPhoto, q => q.MapFrom(src => src.UserProfile.Photo))
                 .ForMember(dest => dest.ParentCommentId, q => q.MapFrom(src => src.ParentCommentId))
                 .ForMember(dest => dest.CommentId, q => q.MapFrom(src => src.Id))
                 .ReverseMap();
-            CreateMap<AdvertComment, GetCommentResponceDto>()
+            CreateMap<AdvertComment, GetAdvertCommentResponceDto>()
                 .ForMember(dest => dest.NickName, q => q.MapFrom(src => src.UserProfile.NickName))
                 .ForMember(dest => dest.UserName, q => q.MapFrom(src => src.UserProfile.UserName))
                 .ForMember(dest => dest.UserPhoto, q => q.MapFrom(src => src.UserProfile.Photo))

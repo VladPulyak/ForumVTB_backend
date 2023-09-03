@@ -1,0 +1,18 @@
+using DataAccessLayer.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessLayer.Interfaces
+{
+    public interface ITopicFileRepository : IRepository<TopicFile>
+    {
+        Task<TopicFile> GetById(string id);
+
+        Task<List<TopicFile>> GetByTopicId(string topicId);
+
+        Task Delete(string fileId);
+    }
+}

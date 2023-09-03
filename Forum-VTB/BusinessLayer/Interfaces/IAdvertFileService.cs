@@ -16,6 +16,8 @@ namespace BusinessLayer.Interfaces
 
         Task DeleteAdvertFile(DeleteAdvertFileRequestDto requestDto);
 
-        Task AddMissingFiles(AddMissingFilesRequestDto requestDto);
+        Task AddMissingFiles(AddMissingAdvertFilesRequestDto requestDto);
+
+        Task UpdateAdvertFiles(UpdateAdvertFilesRequestDto requestDto);
     }
 }

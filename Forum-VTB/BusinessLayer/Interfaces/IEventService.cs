@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Dtos.Events;
+﻿using BusinessLayer.Dtos.Common;
+using BusinessLayer.Dtos.Events;
 using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,16 @@ namespace BusinessLayer.Interfaces
 {
     public interface IEventService
     {
-        Task<Event> CreateEvent(CreateEventDto requestDto);
+        Task<CreateEventResponceDto> CreateEvent(CreateEventRequestDto requestDto);
+
+        Task<UpdateEventResponceDto> UpdateEvent(UpdateEventRequestDto requestDto);
+
+        Task<List<EventResponceDto>> GetFourNewestEvents();
+
+        Task DeleteEvent(DeleteEventRequestDto requestDto);
+
+        Task<EventResponceDto> GetEventCard(GetEventCardRequestDto requestDto);
+
+        Task<List<EventResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto);
     }
 }

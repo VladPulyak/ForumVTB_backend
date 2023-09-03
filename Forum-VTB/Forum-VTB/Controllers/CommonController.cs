@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Forum_VTB.Controllers
 {
     [ApiController]
+    [Authorize]
     public class CommonController : ControllerBase
     {
         private readonly ICommonService _commonService;
@@ -26,6 +27,42 @@ namespace Forum_VTB.Controllers
             try
             {
                 responceDto = await _commonService.GetByKeyPhrase(phrase);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
+        }
+
+        [HttpGet("/GetUserAdverts")]
+        public async Task<ActionResult> GetAllUserAdverts()
+        {
+            GetAllUserAdvertsResponceDto responceDto;
+            try
+            {
+                responceDto = await _commonService.GetUserAdverts();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDto);
+        }
+
+        [HttpGet("/GetUserFavourites")]
+        public async Task<ActionResult> GetUserFavourites()
+        {
+            GetUserFavouritesResponceDto responceDto;
+            try
+            {
+                responceDto = await _commonService.GetUserFavourites();
             }
             catch (Exception ex)
             {

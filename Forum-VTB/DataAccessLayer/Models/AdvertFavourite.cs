@@ -14,8 +14,8 @@ namespace DataAccessLayer.Models
 
         public string? AdvertId { get; set; }
 
-        public UserProfile User { get; set; }
+        public UserProfile? User { get; set; }
 
-        public Advert Advert { get; set; }
+        public Advert? Advert { get; set; }
     }
 }

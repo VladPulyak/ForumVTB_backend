@@ -13,7 +13,6 @@ namespace BusinessLayer.MapProfiles
     {
         public AdvertFileMapProfiles()
         {
-            //CreateMap<AdvertFile, AddAdvertFileRequestDto>().ReverseMap();
             CreateMap<AdvertFile, GetAdvertFileResponceDto>()
                 .ForMember(q => q.FileString, w => w.MapFrom(q => q.FileURL))
                 .ReverseMap();

@@ -44,7 +44,7 @@ namespace BusinessLayer.Services
             return responceDtos;
         }
 
-        public async Task AddMissingFiles(AddMissingFilesRequestDto requestDto)
+        public async Task AddMissingFiles(AddMissingAdvertFilesRequestDto requestDto)
         {
             var advertFiles = await GetAdvertFiles(new GetAdvertFileRequestDto
             {
@@ -62,6 +62,22 @@ namespace BusinessLayer.Services
         public async Task DeleteAdvertFile(DeleteAdvertFileRequestDto requestDto)
         {
             await _advertFileRepository.Delete(requestDto.FileId);
+        }
+
+        private async Task DeleteFilesById(string advertId)
+        {
+            await _advertFileRepository.DeleteRange(advertId);
+            await _advertFileRepository.Save();
+        }
+
+        public async Task UpdateAdvertFiles(UpdateAdvertFilesRequestDto requestDto)
+        {
+            await DeleteFilesById(requestDto.AdvertId);
+            await AddFiles(new AddAdvertFilesRequestDto
+            {
+                AdvertId = requestDto.AdvertId,
+                FileStrings = requestDto.FileStrings
+            });
         }
     }
 }

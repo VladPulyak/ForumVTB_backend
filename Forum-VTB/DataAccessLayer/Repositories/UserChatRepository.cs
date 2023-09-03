@@ -21,13 +21,16 @@ namespace DataAccessLayer.Repositories
             return await _set.Where(q => q.FirstUserId == firstUserId && q.SecondUserId == secondUserId || q.FirstUserId == secondUserId && q.SecondUserId == firstUserId).SingleOrDefaultAsync();
         }
 
+        public async Task<UserChat> GetByUserIdsAndAdvertId(string firstUserId, string secondUserId, string advertId)
+        {
+            return await _set.Where(q => (q.FirstUserId == firstUserId && q.SecondUserId == secondUserId || q.FirstUserId == secondUserId && q.SecondUserId == firstUserId) && q.AdvertId == advertId).SingleOrDefaultAsync();
+        }
+
         public async Task<List<UserChat>> GetByUserId(string userId)
         {
             return await _set.Where(q => q.FirstUserId == userId || q.SecondUserId == userId)
                 .Include(q => q.FirstUser)
                 .Include(q => q.SecondUser)
-                .Include(q => q.Advert)
-                .Include(q => q.Advert.Files)
                 .ToListAsync();
         }
     }

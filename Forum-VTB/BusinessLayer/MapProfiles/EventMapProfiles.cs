@@ -1,4 +1,5 @@
 using AutoMapper;
+using BusinessLayer.Dtos.Advert;
 using BusinessLayer.Dtos.Events;
 using DataAccessLayer.Models;
 using System;
@@ -13,7 +14,12 @@ namespace BusinessLayer.MapProfiles
     {
         public EventMapProfiles()
         {
-            CreateMap<Event, CreateEventDto>().ReverseMap();
+            CreateMap<Event, CreateEventRequestDto>().ReverseMap();
+            CreateMap<Event, EventResponceDto>()
+                .ForMember(dest => dest.EventId, q => q.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SectionName, q => q.MapFrom(src => src.Subsection.Section.Name))
+                .ForMember(dest => dest.SubsectionName, q => q.MapFrom(src => src.Subsection.Name));
+
         }
     }
 }

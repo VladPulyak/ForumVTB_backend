@@ -19,36 +19,17 @@ namespace Forum_VTB.Controllers
     {
         private readonly IAdvertService _advertService;
         private readonly IAdvertFileService _advertFileService;
-        private readonly ICommentService _commentService;
-        private readonly IFavouriteService _favouriteService;
+        private readonly IAdvertCommentService _commentService;
+        private readonly IAdvertFavouriteService _advertFavouriteService;
 
-        public BuySellController(IAdvertService advertService, ICommentService commentService, IFavouriteService favouriteService, IAdvertFileService advertFileService)
+        public BuySellController(IAdvertService advertService, IAdvertCommentService commentService, IAdvertFileService advertFileService, IAdvertFavouriteService advertFavouriteService)
         {
             _advertService = advertService;
             _commentService = commentService;
-            _favouriteService = favouriteService;
             _advertFileService = advertFileService;
+            _advertFavouriteService = advertFavouriteService;
         }
 
-        [HttpGet("/Adverts/GetUserAdverts")]
-        public async Task<ActionResult> GetUserAdverts()
-        {
-            List<AdvertResponceDto> responceDtos;
-            try
-            {
-                responceDtos = await _advertService.GetUserAdverts();
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-
-            return Ok(responceDtos);
-        }
 
         [AllowAnonymous]
         [HttpGet("/Adverts/GetFourNewestAdverts")]
@@ -184,11 +165,11 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Favourites/AddToFavourites")]
-        public async Task<ActionResult> AddToFavourites(AddToFAdvertFavouritesRequestDto requestDto)
+        public async Task<ActionResult> AddToFavourites(AddToAdvertFavouritesRequestDto requestDto)
         {
             try
             {
-                await _favouriteService.AddToAdvertFavourites(requestDto);
+                await _advertFavouriteService.AddToAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
@@ -206,7 +187,7 @@ namespace Forum_VTB.Controllers
         {
             try
             {
-                await _favouriteService.DeleteFromAdvertFavourites(requestDto);
+                await _advertFavouriteService.DeleteFromAdvertFavourites(requestDto);
             }
             catch (Exception ex)
             {
@@ -217,25 +198,6 @@ namespace Forum_VTB.Controllers
             }
 
             return Ok("Advert deleted from favourites successfully!");
-        }
-
-        [HttpGet("/Favourites/GetUserFavourites")]
-        public async Task<ActionResult> GetUserFavourites()
-        {
-            GetUserFavouritesResponceDto responceDto;
-            try
-            {
-                responceDto = await _favouriteService.GetUserFavourites();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ExceptionResponceDto
-                {
-                    Message = ex.Message
-                });
-            }
-
-            return Ok(responceDto);
         }
 
         [AllowAnonymous]
@@ -300,9 +262,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Comments/CreateComment")]
-        public async Task<ActionResult> CreateComment(CreateCommentRequestDto requestDto)
+        public async Task<ActionResult> CreateComment(CreateAdvertCommentRequestDto requestDto)
         {
-            CreateCommentResponceDto responceDto;
+            CreateAdvertCommentResponceDto responceDto;
             try
             {
                 responceDto = await _commentService.CreateComment(requestDto);
@@ -319,9 +281,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPut("/Comments/UpdateComment")]
-        public async Task<ActionResult> UpdateComment(UpdateCommentRequestDto requestDto)
+        public async Task<ActionResult> UpdateComment(UpdateAdvertCommentRequestDto requestDto)
         {
-            UpdateCommentResponceDto responceDto;
+            UpdateAdvertCommentResponceDto responceDto;
 
             try
             {
@@ -339,7 +301,7 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpDelete("/Comments/DeleteComment")]
-        public async Task<ActionResult> DeleteComment(DeleteCommentRequestDto requestDto)
+        public async Task<ActionResult> DeleteComment(DeleteAdvertCommentRequestDto requestDto)
         {
             try
             {
@@ -357,9 +319,9 @@ namespace Forum_VTB.Controllers
         }
 
         [HttpPost("/Comments/ReplyComment")]
-        public async Task<ActionResult> ReplyComment(ReplyCommentRequestDto requestDto)
+        public async Task<ActionResult> ReplyComment(ReplyAdvertCommentRequestDto requestDto)
         {
-            ReplyCommentResponceDto responceDto;
+            ReplyAdvertCommentResponceDto responceDto;
 
             try
             {

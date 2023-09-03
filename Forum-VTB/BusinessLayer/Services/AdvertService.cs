@@ -26,15 +26,14 @@ namespace BusinessLayer.Services
         private readonly ISubsectionRepository _subsectionRepository;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IMapper _mapper;
-        private readonly ICommentService _commentService;
+        private readonly IAdvertCommentService _commentService;
         private readonly IAdvertFileService _advertFileService;
-        private readonly IAdvertFileService _fileService;
         private readonly UserManager<UserProfile> _userManager;
         private readonly ISectionRepository _sectionRepository;
         private readonly IAdvertFavouriteRepository _favouriteRepository;
         private readonly IUserProfileRepository _userProfileRepository;
 
-        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, ICommentService commentService, IAdvertFileService fileService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
+        public AdvertService(IAdvertRepository advertRepository, IHttpContextAccessor contextAccessor, UserManager<UserProfile> userManager, IMapper mapper, ISubsectionRepository subsectionRepository, IAdvertCommentService commentService, IAdvertFileService advertFileService, ISectionRepository sectionRepository, IAdvertFavouriteRepository favouriteRepository, IUserProfileRepository userProfileRepository)
         {
             _advertRepository = advertRepository;
             _contextAccessor = contextAccessor;
@@ -42,7 +41,6 @@ namespace BusinessLayer.Services
             _mapper = mapper;
             _subsectionRepository = subsectionRepository;
             _commentService = commentService;
-            _fileService = fileService;
             _advertFileService = advertFileService;
             _sectionRepository = sectionRepository;
             _favouriteRepository = favouriteRepository;
@@ -54,7 +52,7 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = _mapper.Map<Advert>(requestDto);
-            var subsection = await _subsectionRepository.GetByName(requestDto.SubsectionName);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             advert.Subsection = subsection;
             advert.Price = requestDto.Price;
             advert.UserId = user.Id;
@@ -65,7 +63,7 @@ namespace BusinessLayer.Services
             advert.PhoneNumber = requestDto.PhoneNumber;
             var addedAdvert = await _advertRepository.Add(advert);
             await _advertRepository.Save();
-            await _fileService.AddFiles(new AddAdvertFilesRequestDto
+            await _advertFileService.AddFiles(new AddAdvertFilesRequestDto
             {
                 AdvertId = advert.Id,
                 FileStrings = requestDto.FileStrings
@@ -93,16 +91,19 @@ namespace BusinessLayer.Services
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
             var advert = await _advertRepository.GetById(requestDto.AdvertId);
+            var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             advert.Title = requestDto.Title;
             advert.Description = requestDto.Description;
             advert.Price = requestDto.Price;
             advert.MainPhoto = requestDto.MainPhoto;
             advert.DateOfCreation = DateTime.UtcNow;
             advert.Status = Status.Active.ToString();
-            await _advertFileService.AddMissingFiles(new AddMissingFilesRequestDto
+            advert.Subsection = subsection;
+            advert.SubsectionId = subsection.Id;
+            await _advertFileService.UpdateAdvertFiles(new UpdateAdvertFilesRequestDto
             {
-                Advert = advert,
-                FileStrings = requestDto.FileStrings
+                FileStrings = requestDto.FileStrings,
+                AdvertId = advert.Id
             });
             var updatedAdvert = _advertRepository.Update(advert);
             await _advertRepository.Save();
@@ -117,8 +118,8 @@ namespace BusinessLayer.Services
                 DateOfCreation = updatedAdvert.DateOfCreation,
                 Status = updatedAdvert.Status,
                 MainPhoto = updatedAdvert.MainPhoto,
-                Comments = updatedAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
-                await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
+                Comments = updatedAdvert.AdvertComments is null ? new List<GetAdvertCommentResponceDto>() :
+                await _commentService.GetCommentsByAdvertId(new GetAdvertCommentRequestDto
                 {
                     AdvertId = updatedAdvert.Id
                 }),
@@ -132,7 +133,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> GetFourNewestAdverts()
         {
-             var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
+            var adverts = await _advertRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts);
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
@@ -191,8 +192,8 @@ namespace BusinessLayer.Services
                 Description = userAdvert.Description,
                 DateOfCreation = userAdvert.DateOfCreation,
                 Price = userAdvert.Price,
-                Comments = userAdvert.AdvertComments is null ? new List<GetCommentResponceDto>() :
-                await _commentService.GetCommentsByAdvertId(new GetCommentsRequestDto
+                Comments = userAdvert.AdvertComments is null ? new List<GetAdvertCommentResponceDto>() :
+                await _commentService.GetCommentsByAdvertId(new GetAdvertCommentRequestDto
                 {
                     AdvertId = userAdvert.Id
                 }),
@@ -206,7 +207,8 @@ namespace BusinessLayer.Services
                 SubsectionName = userAdvert.Subsection.Name,
                 IsFavourite = isFavourite,
                 PhoneNumber = userAdvert.PhoneNumber,
-                MainPhoto = userAdvert.MainPhoto
+                MainPhoto = userAdvert.MainPhoto,
+                Status = userAdvert.Status
             };
         }
 
@@ -225,7 +227,7 @@ namespace BusinessLayer.Services
         public async Task<List<AdvertResponceDto>> FindBySectionName(FindBySectionNameRequestDto requestDto)
         {
             var adverts = await _advertRepository.GetBySectionName(requestDto.SectionName);
-            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderByDescending(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
@@ -237,8 +239,8 @@ namespace BusinessLayer.Services
 
         public async Task<List<AdvertResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
-            var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName);
-            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderBy(q => q.DateOfCreation).ToList());
+            var adverts = await _advertRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
+            var responceDtos = _mapper.Map<List<AdvertResponceDto>>(adverts.OrderByDescending(q => q.DateOfCreation).ToList());
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
                 var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;

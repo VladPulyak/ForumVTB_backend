@@ -40,7 +40,5 @@ namespace DataAccessLayer.Models
         public Subsection? Subsection { get; set; }
 
         public ICollection<AdvertFavourite>? Favourites { get; set; }
-
-        public ICollection<UserChat>? Chats { get; set; }
     }
 }

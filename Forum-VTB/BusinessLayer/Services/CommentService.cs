@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
-    public class CommentService : ICommentService
+    public class CommentService : IAdvertCommentService
     {
         private readonly IAdvertCommentRepository _advertCommentRepository;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace BusinessLayer.Services
             _userManager = userManager;
         }
 
-        public async Task<CreateCommentResponceDto> CreateComment(CreateCommentRequestDto requestDto)
+        public async Task<CreateAdvertCommentResponceDto> CreateComment(CreateAdvertCommentRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
             comment.DateOfCreation = DateTime.UtcNow;
             var addedComment = await _advertCommentRepository.Add(comment);
             await _advertCommentRepository.Save();
-            return new CreateCommentResponceDto
+            return new CreateAdvertCommentResponceDto
             {
                 CommentId = addedComment.Id,
                 AdvertId = addedComment.AdvertId,
@@ -51,7 +51,7 @@ namespace BusinessLayer.Services
             };
         }
 
-        public async Task<UpdateCommentResponceDto> UpdateComment(UpdateCommentRequestDto requestDto)
+        public async Task<UpdateAdvertCommentResponceDto> UpdateComment(UpdateAdvertCommentRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -60,7 +60,7 @@ namespace BusinessLayer.Services
             comment.DateOfCreation = DateTime.UtcNow;
             var updatedComment = _advertCommentRepository.Update(comment);
             await _advertCommentRepository.Save();
-            return new UpdateCommentResponceDto
+            return new UpdateAdvertCommentResponceDto
             {
                 CommentId = updatedComment.Id,
                 AdvertId = updatedComment.AdvertId,
@@ -71,20 +71,20 @@ namespace BusinessLayer.Services
             };
         }
 
-        public async Task DeleteComment(DeleteCommentRequestDto requestDto)
+        public async Task DeleteComment(DeleteAdvertCommentRequestDto requestDto)
         {
             await _advertCommentRepository.Delete(requestDto.CommentId);
             await _advertCommentRepository.Save();
         }
 
-        public async Task<List<GetCommentResponceDto>> GetCommentsByAdvertId(GetCommentsRequestDto requestDto)
+        public async Task<List<GetAdvertCommentResponceDto>> GetCommentsByAdvertId(GetAdvertCommentRequestDto requestDto)
         {
             var comments = await _advertCommentRepository.GetByAdvertId(requestDto.AdvertId);
-            var commentResponceDtos = _mapper.Map<List<GetCommentResponceDto>>(comments.OrderBy(q => q.DateOfCreation));
+            var commentResponceDtos = _mapper.Map<List<GetAdvertCommentResponceDto>>(comments.OrderBy(q => q.DateOfCreation));
             return commentResponceDtos;
         }
 
-        public async Task<ReplyCommentResponceDto> ReplyComment(ReplyCommentRequestDto requestDto)
+        public async Task<ReplyAdvertCommentResponceDto> ReplyComment(ReplyAdvertCommentRequestDto requestDto)
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -97,7 +97,7 @@ namespace BusinessLayer.Services
             comment.DateOfCreation = DateTime.UtcNow;
             var addedComment = await _advertCommentRepository.Add(comment);
             await _advertCommentRepository.Save();
-            return new ReplyCommentResponceDto
+            return new ReplyAdvertCommentResponceDto
             {
                 CommentId = addedComment.Id,
                 AdvertId = addedComment.AdvertId,

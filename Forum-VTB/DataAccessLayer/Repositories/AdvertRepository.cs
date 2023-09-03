@@ -50,6 +50,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.User)
                 .Include(q => q.AdvertComments)
                 .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .Include(q => q.Files)
                 .SingleAsync();
             if (advert is null)
@@ -88,12 +89,13 @@ namespace DataAccessLayer.Repositories
             return entity;
         }
 
-        public async Task<List<Advert>> GetBySubsectionName(string subsectionName)
+        public async Task<List<Advert>> GetBySubsectionName(string subsectionName, string sectionName)
         {
-            var entity = await _set.Include(q => q.Files)
+            var entity = await _set
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
-                .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active")
+                .Where(q => q.Subsection.Name == subsectionName && q.Status == "Active" && q.Subsection.Section.Name == sectionName)
+                .Include(q => q.Files)
                 .ToListAsync();
 
             return entity;
@@ -104,6 +106,8 @@ namespace DataAccessLayer.Repositories
             keyPhrase = keyPhrase.Trim();
             return await _set.Where(a => (a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper())) && a.Status == "Active")
                 .Include(q => q.Files)
+                .Include(q => q.Subsection)
+                .Include(q => q.Subsection.Section)
                 .ToListAsync();
         }
     }

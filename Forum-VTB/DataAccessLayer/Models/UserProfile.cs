@@ -28,9 +28,22 @@ namespace DataAccessLayer.Models
 
         public ICollection<UserChat>? ChatsAsSecondUser { get; set; }
 
-        public ICollection<Work>? Works { get; set; }
+        public ICollection<Job>? Jobs { get; set; }
 
-        public ICollection<WorkFavourite>? WorkFavourites { get; set; }
+        public ICollection<JobFavourite>? JobFavourites { get; set; }
+
+        public ICollection<Find>? Finds { get; set; }
+
+        public ICollection<FindFavourite>? FindFavourites { get; set; }
+
+        public ICollection<FindComment>? FindComments { get; set; }
+
+        public ICollection<Topic>? Topics { get; set; }
+
+        public ICollection<TopicFavourite>? TopicFavourites { get; set; }
+
+        public ICollection<TopicMessage>? TopicMessages { get; set; }
+
 
     }
 }

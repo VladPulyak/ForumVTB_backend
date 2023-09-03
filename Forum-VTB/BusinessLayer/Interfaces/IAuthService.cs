@@ -16,6 +16,8 @@ namespace BusinessLayer.Interfaces
     {
         Task<UserRegisterResponceDto> Register(UserRegisterDto registerUserDto);
 
+        Task<UserRegisterResponceDto> RegisterAdminAccount(UserRegisterDto registerUserDto);
+
         Task<AuthResponceDto> Login(UserLoginDto loginUserDto);
 
         Task<string> CreateRefreshToken(UserProfile user);

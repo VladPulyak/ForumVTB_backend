@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,21 @@ namespace DataAccessLayer.Models
 
         public string? AdvertId { get; set; }
 
+        public string? ChapterName { get; set; }
+
         public UserProfile? FirstUser { get; set; }
 
         public UserProfile? SecondUser { get; set; }
 
         public ICollection<UserMessage>? Messages { get; set; }
 
-        public Advert Advert { get; set; }
+        [NotMapped]
+        public Advert? Advert { get; set; }
+
+        [NotMapped]
+        public Job? Job { get; set; }
+
+        [NotMapped]
+        public Find? Find { get; set; }
     }
 }

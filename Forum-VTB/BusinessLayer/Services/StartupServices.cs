@@ -1,8 +1,11 @@
-﻿using DataAccessLayer;
+﻿using BusinessLayer.Dtos.UserThemes;
+using BusinessLayer.Interfaces;
+using DataAccessLayer;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Telegram.Bot.Types;
 
 namespace BusinessLayer.Services
 {
@@ -15,6 +18,7 @@ namespace BusinessLayer.Services
                 var dbContext = scope.ServiceProvider.GetRequiredService<ForumVTBDbContext>();
                 dbContext.Database.Migrate();
                 await RolesSeedDataAsync(dbContext);
+                await ChaptersSeedData(dbContext);
                 await SectionsSeedDataAsync(dbContext);
                 await TransportSubsectionsSeedDataAsync(dbContext);
                 await ElectronicsSubsectionsSeedDataAsync(dbContext);
@@ -23,7 +27,66 @@ namespace BusinessLayer.Services
                 await RealEstateSubsectionsSeedDataAsync(dbContext);
                 await ClothesAndPersonalThingsSubsectionsSeedDataAsync(dbContext);
                 await HouseAndGardenSubsectionsSeedDataAsync(dbContext);
-                await ServicesSubsectionsSeedDataAsync(dbContext);
+                await ISuggestSubsectionsSeedDataAsync(dbContext);
+                await ISearchSubsectionsSeedDataAsync(dbContext);
+                await FindsSubsectionsSeedData(dbContext);
+                await ForumSubsectionsSeedData(dbContext);
+                await EventsSubsectionsSeedData(dbContext);
+                await AdminAccountSeedData(dbContext);
+            }
+        }
+
+        private static async Task AdminAccountSeedData(ForumVTBDbContext dbContext)
+        {
+            var adminRole = await dbContext.Roles.SingleOrDefaultAsync(q => q.Name == "Admin");
+            if (!await dbContext.UserRoles.AnyAsync(q => q.RoleId == adminRole.Id))
+            {
+                var user = await dbContext.UserProfiles.AddAsync(new UserProfile
+                {
+                    BirthDate = DateTime.Now,
+                    ConcurrencyStamp = Guid.NewGuid().ToString(),
+                    Email = "vitfor@dreamsoft.by",
+                    Id = Guid.NewGuid().ToString(),
+                    NickName = "Support",
+                    UserName = "Support",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    PasswordHash = "AQAAAAIAAYagAAAAEBa6vGdEJvoWCLvcE/fP9vc5LrqH1f3QMyLI8XqRwgNXl2wlpMOE+OgMX0P1kP/QQg==",
+                    NormalizedEmail = "VITFOR@DREAMSOFT.BY",
+                    NormalizedUserName = "SUPPORT"
+                });
+
+                await dbContext.SaveChangesAsync();
+
+                await dbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+                {
+                    RoleId = adminRole.Id,
+                    UserId = user.Entity.Id
+                });
+
+                await dbContext.Themes.AddAsync(new UserTheme
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = user.Entity.Id,
+                    Theme = "dark"
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+        private static async Task ChaptersSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Chapters.AnyAsync())
+            {
+                await dbContext.Chapters.AddRangeAsync(new List<Chapter>
+                {
+                    new Chapter {Name = "Buy-Sell"},
+                    new Chapter {Name = "Services"},
+                    new Chapter {Name = "Finds"},
+                    new Chapter {Name = "Events"},
+                    new Chapter {Name = "Forum"}
+                });
+
+                await dbContext.SaveChangesAsync();
             }
         }
 
@@ -47,31 +110,112 @@ namespace BusinessLayer.Services
             {
                 await dbContext.Sections.AddRangeAsync(new List<Section>
                 {
-                    new Section {Name = "Transport"},
-                    new Section {Name = "Electronics"},
-                    new Section {Name = "Sports and relax"},
-                    new Section {Name = "Animals"},
-                    new Section {Name = "Real estate"},
-                    new Section {Name = "Clothes and personal things"},
-                    new Section {Name = "House and garden"},
-                    new Section {Name = "Services"}
+                    new Section {Name = "Transport", ChapterId = 1},
+                    new Section {Name = "Electronics", ChapterId = 1},
+                    new Section {Name = "Sports and relax", ChapterId = 1},
+                    new Section {Name = "Animals", ChapterId = 1},
+                    new Section {Name = "Real estate", ChapterId = 1},
+                    new Section {Name = "Clothes and personal things", ChapterId = 1},
+                    new Section {Name = "House and garden", ChapterId = 1},
+                    new Section {Name = "I suggest", ChapterId = 2},
+                    new Section {Name = "I search", ChapterId = 2},
                 });
 
                 await dbContext.SaveChangesAsync();
             }
 
-            if (!await dbContext.Sections.Where(q=>q.Name == "Services").AnyAsync())
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 3))
             {
                 await dbContext.Sections.AddRangeAsync(new List<Section>
                 {
-                    new Section {Name = "Services"}
+                    new Section { Name = "Finds", ChapterId = 3 }
+                });
+                await dbContext.SaveChangesAsync();
+            }
+
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 4))
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section { Name = "Events", ChapterId = 4 }
+                });
+                await dbContext.SaveChangesAsync();
+            }
+
+            if (!await dbContext.Sections.AnyAsync(q => q.ChapterId == 5))
+            {
+                await dbContext.Sections.AddRangeAsync(new List<Section>
+                {
+                    new Section { Name = "Forum", ChapterId = 5 }
+                });
+                await dbContext.SaveChangesAsync();
+
+            }
+        }
+
+        private static async Task EventsSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 12))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Cinema", SectionId = 12},
+                    new Subsection {Name = "Theaters and museums", SectionId = 12},
+                    new Subsection {Name = "Concerts", SectionId = 12},
+                    new Subsection {Name = "Quests", SectionId = 12},
+                    new Subsection {Name = "Sport", SectionId = 12},
+                    new Subsection {Name = "Excursions", SectionId = 12}
                 });
 
                 await dbContext.SaveChangesAsync();
             }
         }
 
-        private static async Task ServicesSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
+        private static async Task ForumSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 11))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Tourism", SectionId = 11},
+                    new Subsection {Name = "Real Estate", SectionId = 11},
+                    new Subsection {Name = "Sport", SectionId = 11},
+                    new Subsection {Name = "Hunting", SectionId = 11},
+                    new Subsection {Name = "Repairing", SectionId = 11},
+                    new Subsection {Name = "Games", SectionId = 11},
+                    new Subsection {Name = "Fishing", SectionId = 11},
+                    new Subsection {Name = "Electronics", SectionId = 11},
+                    new Subsection {Name = "Health and beauty", SectionId = 11},
+                    new Subsection {Name = "Travelling", SectionId = 11},
+                    new Subsection {Name = "Documents", SectionId = 11},
+                    new Subsection {Name = "For parents", SectionId = 11},
+                    new Subsection {Name = "All about city", SectionId = 11},
+                    new Subsection {Name = "Auto", SectionId = 11},
+                    new Subsection {Name = "Animals", SectionId = 11},
+                    new Subsection {Name = "Cooking", SectionId = 11},
+                    new Subsection {Name = "Plants", SectionId = 11},
+                    new Subsection {Name = "Other", SectionId = 11}
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task FindsSubsectionsSeedData(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 10))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Losses", SectionId = 10},
+                    new Subsection {Name = "Finds", SectionId = 10}
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task ISuggestSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
         {
             if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 8))
             {
@@ -85,11 +229,34 @@ namespace BusinessLayer.Services
                     new Subsection {Name = "Transportation", SectionId = 8},
                     new Subsection {Name = "Advertising", SectionId = 8},
                     new Subsection {Name = "Buildings", SectionId = 8},
-                    new Subsection {Name = "Buildings", SectionId = 8},
                     new Subsection {Name = "Animal", SectionId = 8},
                     new Subsection {Name = "Photo and video", SectionId = 8},
                     new Subsection {Name = "Legal", SectionId = 8},
                     new Subsection {Name = "Other", SectionId = 8},
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task ISearchSubsectionsSeedDataAsync(ForumVTBDbContext dbContext)
+        {
+            if (!await dbContext.Subsections.AnyAsync(q => q.SectionId == 9))
+            {
+                await dbContext.Subsections.AddRangeAsync(new List<Subsection>
+                {
+                    new Subsection {Name = "Work", SectionId = 9},
+                    new Subsection {Name = "Domestic", SectionId = 9},
+                    new Subsection {Name = "Electronics", SectionId = 9},
+                    new Subsection {Name = "Beauty and health", SectionId = 9},
+                    new Subsection {Name = "Educational", SectionId = 9},
+                    new Subsection {Name = "Transportation", SectionId = 9},
+                    new Subsection {Name = "Advertising", SectionId = 9},
+                    new Subsection {Name = "Buildings", SectionId = 9},
+                    new Subsection {Name = "Animal", SectionId = 9},
+                    new Subsection {Name = "Photo and video", SectionId = 9},
+                    new Subsection {Name = "Legal", SectionId = 9},
+                    new Subsection {Name = "Other", SectionId = 9},
                 });
 
                 await dbContext.SaveChangesAsync();

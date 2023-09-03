@@ -25,7 +25,7 @@ namespace BusinessLayer.Dtos.Advert
 
         public string? Status { get; set; }
 
-        public List<GetCommentResponceDto>? Comments { get; set; }
+        public List<GetAdvertCommentResponceDto>? Comments { get; set; }
 
         public DateTime DateOfCreation { get; set; }
 
