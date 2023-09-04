@@ -24,14 +24,5 @@ namespace DataAccessLayer.Models
         public UserProfile? SecondUser { get; set; }
 
         public ICollection<UserMessage>? Messages { get; set; }
-
-        [NotMapped]
-        public Advert? Advert { get; set; }
-
-        [NotMapped]
-        public Job? Job { get; set; }
-
-        [NotMapped]
-        public Find? Find { get; set; }
     }
 }
