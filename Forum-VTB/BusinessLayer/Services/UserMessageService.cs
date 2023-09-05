@@ -173,156 +173,83 @@ namespace BusinessLayer.Services
             return chatDtos.ToList();
         }
 
-        private async Task<List<UserChatResponceDto>> MapToUserChatResponceDtos(List<UserChat> chats, string userEmail)
+
+        private async Task<UserChatResponceDto[]?> MapToUserChatResponceDtos(List<UserChat> chats, string userEmail)
         {
-            var mappedChats = new List<UserChatResponceDto>();
-
-            foreach (var chat in chats)
+            return await Task.WhenAll(chats.Select(async chat =>
             {
-                switch (chat.ChapterName)
+                await _dbContextSemaphore.WaitAsync();
+                try
                 {
-                    case "Buy-Sell":
-                        {
-                            var advert = await _advertRepository.GetActiveById(chat.AdvertId);
-                            mappedChats.Add(new()
+                    switch (chat.ChapterName)
+                    {
+                        case "Buy-Sell":
                             {
-                                ChatId = chat.Id,
-                                Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-                                NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-                                UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-                                AdvertId = advert.Id,
-                                AdvertTitle = advert.Title,
-                                AdvertPrice = advert.Price,
-                                AdvertPhoto = advert.MainPhoto,
-                                ChapterName = chat.ChapterName,
-                                SectionName = advert.Subsection.Name,
-                                SubsectionName = advert.Subsection.Section.Name
-                            });
-                            break;
-                        }
-                    case "Services":
-                        {
-                            var job = await _jobRepository.GetActiveById(chat.AdvertId);
-                            mappedChats.Add(new()
+                                var advert = await _advertRepository.GetActiveById(chat.AdvertId);
+                                return new UserChatResponceDto
+                                {
+                                    ChatId = chat.Id,
+                                    Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
+                                    NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
+                                    UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
+                                    AdvertId = advert.Id,
+                                    AdvertTitle = advert.Title,
+                                    AdvertPrice = advert.Price,
+                                    AdvertPhoto = advert.MainPhoto,
+                                    ChapterName = chat.ChapterName,
+                                    SectionName = advert.Subsection.Name,
+                                    SubsectionName = advert.Subsection.Section.Name
+                                };
+                            }
+                        case "Services":
                             {
-                                ChatId = chat.Id,
-                                Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-                                NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-                                UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-                                AdvertId = job.Id,
-                                AdvertTitle = job.Title,
-                                AdvertPrice = job.Price,
-                                AdvertPhoto = job.MainPhoto,
-                                ChapterName = chat.ChapterName,
-                                SectionName = job.Subsection.Name,
-                                SubsectionName = job.Subsection.Section.Name
-                            });
-                            break;
-                        }
-                    case "Finds":
-                        {
-                            var find = await _findRepository.GetActiveById(chat.AdvertId);
-                            mappedChats.Add(new()
+                                var job = await _jobRepository.GetActiveById(chat.AdvertId);
+                                return new UserChatResponceDto
+                                {
+                                    ChatId = chat.Id,
+                                    Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
+                                    NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
+                                    UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
+                                    AdvertId = job.Id,
+                                    AdvertTitle = job.Title,
+                                    AdvertPrice = job.Price,
+                                    AdvertPhoto = job.MainPhoto,
+                                    ChapterName = chat.ChapterName,
+                                    SectionName = job.Subsection.Name,
+                                    SubsectionName = job.Subsection.Section.Name
+                                };
+                            }
+                        case "Finds":
                             {
-                                ChatId = chat.Id,
-                                Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-                                NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-                                UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-                                AdvertId = find.Id,
-                                AdvertTitle = find.Title,
-                                AdvertPrice = string.Empty,
-                                AdvertPhoto = find.MainPhoto,
-                                ChapterName = chat.ChapterName,
-                                SectionName = find.Subsection.Name,
-                                SubsectionName = find.Subsection.Section.Name
-                            });
-                            break;
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException("Invalid operation");
-                        }
+                                var find = await _findRepository.GetActiveById(chat.AdvertId);
+                                return new UserChatResponceDto
+                                {
+                                    ChatId = chat.Id,
+                                    Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
+                                    NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
+                                    UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
+                                    AdvertId = find.Id,
+                                    AdvertTitle = find.Title,
+                                    AdvertPrice = string.Empty,
+                                    AdvertPhoto = find.MainPhoto,
+                                    ChapterName = chat.ChapterName,
+                                    SectionName = find.Subsection.Name,
+                                    SubsectionName = find.Subsection.Section.Name
+                                };
+                            }
+                        default:
+                            {
+                                throw new InvalidOperationException("Invalid operation");
+                            }
+                    }
                 }
-            }
-            return mappedChats;
-
-            //private async Task<UserChatResponceDto[]?> MapToUserChatResponceDtos(List<UserChat> chats, string userEmail)
-            //{
-            //    return await Task.WhenAll(chats.Select(async chat =>
-            //    {
-            //        await _dbContextSemaphore.WaitAsync();
-            //        try
-            //        {
-            //            switch (chat.ChapterName)
-            //            {
-            //                case "Buy-Sell":
-            //                    {
-            //                        var advert = await _advertRepository.GetActiveById(chat.AdvertId);
-            //                        return new UserChatResponceDto
-            //                        {
-            //                            ChatId = chat.Id,
-            //                            Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-            //                            NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-            //                            UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-            //                            AdvertId = advert.Id,
-            //                            AdvertTitle = advert.Title,
-            //                            AdvertPrice = advert.Price,
-            //                            AdvertPhoto = advert.MainPhoto,
-            //                            ChapterName = chat.ChapterName,
-            //                            SectionName = advert.Subsection.Name,
-            //                            SubsectionName = advert.Subsection.Section.Name
-            //                        };
-            //                    }
-            //                case "Services":
-            //                    {
-            //                        var job = await _jobRepository.GetActiveById(chat.AdvertId);
-            //                        return new UserChatResponceDto
-            //                        {
-            //                            ChatId = chat.Id,
-            //                            Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-            //                            NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-            //                            UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-            //                            AdvertId = job.Id,
-            //                            AdvertTitle = job.Title,
-            //                            AdvertPrice = job.Price,
-            //                            AdvertPhoto = job.MainPhoto,
-            //                            ChapterName = chat.ChapterName,
-            //                            SectionName = job.Subsection.Name,
-            //                            SubsectionName = job.Subsection.Section.Name
-            //                        };
-            //                    }
-            //                case "Finds":
-            //                    {
-            //                        var find = await _findRepository.GetActiveById(chat.AdvertId);
-            //                        return new UserChatResponceDto
-            //                        {
-            //                            ChatId = chat.Id,
-            //                            Username = chat.FirstUser.Email == userEmail ? chat.SecondUser.UserName : chat.FirstUser.UserName,
-            //                            NickName = chat.FirstUser.Email == userEmail ? chat.SecondUser.NickName : chat.FirstUser.NickName,
-            //                            UserPhoto = chat.FirstUser.Email == userEmail ? chat.SecondUser.Photo : chat.FirstUser.Photo,
-            //                            AdvertId = find.Id,
-            //                            AdvertTitle = find.Title,
-            //                            AdvertPrice = string.Empty,
-            //                            AdvertPhoto = find.MainPhoto,
-            //                            ChapterName = chat.ChapterName,
-            //                            SectionName = find.Subsection.Name,
-            //                            SubsectionName = find.Subsection.Section.Name
-            //                        };
-            //                    }
-            //                default:
-            //                    {
-            //                        throw new InvalidOperationException("Invalid operation");
-            //                    }
-            //            }
-            //        }
-            //        finally
-            //        {
-            //            _dbContextSemaphore.Release();
-            //        }
-            //    }));
-            //}
+                finally
+                {
+                    _dbContextSemaphore.Release();
+                }
+            }));
         }
-            public async Task<List<GetChatMessageResponceDto>> GetChatMessages(string chatId)
+        public async Task<List<GetChatMessageResponceDto>> GetChatMessages(string chatId)
         {
             var messages = await _userMessageRepository.GetByChatId(chatId);
             var responceDtos = _mapper.Map<List<GetChatMessageResponceDto>>(messages);
