@@ -16,7 +16,7 @@ namespace DataAccessLayer.Configurations
             builder.ToTable("Events");
             builder.HasKey(q => q.Id);
             builder.Property(q => q.Title).IsRequired().HasMaxLength(50);
-            builder.Property(q => q.Description).IsRequired().HasMaxLength(300);
+            builder.Property(q => q.Description).IsRequired().HasMaxLength(3000);
             builder.Property(q => q.Address).IsRequired().HasMaxLength(300);
             builder.Property(q => q.Price).IsRequired().HasMaxLength(10);
             builder.Property(q => q.PhoneNumber).IsRequired().HasMaxLength(13);
