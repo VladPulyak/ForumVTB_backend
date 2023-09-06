@@ -16,5 +16,9 @@ namespace DataAccessLayer.Interfaces
         Task<List<Event>> GetBySubsectionName(string subsectionName, string sectionName);
 
         Task<List<Event>> SearchByKeyPhrase(string keyPhrase);
+
+        Task<List<Event>> GetByDate(DateTime date);
+
+        Task<List<Event>> GetByDateInSubsection(DateTime date, string subsectionName);
     }
 }

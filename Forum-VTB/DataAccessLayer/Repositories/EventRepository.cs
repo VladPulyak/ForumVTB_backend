@@ -14,7 +14,7 @@ namespace DataAccessLayer.Repositories
     {
         public EventRepository(ForumVTBDbContext context) : base(context)
         {
-            
+
         }
 
         public override IQueryable<Event> GetAll()
@@ -66,5 +66,16 @@ namespace DataAccessLayer.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Event>> GetByDate(DateTime date)
+        {
+            return await _set.Where(q => date > q.StartDate && date < q.EndDate).ToListAsync();
+        }
+
+        public async Task<List<Event>> GetByDateInSubsection(DateTime date, string subsectionName)
+        {
+            return await _set
+                .Include(q => q.Subsection)
+                .Where(q => (date > q.StartDate && date < q.EndDate) && q.Subsection.Name == subsectionName).ToListAsync();
+        }
     }
 }

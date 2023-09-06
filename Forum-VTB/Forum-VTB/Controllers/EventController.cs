@@ -139,5 +139,45 @@ namespace Forum_VTB.Controllers
             }
             return Ok(responceDtos);
         }
+
+        [AllowAnonymous]
+        [HttpPost("/Events/GetByDate")]
+        public async Task<ActionResult> GetByDate(GetByDateRequestDto requestDto)
+        {
+            List<EventResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _eventService.GetByDate(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDtos);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("/Events/GetByDateInSubsection")]
+        public async Task<ActionResult> GetByDateInSubsection(GetByDateInSubsectionRequestDto requestDto)
+        {
+            List<EventResponceDto> responceDtos;
+
+            try
+            {
+                responceDtos = await _eventService.GetByDateInSubsection(requestDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ExceptionResponceDto
+                {
+                    Message = ex.Message
+                });
+            }
+            return Ok(responceDtos);
+        }
     }
 }

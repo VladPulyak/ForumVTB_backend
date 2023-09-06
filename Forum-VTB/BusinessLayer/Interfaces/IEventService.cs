@@ -22,5 +22,9 @@ namespace BusinessLayer.Interfaces
         Task<EventResponceDto> GetEventCard(GetEventCardRequestDto requestDto);
 
         Task<List<EventResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto);
+
+        Task<List<EventResponceDto>> GetByDate(GetByDateRequestDto requestDto);
+
+        Task<List<EventResponceDto>> GetByDateInSubsection(GetByDateInSubsectionRequestDto requestDto);
     }
 }
