@@ -32,6 +32,7 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
+            //var date = Convert.ToDateTime(requestDto.StartDate);
             var @event = _mapper.Map<Event>(requestDto);
             var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             @event.Subsection = subsection;

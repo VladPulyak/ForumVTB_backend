@@ -75,7 +75,8 @@ namespace DataAccessLayer.Repositories
         {
             return await _set
                 .Include(q => q.Subsection)
-                .Where(q => (date > q.StartDate && date < q.EndDate) && q.Subsection.Name == subsectionName).ToListAsync();
+                .Where(q => (date >= q.StartDate && date <= q.EndDate) && q.Subsection.Name == subsectionName)
+                .ToListAsync();
         }
     }
 }
