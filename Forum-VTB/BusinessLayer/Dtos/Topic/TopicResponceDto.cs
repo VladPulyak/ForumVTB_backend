@@ -18,6 +18,12 @@ namespace BusinessLayer.Dtos.Topic
 
         public string? MainPhoto { get; set; }
 
+        public string? UserName { get; set; }
+
+        public string? NickName { get; set; }
+
+        public string? UserPhoto { get; set; }
+
         public DateTime? DateOfLastMessage { get; set; }
 
         public int? MessagesCount { get; set; }

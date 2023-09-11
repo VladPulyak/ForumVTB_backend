@@ -32,11 +32,11 @@ namespace BusinessLayer.Services
         {
             var userEmail = _contextAccessor.HttpContext?.User.Claims.Single(q => q.Type == ClaimTypes.Email).Value;
             var user = await _userManager.FindByEmailAsync(userEmail);
+            //var date = Convert.ToDateTime(requestDto.StartDate);
             var @event = _mapper.Map<Event>(requestDto);
             var subsection = await _subsectionRepository.GetBySubsectionAndSectionNames(requestDto.SectionName, requestDto.SubsectionName);
             @event.Subsection = subsection;
             @event.SubsectionId = subsection.Id;
-            @event.DateOfCreation = DateTime.UtcNow;
             @event.Id = Guid.NewGuid().ToString();
             var addedEvent = await _eventRepository.Add(@event);
             await _eventRepository.Save();
@@ -46,7 +46,8 @@ namespace BusinessLayer.Services
                 Title = addedEvent.Title,
                 Description = addedEvent.Description,
                 Price = addedEvent.Price,
-                DateOfCreation = @event.DateOfCreation,
+                StartDate = addedEvent.StartDate,
+                EndDate = addedEvent.EndDate,
                 Address = addedEvent.Address,
                 PhoneNumber = addedEvent.PhoneNumber,
                 Poster = addedEvent.Poster,
@@ -64,7 +65,8 @@ namespace BusinessLayer.Services
             @event.Title = requestDto.Title;
             @event.Description = requestDto.Description;
             @event.Price = requestDto.Price;
-            @event.DateOfCreation = DateTime.UtcNow;
+            @event.StartDate = requestDto.StartDate;
+            @event.EndDate = requestDto.EndDate;
             @event.Subsection = subsection;
             @event.SubsectionId = subsection.Id;
             var updatedEvent = _eventRepository.Update(@event);
@@ -75,7 +77,8 @@ namespace BusinessLayer.Services
                 Title = updatedEvent.Title,
                 Description = updatedEvent.Description,
                 Price = updatedEvent.Price,
-                DateOfCreation = updatedEvent.DateOfCreation,
+                StartDate = updatedEvent.StartDate,
+                EndDate = updatedEvent.EndDate,
                 Address = updatedEvent.Address,
                 PhoneNumber = updatedEvent.PhoneNumber,
                 Poster = updatedEvent.Poster,
@@ -86,7 +89,7 @@ namespace BusinessLayer.Services
 
         public async Task<List<EventResponceDto>> GetFourNewestEvents()
         {
-            var events = await _eventRepository.GetAll().OrderByDescending(q => q.DateOfCreation).Take(4).ToListAsync();
+            var events = await _eventRepository.GetAll().OrderByDescending(q => q.StartDate).Take(4).ToListAsync();
             var responceDtos = _mapper.Map<List<EventResponceDto>>(events);
             return responceDtos;
         }
@@ -107,7 +110,8 @@ namespace BusinessLayer.Services
                 Title = @event.Title,
                 Description = @event.Description,
                 Price = @event.Price,
-                DateOfCreation = @event.DateOfCreation,
+                StartDate = @event.StartDate,
+                EndDate = @event.EndDate,
                 Address = @event.Address,
                 PhoneNumber = @event.PhoneNumber,
                 Poster = @event.Poster,
@@ -119,8 +123,20 @@ namespace BusinessLayer.Services
         public async Task<List<EventResponceDto>> FindBySubsectionName(FindBySubsectionNameRequestDto requestDto)
         {
             var events = await _eventRepository.GetBySubsectionName(requestDto.SubsectionName, requestDto.SectionName);
-            var responceDtos = _mapper.Map<List<EventResponceDto>>(events.OrderByDescending(q => q.DateOfCreation).ToList());
+            var responceDtos = _mapper.Map<List<EventResponceDto>>(events.OrderByDescending(q => q.StartDate).ToList());
             return responceDtos;
+        }
+
+        public async Task<List<EventResponceDto>> GetByDate(GetByDateRequestDto requestDto)
+        {
+            var events = await _eventRepository.GetByDate(requestDto.Date);
+            return _mapper.Map<List<EventResponceDto>>(events);
+        }
+
+        public async Task<List<EventResponceDto>> GetByDateInSubsection(GetByDateInSubsectionRequestDto requestDto)
+        {
+            var events = await _eventRepository.GetByDateInSubsection(requestDto.Date, requestDto.SubsectionName);
+            return _mapper.Map<List<EventResponceDto>>(events);
         }
     }
 }

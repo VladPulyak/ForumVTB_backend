@@ -173,6 +173,7 @@ namespace BusinessLayer.Services
             return chatDtos.ToList();
         }
 
+
         private async Task<UserChatResponceDto[]?> MapToUserChatResponceDtos(List<UserChat> chats, string userEmail)
         {
             return await Task.WhenAll(chats.Select(async chat =>
@@ -248,7 +249,6 @@ namespace BusinessLayer.Services
                 }
             }));
         }
-
         public async Task<List<GetChatMessageResponceDto>> GetChatMessages(string chatId)
         {
             var messages = await _userMessageRepository.GetByChatId(chatId);

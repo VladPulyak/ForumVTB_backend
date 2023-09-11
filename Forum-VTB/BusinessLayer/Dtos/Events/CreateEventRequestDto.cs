@@ -20,7 +20,9 @@ namespace BusinessLayer.Dtos.Events
 
         public string? PhoneNumber { get; set; }
 
-        public DateTime DateOfCreation { get; set; }
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
 
         public string? SubsectionName { get; set; }
 

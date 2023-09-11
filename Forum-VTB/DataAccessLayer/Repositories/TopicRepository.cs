@@ -21,6 +21,7 @@ namespace DataAccessLayer.Repositories
         {
             return _set
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .Include(q => q.Favourites)
@@ -38,6 +39,7 @@ namespace DataAccessLayer.Repositories
             var topics = await _set.Where(q => q.UserId == userId)
                 .Include(q => q.Messages)
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .OrderBy(q => q.DateOfCreation)
@@ -69,6 +71,7 @@ namespace DataAccessLayer.Repositories
                 .Include(q => q.Subsection.Section)
                 .Where(q => q.Subsection.Section.Name == sectionName)
                 .Include(q => q.Messages)
+                .Include(q => q.User)
                 .ToListAsync();
 
             return entity;
@@ -82,6 +85,7 @@ namespace DataAccessLayer.Repositories
                 .Where(q => q.Subsection.Name == subsectionName && q.Subsection.Section.Name == sectionName)
                 .Include(q => q.Files)
                 .Include(q => q.Messages)
+                .Include(q => q.User)
                 .ToListAsync();
 
             return entity;
@@ -92,6 +96,7 @@ namespace DataAccessLayer.Repositories
             keyPhrase = keyPhrase.Trim();
             return await _set.Where(a => (a.Title.ToUpper().Contains(keyPhrase.ToUpper()) || a.Description.ToUpper().Contains(keyPhrase.ToUpper())))
                 .Include(q => q.Files)
+                .Include(q => q.User)
                 .Include(q => q.Subsection)
                 .Include(q => q.Subsection.Section)
                 .ToListAsync();
