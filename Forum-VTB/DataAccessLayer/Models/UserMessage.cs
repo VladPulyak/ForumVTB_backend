@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataAccessLayer.Models
+﻿namespace DataAccessLayer.Models
 {
-    public class UserMessage
+    public sealed class UserMessage
     {
         public string? Id { get; set; }
 

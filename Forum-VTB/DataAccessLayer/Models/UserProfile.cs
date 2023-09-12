@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.Models
 {
-    public class UserProfile : IdentityUser
+    public sealed class UserProfile : IdentityUser
     {
         public string? Photo { get; set; }
 
